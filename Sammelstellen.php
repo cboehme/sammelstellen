@@ -15,5 +15,17 @@ defined( 'ABSPATH' ) or die( 'No direct invokation allowed' );
 add_action('admin_menu', 'sammelstellen_init');
 
 function sammelstellen_init() {
-    add_menu_page('Sammelstellen', 'Sammelstellen', 'manage_options', 'sammelstellen');
+
+    add_menu_page('Sammelstellen', 'Sammelstellen', 'edit_posts', 'sammelstellen',
+            'sammelstellen_list_page');
+}
+
+function sammelstellen_list_page() {
+?>
+
+    <div class="wrap">
+        <h1>Sammelstellen</h1>
+    </div>
+
+<?php
 }
