@@ -3,6 +3,9 @@
 
 class Sammelstellen_Admin {
 
+    const NONCE_NAME = '_sammelstellen_nonce';
+    const CREATE_NONCE = 'sammelstellen-create-sammestelle';
+
     private static $initialised = false;
 
     public static function init() {
@@ -43,9 +46,12 @@ class Sammelstellen_Admin {
 
     private static function create_sammelstelle() {
         // FIXME: Check capabilities!
-        // FIXME: Check nonce!
 
-        echo "Okay!";
+        if ( !wp_verify_nonce( $_POST[self::NONCE_NAME], self::CREATE_NONCE ) ) {
+            return false;
+        }
+
+        return true;
     }
 
     public static function get_page_url() {
