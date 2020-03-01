@@ -18,6 +18,9 @@ if ( !function_exists( 'add_action' ) ) {
 
 define( 'SAMMELSTELLEN__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
+register_activation_hook( __FILE__, array( 'Sammelstellen', 'activate_plugin' ) );
+register_uninstall_hook( __FILE__, array( 'Sammelstellen', 'uninstall_plugin' ) );
+
 require_once( SAMMELSTELLEN__PLUGIN_DIR . 'class.sammelstellen.php' );
 add_action( 'init', array( 'Sammelstellen', 'init' ) );
 
