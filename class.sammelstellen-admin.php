@@ -19,6 +19,7 @@ class Sammelstellen_Admin {
 
     private static function init_hooks() {
         add_action( 'admin_menu', array( 'Sammelstellen_Admin', 'admin_menu' ) );
+        add_action( 'admin_enqueue_scripts', array( 'Sammelstellen_Admin', 'load_resources' ) );
     }
 
     public static function admin_menu() {
@@ -26,6 +27,10 @@ class Sammelstellen_Admin {
             'sammelstellen', array( 'Sammelstellen_Admin', 'display_list_page' ) );
         add_submenu_page('sammelstellen', 'Neue Sammelstelle hinzufügen', 'Neu hinzufügen',
             'edit_posts', 'sammelstellen-create', array( 'Sammelstellen_Admin', 'display_create_page') );
+    }
+
+    public static function load_resources() {
+        wp_enqueue_style( 'sammelstellen.css', plugin_dir_url( __FILE__ ) . '_inc/sammelstellen.css' );
     }
 
     public static function display_list_page() {
