@@ -21,8 +21,10 @@ class Sammelstellen {
         $sql = "CREATE TABLE $table_name (
                 id mediumint(9) NOT NULL AUTO_INCREMENT,
                 name tinytext NOT NULL,
-                adresse tinytext NOT NULL,
-                anmerkungen tinytext DEFAULT '' NOT NULL,
+                adresse mediumtext NOT NULL,
+                oeffnungszeiten tinytext DEFAULT '' NOT NULL,
+                hinweise mediumtext DEFAULT '' NOT NULL,
+                aktiv boolean DEFAULT false NOT NULL,
                 PRIMARY KEY  (id)                
                 ) $charset_collate;";
 
