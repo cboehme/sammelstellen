@@ -7,23 +7,27 @@
         <table class="form-table" role="presentation">
             <tr class="form-field form-required">
                 <th scope="row"><label for="name">Name der Sammelstelle <span class="description">(erforderlich)</span></label></th>
-                <td><input type="text" id="name" aria-required="true" required="required" maxlength="255"/></td>
+                <td><input type="text" id="name" name="name" aria-required="true" required="required" maxlength="255"/></td>
             </tr>
             <tr class="form-field form-required">
                 <th scope="row"><label for="adresse">Adresse <span class="description">(erforderlich)</span></label></th>
-                <td><textarea id="adresse" aria-required="true" required="required"></textarea></td>
+                <td><textarea id="adresse" name="adresse" aria-required="true" required="required"></textarea></td>
+            </tr>
+            <tr class="form-field form-required">
+                <th scope="row"><label for="position">Position</label></th>
+                <td><input type="text" id="lat" name="lat"/> <input type="text" id="lon" name="lon"/></td>
             </tr>
             <tr class="form-field form-required">
                 <th scope="row"><label for="oeffnungszeiten">Öffnungszeiten</label></th>
-                <td><textarea id="oeffnungszeiten"></textarea></td>
+                <td><textarea id="oeffnungszeiten" name="oeffnungszeiten"></textarea></td>
             </tr>
             <tr class="form-field form-required">
                 <th scope="row">Aktive Sammelstelle</th>
-                <td><input type="checkbox" id="aktiv"/> <label for="aktiv">Die Sammelstelle wird auf der Website angezeigt.</label></td>
+                <td><input type="checkbox" id="aktiv" name="aktiv"/> <label for="aktiv">Die Sammelstelle wird auf der Website angezeigt.</label></td>
             </tr>
             <tr class="form-field form-required">
                 <th scope="row"><label for="hinweise">Hinweise</label></th>
-                <td><textarea id="hinweise"></textarea></td>
+                <td><textarea id="hinweise" name="hinweise"></textarea></td>
             </tr>
         </table>
         <input type="submit" name="submit" id="submit" class="button button-primary" value="Neue Sammelstelle hinzufügen"/>

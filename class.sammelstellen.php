@@ -15,7 +15,7 @@ class Sammelstellen {
     public static function activate_plugin() {
         global $wpdb;
 
-        $table_name = $wpdb->prefix . 'sammelstellen';
+        $table_name = Sammelstellen::get_table_name();
         $charset_collate = $wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE $table_name (
@@ -50,6 +50,12 @@ class Sammelstellen {
         $file = SAMMELSTELLEN__PLUGIN_DIR . 'views/'. $name . '.php';
 
         include( $file );
+    }
+
+    public static function get_table_name() {
+        global $wpdb;
+
+        return $wpdb->prefix . 'sammelstellen';
     }
 
 }

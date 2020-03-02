@@ -45,11 +45,35 @@ class Sammelstellen_Admin {
     }
 
     private static function create_sammelstelle() {
+        global $wpdb;
+
         // FIXME: Check capabilities!
 
         if ( !wp_verify_nonce( $_POST[self::NONCE_NAME], self::CREATE_NONCE ) ) {
             return false;
         }
+
+        // FIXME: Validate input!
+        $name = $_POST["name"];
+        $adresse = $_POST["adresse"];
+        $oeffnungszeiten = $_POST["oeffnungszeiten"];
+        $hinweise = $_POST["hinweise"];
+        $aktiv = isset($_POST["aktiv"]);
+        $lon = $_POST["lon"];
+        $lat = $_POST["lat"];
+
+        $table_name = Sammelstellen::get_table_name();
+        $wpdb->query(
+            $wpdb->prepare( "
+                INSERT INTO $table_name
+                ( name, adresse, oeffnungszeiten, hinweise, aktiv, location )
+                VALUES ( %s, %s, %s, %s, %d, PointFromText( %s ) )",
+            $name,
+            $adresse,
+            $oeffnungszeiten,
+            $hinweise,
+            $aktiv,
+            "POINT($lon $lat)" ) );
 
         return true;
     }
