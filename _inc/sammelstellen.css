@@ -1,3 +1,7 @@
 .form-field input[type=text], .form-field textarea {
     width: 25em;
 }
+
+.form-field textarea {
+    min-height: 52px;
+}
