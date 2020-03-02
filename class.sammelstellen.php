@@ -25,6 +25,7 @@ class Sammelstellen {
                 oeffnungszeiten tinytext DEFAULT '' NOT NULL,
                 hinweise mediumtext DEFAULT '' NOT NULL,
                 aktiv boolean DEFAULT false NOT NULL,
+                location point NOT NULL,
                 PRIMARY KEY  (id)                
                 ) $charset_collate;";
 
