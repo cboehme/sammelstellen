@@ -5,3 +5,8 @@
 .form-field textarea {
     min-height: 52px;
 }
+
+.form-field div.map {
+    width: 25em;
+    height: 40ex;
+}

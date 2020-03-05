@@ -34,6 +34,8 @@ class Sammelstellen_Admin {
 
     public static function load_resources() {
         wp_enqueue_style( 'sammelstellen.css', plugin_dir_url( __FILE__ ) . '_inc/sammelstellen.css' );
+        wp_enqueue_style( 'ol.css', plugin_dir_url( __FILE__ ) . '_inc/ol.css' );
+        wp_enqueue_script( 'ol.js', plugin_dir_url( __FILE__ ) . '_inc/ol.js' );
     }
 
     public static function display_list_page() {
