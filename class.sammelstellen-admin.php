@@ -56,16 +56,16 @@ class Sammelstellen_Admin {
         }
 
         // FIXME: Validate input!
-        $name = $_POST["name"];
-        $adresse = $_POST["adresse"];
-        $oeffnungszeiten = $_POST["oeffnungszeiten"];
-        $hinweise = $_POST["hinweise"];
-        $aktiv = isset($_POST["aktiv"]);
-        $lon = $_POST["lon"];
-        $lat = $_POST["lat"];
+        $name = sanitize_text_field( $_POST["name"] );
+        $adresse = sanitize_textarea_field( $_POST["adresse"] );
+        $oeffnungszeiten = sanitize_textarea_field( $_POST["oeffnungszeiten"] );
+        $hinweise = sanitize_textarea_field( $_POST["hinweise"] );
+        $aktiv = isset( $_POST["aktiv"] );
+        $lon = self::sanitize_longitude( $_POST["lon"] );
+        $lat = self::sanitize_latitude( $_POST["lat"] );
 
         $table_name = Sammelstellen::get_table_name();
-        $wpdb->query(
+        $result = $wpdb->query(
             $wpdb->prepare( "
                 INSERT INTO $table_name
                 ( name, adresse, oeffnungszeiten, hinweise, aktiv, location )
@@ -77,7 +77,29 @@ class Sammelstellen_Admin {
             $aktiv,
             "POINT($lon $lat)" ) );
 
-        return true;
+        return $result;
+    }
+
+    private static function sanitize_latitude($str) {
+
+        if ( preg_match( '/\\d+(\.\\d*)?/', $str ) == 1 ) {
+            $latitude = floatval( $str );
+            if ( -90.0 <= $latitude && $latitude <= 90.0 ) {
+                return $latitude;
+            }
+        }
+        return 0;
+    }
+
+    private static function sanitize_longitude($str) {
+
+        if ( preg_match( '/\\d*(\.\\d*)?/', $str ) == 1 ) {
+            $longitude = floatval( $str );
+            if ( -180.0 <= $longitude && $longitude <= 180.0 ) {
+                return $longitude;
+            }
+        }
+        return 0;
     }
 
     public static function get_page_url() {
