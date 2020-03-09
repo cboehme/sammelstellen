@@ -14,9 +14,9 @@
                 <td><textarea id="adresse" name="adresse" aria-required="true" required="required"></textarea></td>
             </tr>
             <tr class="form-field form-required">
-                <th scope="row"><label for="position">Position</label></th>
-                <td><input type="hidden" id="lat" name="lat"/> <input type="hidden" id="lon" name="lon"/>
-                    <div class="map" id="map"></div>
+                <th scope="row"><label for="map">Position</label></th>
+                <td><div class="map" id="map"></div>
+                    <input type="hidden" id="lat" name="lat"/> <input type="hidden" id="lon" name="lon"/>
                 </td>
             </tr>
             <tr class="form-field form-required">
@@ -40,14 +40,40 @@
             zoom: 2
         });
 
+        const marker = new ol.Feature();
+        marker.setStyle(new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 6,
+                fill: new ol.style.Fill({
+                    color: '#3399CC'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#fff',
+                    width: 2
+                })
+            })
+        }));
+
         const map = new ol.Map({
             target: 'map',
             layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM()
+                }),
+                new ol.layer.Vector({
+                    source: new ol.source.Vector({
+                        features: [marker]
+                    })
                 })
             ],
             view: view
+        });
+
+        map.on('click', function(ev) {
+            const position = ol.proj.toLonLat(ev.coordinate);
+            document.getElementById('lon').value = position[0];
+            document.getElementById('lat').value = position[1];
+            marker.setGeometry(new ol.geom.Point(ev.coordinate));
         });
 
         const geolocation = new ol.Geolocation({
