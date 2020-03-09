@@ -82,7 +82,7 @@ class Sammelstellen_Admin {
 
     private static function sanitize_latitude($str) {
 
-        if ( preg_match( '/\\d+(\.\\d*)?/', $str ) == 1 ) {
+        if ( preg_match( '/-?\\d+(\.\\d*)?/', $str ) == 1 ) {
             $latitude = floatval( $str );
             if ( -90.0 <= $latitude && $latitude <= 90.0 ) {
                 return $latitude;
@@ -93,7 +93,7 @@ class Sammelstellen_Admin {
 
     private static function sanitize_longitude($str) {
 
-        if ( preg_match( '/\\d*(\.\\d*)?/', $str ) == 1 ) {
+        if ( preg_match( '/-?\\d*(\.\\d*)?/', $str ) == 1 ) {
             $longitude = floatval( $str );
             if ( -180.0 <= $longitude && $longitude <= 180.0 ) {
                 return $longitude;
