@@ -74,8 +74,9 @@
         });
 
         const view = new ol.View({
-            center: [0, 0],
-            zoom: 2
+            center: ol.proj.fromLonLat([7.1006600, 50.7358510]),
+            extent: ol.proj.transformExtent([6.95, 50.60, 7.35, 50.80], 'EPSG:4326', 'EPSG:3857'),
+            zoom: 10
         });
 
         const marker = new ol.Feature();
@@ -112,28 +113,6 @@
             document.getElementById('lon').value = position[0];
             document.getElementById('lat').value = position[1];
             marker.setGeometry(new ol.geom.Point(ev.coordinate));
-        });
-
-        const geolocation = new ol.Geolocation({
-            trackingOptions: {
-                enableHighAccuracy: true
-            },
-            projection: view.getProjection(),
-            tracking: true
-        });
-
-        geolocation.on('error', function(error) {
-            console.log('Geolokalisierung ist fehlgeschlagen: ' + error.message);
-        });
-
-        geolocation.on('change:position', function() {
-            var coordinates = geolocation.getPosition();
-            map.getView().animate({
-                center: coordinates,
-                zoom: 16,
-                duration: 1000
-            });
-            geolocation.setTracking(false);
         });
     </script>
 </div>
