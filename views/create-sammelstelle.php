@@ -1,7 +1,7 @@
 <div class="wrap">
     <h2><?= esc_html( get_admin_page_title() ) ?></h2>
     <p>Legt eine neue Sammelstelle an.</p>
-    <form action="<?= esc_url( Sammelstellen_Admin::get_page_url() ); ?>" method="post" class="validate">
+    <form action="<?= esc_url( Sammelstellen_Admin::get_page_url() ); ?>" method="post" class="validate" id="sammelstellenForm">
         <?= wp_nonce_field( Sammelstellen_Admin::CREATE_NONCE, Sammelstellen_Admin::NONCE_NAME ) ?>
         <input type="hidden" name="action" value="create-sammelstelle">
         <table class="form-table" role="presentation">
@@ -14,7 +14,7 @@
                 <td><textarea id="adresse" name="adresse" aria-required="true" required="required"></textarea></td>
             </tr>
             <tr class="form-field form-required">
-                <th scope="row"><label for="map">Position</label></th>
+                <th scope="row"><label for="map">Position <span class="description">(erforderlich)</span></label></th>
                 <td><div class="map" id="map"></div>
                     <input type="hidden" id="lat" name="lat"/> <input type="hidden" id="lon" name="lon"/>
                 </td>

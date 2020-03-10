@@ -2,6 +2,10 @@
     width: 25em;
 }
 
+.form-field input[type=text]:invalid, .form-field textarea:invalid {
+    background-color: #ffd3d3;
+}
+
 .form-field textarea {
     min-height: 52px;
 }
