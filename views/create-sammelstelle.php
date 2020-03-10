@@ -1,7 +1,7 @@
 <div class="wrap">
     <h2><?= esc_html( get_admin_page_title() ) ?></h2>
     <p>Legt eine neue Sammelstelle an.</p>
-    <form action="<?= esc_url( Sammelstellen_Admin::get_page_url() ); ?>" method="post" class="validate" id="sammelstellenForm">
+    <form action="<?= esc_url( Sammelstellen_Admin::get_page_url() ); ?>" method="post" class="validate" novalidate="novalidate" id="sammelstellenForm">
         <?= wp_nonce_field( Sammelstellen_Admin::CREATE_NONCE, Sammelstellen_Admin::NONCE_NAME ) ?>
         <input type="hidden" name="action" value="create-sammelstelle">
         <table class="form-table" role="presentation">
@@ -35,6 +35,44 @@
         <input type="submit" name="submit" id="submit" class="button button-primary" value="Neue Sammelstelle hinzufügen"/>
     </form>
     <script type="application/javascript">
+        function elementById(id) {
+            return document.getElementById(id);
+        }
+
+        function checkElementValidity(id) {
+            const element = elementById(id);
+            if (element.checkValidity()) {
+                element.parentElement.parentElement.classList.remove('form-invalid');
+                return true;
+            }
+            element.parentElement.parentElement.classList.add('form-invalid');
+            return false;
+        }
+
+        function checkPositionValidity() {
+            const element = elementById('lat');
+            if (element.value === '') {
+                element.parentElement.parentElement.classList.add('form-invalid');
+                return false;
+            }
+            element.parentElement.parentElement.classList.remove('form-invalid');
+            return true;
+        }
+
+        elementById('sammelstellenForm').addEventListener('submit', function(ev) {
+            var valid =
+                    checkElementValidity('name') &
+                    checkElementValidity('adresse') &
+                    checkPositionValidity() &
+                    checkElementValidity('oeffnungszeiten') &
+                    checkElementValidity('aktiv') &
+                    checkElementValidity('hinweise');
+
+            if (!valid) {
+                ev.preventDefault()
+            }
+        });
+
         const view = new ol.View({
             center: [0, 0],
             zoom: 2

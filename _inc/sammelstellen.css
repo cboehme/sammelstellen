@@ -2,8 +2,20 @@
     width: 25em;
 }
 
-.form-field input[type=text]:invalid, .form-field textarea:invalid {
-    background-color: #ffd3d3;
+.form-invalid input,
+.form-invalid input:focus,
+.form-invalid textarea,
+.form-invalid textarea:focus,
+.form-invalid #map {
+    border-color: #dc3232 !important;
+    box-shadow: 0 0 2px rgba(204,0,0,.8);
+}
+.form-table .form-required.form-invalid td::after {
+    content: "\f534";
+    font: normal 20px/1 dashicons;
+    color: #dc3232;
+    margin-left: -25px;
+    vertical-align: middle;
 }
 
 .form-field textarea {
