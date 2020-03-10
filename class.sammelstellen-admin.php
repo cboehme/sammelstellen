@@ -6,6 +6,14 @@ class Sammelstellen_Admin {
     const NONCE_NAME = '_sammelstellen_nonce';
     const CREATE_NONCE = 'sammelstellen-create-sammestelle';
 
+    const FIELD_NAME = "name";
+    const FIELD_ADRESSE = "adresse";
+    const FIELD_LATITUDE = "lat";
+    const FIELD_LONGITUDE = "lon";
+    const FIELD_OEFFNUNGSZEITEN = "oeffnungszeiten";
+    const FIELD_AKTIV = "aktiv";
+    const FIELD_HINWEISE = "hinweise";
+
     private static $initialised = false;
 
     public static function init() {
@@ -55,14 +63,26 @@ class Sammelstellen_Admin {
             return false;
         }
 
-        // FIXME: Validate input!
-        $name = sanitize_text_field( $_POST["name"] );
-        $adresse = sanitize_textarea_field( $_POST["adresse"] );
-        $oeffnungszeiten = sanitize_textarea_field( $_POST["oeffnungszeiten"] );
-        $hinweise = sanitize_textarea_field( $_POST["hinweise"] );
-        $aktiv = isset( $_POST["aktiv"] );
-        $lon = self::sanitize_longitude( $_POST["lon"] );
-        $lat = self::sanitize_latitude( $_POST["lat"] );
+        if ( !self::has_required_text_field( self::FIELD_NAME ) ) {
+            return false;
+        }
+        if ( !self::has_required_text_field( self::FIELD_ADRESSE ) ) {
+            return false;
+        }
+        if ( !self::has_required_longitude_field( self::FIELD_LONGITUDE ) ) {
+            return false;
+        }
+        if ( !self::has_required_latitude_field( self::FIELD_LATITUDE ) ) {
+            return false;
+        }
+
+        $name = sanitize_text_field( $_POST[self::FIELD_NAME] );
+        $adresse = sanitize_textarea_field( $_POST[self::FIELD_ADRESSE] );
+        $lon = floatval( $_POST[self::FIELD_LONGITUDE] );
+        $lat = floatval( $_POST[self::FIELD_LATITUDE] );
+        $oeffnungszeiten = sanitize_textarea_field( $_POST[self::FIELD_OEFFNUNGSZEITEN] );
+        $aktiv = isset( $_POST[self::FIELD_AKTIV] );
+        $hinweise = sanitize_textarea_field( $_POST[self::FIELD_HINWEISE] );
 
         $table_name = Sammelstellen::get_table_name();
         $result = $wpdb->query(
@@ -80,26 +100,36 @@ class Sammelstellen_Admin {
         return $result;
     }
 
-    private static function sanitize_latitude($str) {
+    private static function has_required_text_field( $name ) {
 
-        if ( preg_match( '/-?\\d+(\.\\d*)?/', $str ) == 1 ) {
-            $latitude = floatval( $str );
-            if ( -90.0 <= $latitude && $latitude <= 90.0 ) {
-                return $latitude;
-            }
-        }
-        return 0;
+        return isset( $_POST[$name] ) && !empty( trim( $_POST[$name] ) );
     }
 
-    private static function sanitize_longitude($str) {
+    private static function has_required_latitude_field( $name ) {
 
-        if ( preg_match( '/-?\\d*(\.\\d*)?/', $str ) == 1 ) {
-            $longitude = floatval( $str );
-            if ( -180.0 <= $longitude && $longitude <= 180.0 ) {
-                return $longitude;
+        if ( self::has_required_float_field( $name ) ) {
+            $latitude = floatval( $_POST[$name] );
+            if (-90.0 <= $latitude && $latitude <= 90.0) {
+                return true;
             }
         }
-        return 0;
+        return false;
+    }
+
+    private static function has_required_longitude_field( $name ) {
+
+        if ( self::has_required_float_field( $name ) ) {
+            $longitude = floatval( $_POST[$name] );
+            if (-180.0 <= $longitude && $longitude <= 180.0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static function has_required_float_field( $name ) {
+
+        return isset( $_POST[$name] ) && preg_match( '/-?\\d+(\.\\d*)?/', $_POST[$name] ) == 1;
     }
 
     public static function get_page_url() {
