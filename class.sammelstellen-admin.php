@@ -38,6 +38,30 @@ class Sammelstellen_Admin {
             'sammelstellen', array( 'Sammelstellen_Admin', 'display_list_page' ) );
         add_submenu_page('sammelstellen', 'Neue Sammelstelle hinzufügen', 'Neu hinzufügen',
             'edit_posts', 'sammelstellen-create', array( 'Sammelstellen_Admin', 'display_create_page') );
+
+        add_submenu_page('sammelstellen', 'Sammelstelle bearbeiten', 'Bearbeiten',
+            'edit_posts', 'sammelstellen-edit', array( 'Sammelstellen_Admin', 'display_edit_page') );
+        add_filter( 'submenu_file', array( 'Sammelstellen_Admin', 'remove_edit_sammelstelle' ) );
+    }
+
+    public static function remove_edit_sammelstelle() {
+        global $plugin_page;
+
+        $hidden_submenus = array(
+            'sammelstellen-edit' => true,
+        );
+
+        // Select another submenu item to highlight (optional).
+        if ( $plugin_page && isset( $hidden_submenus[ $plugin_page ] ) ) {
+            $submenu_file = 'sammelstellen';
+        }
+
+        // Hide the submenu.
+        foreach ( $hidden_submenus as $submenu => $unused ) {
+            remove_submenu_page( 'sammelstellen', $submenu );
+        }
+
+        return $submenu_file;
     }
 
     public static function load_resources() {
@@ -47,7 +71,20 @@ class Sammelstellen_Admin {
     }
 
     public static function display_list_page() {
-        Sammelstellen::view( 'list-sammelstellen' );
+
+        $model['sammelstellen'] = self::find_all_sammelstellen();
+
+        Sammelstellen::view( 'list-sammelstellen', $model);
+    }
+
+    private static function find_all_sammelstellen() {
+        global $wpdb;
+
+        $table_name = Sammelstellen::get_table_name();
+        return $wpdb->get_results("
+                SELECT id, name, adresse, oeffnungszeiten, aktiv, hinweise,
+                    X(location) as longitude, Y(location) as latitude
+                    FROM $table_name ORDER BY name");
     }
 
     public static function display_create_page() {
@@ -134,9 +171,24 @@ class Sammelstellen_Admin {
         return isset( $_POST[$name] ) && preg_match( '/-?\\d+(\.\\d*)?/', $_POST[$name] ) == 1;
     }
 
+    public static function display_edit_page() {
+        // TODO: Load Sammelstelle
+        Sammelstellen::view( 'create-sammelstelle' );
+    }
+
     public static function get_page_url() {
 
         $args = array( 'page' => 'sammelstellen-create' );
+
+        return add_query_arg( $args, admin_url( 'admin.php' ) );
+    }
+
+    public static function get_edit_sammelstelle_url($id) {
+
+        $args = array(
+            'page' => 'sammelstellen-edit',
+            'id' => $id
+        );
 
         return add_query_arg( $args, admin_url( 'admin.php' ) );
     }
