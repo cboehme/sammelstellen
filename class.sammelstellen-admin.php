@@ -57,7 +57,9 @@ class Sammelstellen_Admin {
     private static function create_sammelstelle() {
         global $wpdb;
 
-        // FIXME: Check capabilities!
+        if ( ! current_user_can( 'edit_posts' ) ) {
+            die( 'Access not allowed' );
+        }
 
         if ( !wp_verify_nonce( $_POST[self::NONCE_NAME], self::CREATE_NONCE ) ) {
             return false;
