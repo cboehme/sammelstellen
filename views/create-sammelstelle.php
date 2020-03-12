@@ -1,7 +1,7 @@
 <div class="wrap">
     <h2><?= esc_html( get_admin_page_title() ) ?></h2>
     <p>Legt eine neue Sammelstelle an.</p>
-    <form action="<?= esc_url( Sammelstellen_Admin::get_page_url() ); ?>" method="post" class="validate" novalidate="novalidate" id="sammelstellenForm">
+    <form action="<?= esc_url( Sammelstellen_Admin::get_sammelstellen_url() ); ?>" method="post" class="validate" novalidate="novalidate" id="sammelstellenForm">
         <?= wp_nonce_field( Sammelstellen_Admin::CREATE_NONCE, Sammelstellen_Admin::NONCE_NAME ) ?>
         <input type="hidden" name="action" value="create-sammelstelle">
         <table class="form-table" role="presentation">

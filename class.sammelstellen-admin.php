@@ -176,6 +176,13 @@ class Sammelstellen_Admin {
         Sammelstellen::view( 'create-sammelstelle' );
     }
 
+    public static function get_sammelstellen_url() {
+
+        $args = array( 'page' => 'sammelstellen' );
+
+        return add_query_arg( $args, admin_url( 'admin.php' ) );
+    }
+
     public static function get_page_url() {
 
         $args = array( 'page' => 'sammelstellen-create' );
