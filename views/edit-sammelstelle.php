@@ -7,29 +7,30 @@
         <table class="form-table" role="presentation">
             <tr class="form-field form-required">
                 <th scope="row"><label for="name">Name der Sammelstelle <span class="description">(erforderlich)</span></label></th>
-                <td><input type="text" id="name" name="name" aria-required="true" required="required" maxlength="255"/></td>
+                <td><input type="text" id="name" name="name" aria-required="true" required="required" value="<?= esc_attr( $sammelstelle->name ); ?>" maxlength="255"/></td>
             </tr>
             <tr class="form-field form-required">
                 <th scope="row"><label for="adresse">Adresse <span class="description">(erforderlich)</span></label></th>
-                <td><textarea id="adresse" name="adresse" aria-required="true" required="required"></textarea></td>
+                <td><textarea id="adresse" name="adresse" aria-required="true" required="required"><?= esc_html( $sammelstelle->adresse ); ?></textarea></td>
             </tr>
             <tr class="form-field form-required">
                 <th scope="row"><label for="map">Position <span class="description">(erforderlich)</span></label></th>
                 <td><div class="map" id="map"></div>
-                    <input type="hidden" id="lat" name="lat"/> <input type="hidden" id="lon" name="lon"/>
+                    <input type="hidden" id="lat" name="lat" value="<?= esc_attr( $sammelstelle->latitude ); ?>" />
+                    <input type="hidden" id="lon" name="lon" value="<?= esc_attr( $sammelstelle->longitude ); ?>" />
                 </td>
             </tr>
             <tr class="form-field form-required">
                 <th scope="row"><label for="oeffnungszeiten">Öffnungszeiten</label></th>
-                <td><textarea id="oeffnungszeiten" name="oeffnungszeiten"></textarea></td>
+                <td><textarea id="oeffnungszeiten" name="oeffnungszeiten"><?= esc_html( $sammelstelle->oeffnungszeiten ); ?></textarea></td>
             </tr>
             <tr class="form-field form-required">
                 <th scope="row">Aktive Sammelstelle</th>
-                <td><input type="checkbox" id="aktiv" name="aktiv"/> <label for="aktiv">Die Sammelstelle wird auf der Website angezeigt.</label></td>
+                <td><input type="checkbox" id="aktiv" name="aktiv" <?= $sammelstelle->aktiv ? 'checked' : ''; ?>/> <label for="aktiv">Die Sammelstelle wird auf der Website angezeigt.</label></td>
             </tr>
             <tr class="form-field form-required">
                 <th scope="row"><label for="hinweise">Hinweise</label></th>
-                <td><textarea id="hinweise" name="hinweise"></textarea></td>
+                <td><textarea id="hinweise" name="hinweise"><?= esc_html( $sammelstelle->hinweise ); ?></textarea></td>
             </tr>
         </table>
         <input type="submit" name="submit" id="submit" class="button button-primary" value="Neue Sammelstelle hinzufügen"/>
@@ -114,5 +115,19 @@
             document.getElementById('lat').value = position[1];
             marker.setGeometry(new ol.geom.Point(ev.coordinate));
         });
+
+        const longitude = document.getElementById('lon').value;
+        const latitude = document.getElementById('lat').value;
+        if (longitude !== '' && latitude !== '') {
+            const coordinate = ol.proj.fromLonLat([longitude, latitude]);
+            marker.setGeometry(new ol.geom.Point(coordinate));
+
+            view.animate({
+                center: coordinate,
+                zoom: 16,
+                duration: 1000
+            });
+        }
+
     </script>
 </div>

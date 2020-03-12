@@ -77,18 +77,19 @@ class Sammelstellen_Admin {
         Sammelstellen::view( 'list-sammelstellen', $model);
     }
 
-    private static function find_all_sammelstellen() {
-        global $wpdb;
-
-        $table_name = Sammelstellen::get_table_name();
-        return $wpdb->get_results("
-                SELECT id, name, adresse, oeffnungszeiten, aktiv, hinweise,
-                    X(location) as longitude, Y(location) as latitude
-                    FROM $table_name ORDER BY name");
-    }
-
     public static function display_create_page() {
-        Sammelstellen::view( 'create-sammelstelle' );
+        $args = array(
+            'sammelstelle' => array(
+                'name' => '',
+                'adresse' => '',
+                'oeffnungszeiten' => '',
+                'aktiv' => false,
+                'hinweise' => '',
+                'longitude' => '',
+                'latitude' => ''
+            )
+        );
+        Sammelstellen::view( 'edit-sammelstelle', $args );
     }
 
     private static function create_sammelstelle() {
@@ -172,8 +173,16 @@ class Sammelstellen_Admin {
     }
 
     public static function display_edit_page() {
-        // TODO: Load Sammelstelle
-        Sammelstellen::view( 'create-sammelstelle' );
+
+        if ( !isset( $_GET[ "id" ] ) ) {
+            die("Invalid access");
+        }
+
+        $id = $_GET[ "id" ];
+        $args = array(
+            'sammelstelle' => self::find_sammelstellen_by_id( $id )
+        );
+        Sammelstellen::view( 'edit-sammelstelle', $args );
     }
 
     public static function get_sammelstellen_url() {
@@ -198,6 +207,26 @@ class Sammelstellen_Admin {
         );
 
         return add_query_arg( $args, admin_url( 'admin.php' ) );
+    }
+
+    private static function find_all_sammelstellen() {
+        global $wpdb;
+
+        $table_name = Sammelstellen::get_table_name();
+        return $wpdb->get_results( "
+                SELECT id, name, adresse, oeffnungszeiten, aktiv, hinweise,
+                    X(location) as longitude, Y(location) as latitude
+                    FROM $table_name ORDER BY name");
+    }
+
+    private static function find_sammelstellen_by_id( $id ) {
+        global $wpdb;
+
+        $table_name = Sammelstellen::get_table_name();
+        return $wpdb->get_row( $wpdb->prepare( "
+                SELECT id, name, adresse, oeffnungszeiten, aktiv, hinweise,
+                    X(location) as longitude, Y(location) as latitude
+                    FROM $table_name WHERE id = %s", $id ) );
     }
 
 }
