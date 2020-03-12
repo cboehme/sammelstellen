@@ -1,4 +1,9 @@
 <div class="wrap">
+    <?php
+        function with_breaks( $str ) {
+            return str_replace( "\n", '<br/>', $str);
+        }
+    ?>
     <h1 class="wp-heading-inline">Sammelstellen</h1>
     <a class="page-title-action" href="<?= esc_url( Sammelstellen_Admin::get_page_url() ); ?>">Neu hinzufügen</a>
     <table class="wp-list-table widefat fixed striped pages">
@@ -14,10 +19,10 @@
         </thead>
         <tbody id="the-list">
             <?php foreach( $sammelstellen as $sammelstelle ): ?>
-                <tr id="post-<?= esc_html( $sammelstelle->id ); ?>" class="iedit author-self level-0 type-page status-publish hentry">
+                <tr id="<?= esc_attr( "post-$sammelstelle->id" ); ?>" class="iedit author-self level-0 type-page status-publish hentry">
                     <th scope="row" class="check-column">
-                        <label class="screen-reader-text" for="cb-select-<?= esc_html( $sammelstelle->id ); ?>"><?= esc_html( $sammelstelle->name ); ?> auswählen</label>
-                        <input id="cb-select-<?= esc_html( $sammelstelle->id ); ?>" type="checkbox" name="sammelstellen[]" value="<?= esc_html($sammelstelle->id); ?>" />
+                        <label class="screen-reader-text" for="<?= esc_attr( "cb-select-$sammelstelle->id" ); ?>"><?= esc_html( $sammelstelle->name ); ?> auswählen</label>
+                        <input id="<?= esc_attr( "cb-select-$sammelstelle->id" ); ?>" type="checkbox" name="sammelstellen[]" value="<?= esc_attr($sammelstelle->id); ?>" />
                     </th>
                     <td class="has-row-actions column-primary">
                         <strong><a class="row-title" href="<?= esc_url( Sammelstellen_Admin::get_edit_sammelstelle_url( $sammelstelle->id ) ); ?>" aria-label="&#8222;<?= esc_html( $sammelstelle->name ); ?>&#8220; (Bearbeiten)"><?= esc_html( $sammelstelle->name ); ?></a></strong>
@@ -25,10 +30,10 @@
                             <span class='edit'><a href="<?= esc_url( Sammelstellen_Admin::get_edit_sammelstelle_url( $sammelstelle->id ) ); ?>" aria-label="&#8222;<?= esc_html( $sammelstelle->name ); ?>&#8220; bearbeiten">Bearbeiten</a> | </span>
                             <!--<span class='trash'><a href="http://localhost:8000/wp-admin/post.php?post=2&amp;action=trash&amp;_wpnonce=dc13470be3" class="submitdelete" aria-label="&#8222;<?= esc_html( $sammelstelle->name ); ?>&#8220; löschen">Löschen</a>-->
                     </td>
-                    <td><?= esc_html( $sammelstelle->adresse ); ?></td>
-                    <td><?= esc_html( $sammelstelle->oeffnungzeiten ); ?></td>
+                    <td><?= with_breaks( esc_html( $sammelstelle->adresse ) ); ?></td>
+                    <td><?= with_breaks( esc_html( $sammelstelle->oeffnungzeiten ) ); ?></td>
                     <td><?= $sammelstelle->aktiv ? 'Ja' : 'Nein' ?></td>
-                    <td><?= esc_html( $sammelstelle->hinweise ); ?></td>
+                    <td><?= with_breaks( esc_html( $sammelstelle->hinweise ) ); ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
