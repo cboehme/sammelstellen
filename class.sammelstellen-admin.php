@@ -5,6 +5,7 @@ class Sammelstellen_Admin {
 
     const NONCE_NAME = '_sammelstellen_nonce';
     const CREATE_NONCE = 'sammelstellen-create-sammestelle';
+    const EDIT_NONCE = 'sammelstellen-edit-sammestelle';
 
     const FIELD_NAME = "name";
     const FIELD_ADRESSE = "adresse";
@@ -24,8 +25,9 @@ class Sammelstellen_Admin {
 
         if ( isset( $_POST['action'] ) && $_POST['action'] == 'create-sammelstelle' ) {
             self::create_sammelstelle();
+        } elseif ( isset( $_POST['action'] ) && $_POST['action'] == 'edit-sammelstelle' ) {
+            self::edit_sammelstelle();
         }
-
     }
 
     private static function init_hooks() {
@@ -80,6 +82,7 @@ class Sammelstellen_Admin {
     public static function display_create_page() {
         $args = array(
             'sammelstelle' => array(
+                'id' => '',
                 'name' => '',
                 'adresse' => '',
                 'oeffnungszeiten' => '',
@@ -89,7 +92,7 @@ class Sammelstellen_Admin {
                 'latitude' => ''
             )
         );
-        Sammelstellen::view( 'edit-sammelstelle', $args );
+        Sammelstellen::view( 'create-sammelstelle', $args );
     }
 
     private static function create_sammelstelle() {
@@ -140,6 +143,65 @@ class Sammelstellen_Admin {
         return $result;
     }
 
+    private static function edit_sammelstelle() {
+        global $wpdb;
+
+        if ( ! current_user_can( 'edit_posts' ) ) {
+            die( 'Access not allowed' );
+        }
+
+        if ( !wp_verify_nonce( $_POST[self::NONCE_NAME], self::EDIT_NONCE ) ) {
+            return false;
+        }
+
+        if ( !isset( $_POST[ "id" ] ) ) {
+            return false;
+        }
+
+        if ( !self::has_required_text_field( self::FIELD_NAME ) ) {
+            return false;
+        }
+        if ( !self::has_required_text_field( self::FIELD_ADRESSE ) ) {
+            return false;
+        }
+        if ( !self::has_required_longitude_field( self::FIELD_LONGITUDE ) ) {
+            return false;
+        }
+        if ( !self::has_required_latitude_field( self::FIELD_LATITUDE ) ) {
+            return false;
+        }
+
+        $id = intval( $_POST[ "id" ] );
+        $name = sanitize_text_field( $_POST[self::FIELD_NAME] );
+        $adresse = sanitize_textarea_field( $_POST[self::FIELD_ADRESSE] );
+        $lon = floatval( $_POST[self::FIELD_LONGITUDE] );
+        $lat = floatval( $_POST[self::FIELD_LATITUDE] );
+        $oeffnungszeiten = sanitize_textarea_field( $_POST[self::FIELD_OEFFNUNGSZEITEN] );
+        $aktiv = isset( $_POST[self::FIELD_AKTIV] );
+        $hinweise = sanitize_textarea_field( $_POST[self::FIELD_HINWEISE] );
+
+        $table_name = Sammelstellen::get_table_name();
+        $result = $wpdb->query(
+            $wpdb->prepare( "
+                UPDATE $table_name
+                SET name = %s, 
+                    adresse = %s, 
+                    oeffnungszeiten = %s, 
+                    hinweise = %s, 
+                    aktiv = %d, 
+                    location = PointFromText( %s )
+                WHERE id = %d",
+                $name,
+                $adresse,
+                $oeffnungszeiten,
+                $hinweise,
+                $aktiv,
+                "POINT($lon $lat)",
+                $id ) );
+
+        return $result;
+    }
+
     private static function has_required_text_field( $name ) {
 
         return isset( $_POST[$name] ) && !empty( trim( $_POST[$name] ) );
@@ -178,7 +240,7 @@ class Sammelstellen_Admin {
             die("Invalid access");
         }
 
-        $id = $_GET[ "id" ];
+        $id = intval( $_GET[ "id" ] );
         $args = array(
             'sammelstelle' => self::find_sammelstellen_by_id( $id )
         );
@@ -226,7 +288,7 @@ class Sammelstellen_Admin {
         return $wpdb->get_row( $wpdb->prepare( "
                 SELECT id, name, adresse, oeffnungszeiten, aktiv, hinweise,
                     X(location) as longitude, Y(location) as latitude
-                    FROM $table_name WHERE id = %s", $id ) );
+                    FROM $table_name WHERE id = %d", $id ) );
     }
 
 }
