@@ -9,7 +9,6 @@
     <table class="wp-list-table widefat fixed striped pages">
         <thead>
             <tr>
-                <td id='cb' class='manage-column column-cb check-column'><label class="screen-reader-text" for="cb-select-all-1">Alle auswählen</label><input id="cb-select-all-1" type="checkbox" /></td>
                 <th scope="col" id='name' class='manage-column column-primary'>Name</th>
                 <th scope="col" id='adresse' class='manage-column'>Adresse</th>
                 <th scope="col" id='oeffnungszeiten' class='manage-column'>Öffnungszeiten</th>
@@ -20,10 +19,6 @@
         <tbody id="the-list">
             <?php foreach( $sammelstellen as $sammelstelle ): ?>
                 <tr id="<?= esc_attr( "post-$sammelstelle->id" ); ?>" class="iedit author-self level-0 type-page status-publish hentry">
-                    <th scope="row" class="check-column">
-                        <label class="screen-reader-text" for="<?= esc_attr( "cb-select-$sammelstelle->id" ); ?>"><?= esc_html( $sammelstelle->name ); ?> auswählen</label>
-                        <input id="<?= esc_attr( "cb-select-$sammelstelle->id" ); ?>" type="checkbox" name="sammelstellen[]" value="<?= esc_attr($sammelstelle->id); ?>" />
-                    </th>
                     <td class="has-row-actions column-primary">
                         <strong><a class="row-title" href="<?= esc_url( Sammelstellen_Admin::get_edit_sammelstelle_url( $sammelstelle->id ) ); ?>" aria-label="&#8222;<?= esc_html( $sammelstelle->name ); ?>&#8220; (Bearbeiten)"><?= esc_html( $sammelstelle->name ); ?></a></strong>
                         <div class="row-actions">
@@ -40,7 +35,6 @@
 
         <tfoot>
             <tr>
-                <td class='manage-column column-cb check-column'><label class="screen-reader-text" for="cb-select-all-2">Alle auswählen</label><input id="cb-select-all-2" type="checkbox" /></td>
                 <th scope="col" class='manage-column column-primary'>Name</th>
                 <th scope="col" class='manage-column'>Adresse</th>
                 <th scope="col" class='manage-column'>Öffnungszeiten</th>
