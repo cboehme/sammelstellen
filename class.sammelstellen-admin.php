@@ -6,6 +6,7 @@ class Sammelstellen_Admin {
     const NONCE_NAME = '_sammelstellen_nonce';
     const CREATE_NONCE = 'sammelstellen-create-sammestelle';
     const EDIT_NONCE = 'sammelstellen-edit-sammestelle';
+    const DELETE_NONCE = 'sammelstellen-delete-sammestelle';
 
     const FIELD_NAME = "name";
     const FIELD_ADRESSE = "adresse";
@@ -23,10 +24,15 @@ class Sammelstellen_Admin {
             self::$initialised = true;
         }
 
-        if ( isset( $_POST['action'] ) && $_POST['action'] == 'create-sammelstelle' ) {
-            self::create_sammelstelle();
-        } elseif ( isset( $_POST['action'] ) && $_POST['action'] == 'edit-sammelstelle' ) {
-            self::edit_sammelstelle();
+        if ( isset( $_POST['action'] ) ) {
+            if ( $_POST['action'] == 'create-sammelstelle' ) {
+                self::create_sammelstelle();
+            } else if ( $_POST['action'] == 'edit-sammelstelle' ) {
+                self::edit_sammelstelle();
+            } else if ( $_POST['action'] == 'delete-sammelstelle' ) {
+                self::delete_sammelstelle();
+            }
+
         }
     }
 
@@ -43,6 +49,9 @@ class Sammelstellen_Admin {
 
         add_submenu_page('sammelstellen', 'Sammelstelle bearbeiten', 'Bearbeiten',
             'edit_posts', 'sammelstellen-edit', array( 'Sammelstellen_Admin', 'display_edit_page') );
+        add_submenu_page('sammelstellen', 'Sammelstelle löschen', 'Löschen',
+            'edit_posts', 'sammelstellen-delete', array( 'Sammelstellen_Admin', 'display_confirm_delete_page') );
+
         add_filter( 'submenu_file', array( 'Sammelstellen_Admin', 'remove_edit_sammelstelle' ) );
     }
 
@@ -51,6 +60,7 @@ class Sammelstellen_Admin {
 
         $hidden_submenus = array(
             'sammelstellen-edit' => true,
+            'sammelstellen-delete' => true
         );
 
         // Select another submenu item to highlight (optional).
@@ -202,6 +212,32 @@ class Sammelstellen_Admin {
         return $result;
     }
 
+    private static function delete_sammelstelle() {
+        global $wpdb;
+
+        if ( !current_user_can( 'edit_posts' ) ) {
+            die( 'Access not allowed' );
+        }
+
+        if ( !wp_verify_nonce( $_POST[ self::NONCE_NAME ], self::DELETE_NONCE ) ) {
+            return false;
+        }
+
+        if ( !isset($_POST["id"] ) ) {
+            return false;
+        }
+
+        $id = intval( $_POST[ "id" ] );
+
+        $table_name = Sammelstellen::get_table_name();
+        $result = $wpdb->query(
+            $wpdb->prepare( "
+                DELETE FROM $table_name
+                WHERE id = %d", $id ) );
+
+        return $result;
+    }
+
     private static function has_required_text_field( $name ) {
 
         return isset( $_POST[$name] ) && !empty( trim( $_POST[$name] ) );
@@ -247,6 +283,18 @@ class Sammelstellen_Admin {
         Sammelstellen::view( 'edit-sammelstelle', $args );
     }
 
+    public static function display_confirm_delete_page() {
+        if ( !isset( $_GET[ "id" ] ) ) {
+            die("Invalid access");
+        }
+
+        $id = intval( $_GET[ "id" ] );
+        $args = array(
+            'sammelstelle' => self::find_sammelstellen_by_id( $id )
+        );
+        Sammelstellen::view( 'confirm-delete-sammelstelle', $args );
+    }
+
     public static function get_sammelstellen_url() {
 
         $args = array( 'page' => 'sammelstellen' );
@@ -265,6 +313,16 @@ class Sammelstellen_Admin {
 
         $args = array(
             'page' => 'sammelstellen-edit',
+            'id' => $id
+        );
+
+        return add_query_arg( $args, admin_url( 'admin.php' ) );
+    }
+
+    public static function get_delete_sammelstelle_url($id) {
+
+        $args = array(
+            'page' => 'sammelstellen-delete',
             'id' => $id
         );
 

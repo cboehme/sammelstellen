@@ -23,7 +23,7 @@
                         <strong><a class="row-title" href="<?= esc_url( Sammelstellen_Admin::get_edit_sammelstelle_url( $sammelstelle->id ) ); ?>" aria-label="&#8222;<?= esc_html( $sammelstelle->name ); ?>&#8220; (Bearbeiten)"><?= esc_html( $sammelstelle->name ); ?></a></strong>
                         <div class="row-actions">
                             <span class='edit'><a href="<?= esc_url( Sammelstellen_Admin::get_edit_sammelstelle_url( $sammelstelle->id ) ); ?>" aria-label="&#8222;<?= esc_html( $sammelstelle->name ); ?>&#8220; bearbeiten">Bearbeiten</a> | </span>
-                            <!--<span class='trash'><a href="http://localhost:8000/wp-admin/post.php?post=2&amp;action=trash&amp;_wpnonce=dc13470be3" class="submitdelete" aria-label="&#8222;<?= esc_html( $sammelstelle->name ); ?>&#8220; löschen">Löschen</a>-->
+                            <span class='trash'><a href="<?= esc_url( Sammelstellen_Admin::get_delete_sammelstelle_url( $sammelstelle->id ) ); ?>" class="submitdelete" aria-label="&#8222;<?= esc_html( $sammelstelle->name ); ?>&#8220; löschen">Löschen</a>
                     </td>
                     <td><?= with_breaks( esc_html( $sammelstelle->adresse ) ); ?></td>
                     <td><?= with_breaks( esc_html( $sammelstelle->oeffnungszeiten ) ); ?></td>
