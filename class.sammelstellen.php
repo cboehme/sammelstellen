@@ -58,4 +58,34 @@ class Sammelstellen {
         return $wpdb->prefix . 'sammelstellen';
     }
 
+    public static function find_all_sammelstellen() {
+        global $wpdb;
+
+        $table_name = self::get_table_name();
+        return $wpdb->get_results("
+                SELECT id, name, adresse, oeffnungszeiten, aktiv, hinweise,
+                    X(location) as longitude, Y(location) as latitude
+                    FROM $table_name ORDER BY name" );
+    }
+
+    public static function find_sammelstellen_by_aktiv( $aktiv ) {
+        global $wpdb;
+
+        $table_name = self::get_table_name();
+        return $wpdb->get_results( $wpdb->prepare( "
+                SELECT id, name, adresse, oeffnungszeiten, aktiv, hinweise,
+                    X(location) as longitude, Y(location) as latitude
+                    FROM $table_name WHERE aktiv = %d", $aktiv ) );
+    }
+
+    public static function find_sammelstellen_by_id( $id ) {
+        global $wpdb;
+
+        $table_name = self::get_table_name();
+        return $wpdb->get_row( $wpdb->prepare("
+                SELECT id, name, adresse, oeffnungszeiten, aktiv, hinweise,
+                    X(location) as longitude, Y(location) as latitude
+                    FROM $table_name WHERE id = %d", $id ) );
+    }
+
 }

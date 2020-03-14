@@ -84,7 +84,7 @@ class Sammelstellen_Admin {
 
     public static function display_list_page() {
 
-        $model['sammelstellen'] = self::find_all_sammelstellen();
+        $model['sammelstellen'] = Sammelstellen::find_all_sammelstellen();
 
         Sammelstellen::view( 'list-sammelstellen', $model);
     }
@@ -278,7 +278,7 @@ class Sammelstellen_Admin {
 
         $id = intval( $_GET[ "id" ] );
         $args = array(
-            'sammelstelle' => self::find_sammelstellen_by_id( $id )
+            'sammelstelle' => Sammelstellen::find_sammelstellen_by_id($id)
         );
         Sammelstellen::view( 'edit-sammelstelle', $args );
     }
@@ -290,7 +290,7 @@ class Sammelstellen_Admin {
 
         $id = intval( $_GET[ "id" ] );
         $args = array(
-            'sammelstelle' => self::find_sammelstellen_by_id( $id )
+            'sammelstelle' => Sammelstellen::find_sammelstellen_by_id($id)
         );
         Sammelstellen::view( 'confirm-delete-sammelstelle', $args );
     }
@@ -327,26 +327,6 @@ class Sammelstellen_Admin {
         );
 
         return add_query_arg( $args, admin_url( 'admin.php' ) );
-    }
-
-    private static function find_all_sammelstellen() {
-        global $wpdb;
-
-        $table_name = Sammelstellen::get_table_name();
-        return $wpdb->get_results( "
-                SELECT id, name, adresse, oeffnungszeiten, aktiv, hinweise,
-                    X(location) as longitude, Y(location) as latitude
-                    FROM $table_name ORDER BY name");
-    }
-
-    private static function find_sammelstellen_by_id( $id ) {
-        global $wpdb;
-
-        $table_name = Sammelstellen::get_table_name();
-        return $wpdb->get_row( $wpdb->prepare( "
-                SELECT id, name, adresse, oeffnungszeiten, aktiv, hinweise,
-                    X(location) as longitude, Y(location) as latitude
-                    FROM $table_name WHERE id = %d", $id ) );
     }
 
 }
