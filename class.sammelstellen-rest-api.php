@@ -19,7 +19,7 @@ class Sammelstellen_REST_API {
                 'type' => 'Feature',
                 'geometry' => array(
                     'type' => 'Point',
-                    'coordinate' => array($sammelstelle->longitude, $sammelstelle->latitude)
+                    'coordinates' => array(floatval($sammelstelle->longitude), floatval($sammelstelle->latitude))
                 ),
                 'properties' => array(
                     'name' => $sammelstelle->name,
