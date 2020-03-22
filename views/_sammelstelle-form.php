@@ -72,59 +72,45 @@
         }
     });
 
-    const view = new ol.View({
-        center: ol.proj.fromLonLat([7.1006600, 50.7358510]),
-        extent: ol.proj.transformExtent([6.95, 50.60, 7.35, 50.80], 'EPSG:4326', 'EPSG:3857'),
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'http://localhost:8080/styles/osm-bright/style.json',
+        maxBounds: [[6.95, 50.60], [7.35, 50.80]],
+        hash: true,
+        center: [7.1006600, 50.7358510],
         zoom: 10
     });
 
-    const marker = new ol.Feature();
-    marker.setStyle(new ol.style.Style({
-        image: new ol.style.Circle({
-            radius: 6,
-            fill: new ol.style.Fill({
-                color: '#3399CC'
-            }),
-            stroke: new ol.style.Stroke({
-                color: '#fff',
-                width: 2
-            })
-        })
-    }));
-
-    const map = new ol.Map({
-        target: 'map',
-        layers: [
-            new ol.layer.Tile({
-                source: new ol.source.OSM()
-            }),
-            new ol.layer.Vector({
-                source: new ol.source.Vector({
-                    features: [marker]
-                })
-            })
-        ],
-        view: view
+    const marker = new mapboxgl.Marker({
+        draggable: true
     });
 
-    map.on('click', function(ev) {
-        const position = ol.proj.toLonLat(ev.coordinate);
-        document.getElementById('lon').value = position[0];
-        document.getElementById('lat').value = position[1];
-        marker.setGeometry(new ol.geom.Point(ev.coordinate));
+    marker.on('dragend', function(e) {
+        const position = marker.getLngLat();
+        document.getElementById('lon').value = position.lng;
+        document.getElementById('lat').value = position.lat;
     });
 
-    const longitude = document.getElementById('lon').value;
-    const latitude = document.getElementById('lat').value;
-    if (longitude !== '' && latitude !== '') {
-        const coordinate = ol.proj.fromLonLat([longitude, latitude]);
-        marker.setGeometry(new ol.geom.Point(coordinate));
+    map.on('click', function(e) {
+        document.getElementById('lon').value = e.lngLat.lng;
+        document.getElementById('lat').value = e.lngLat.lat;
+        marker.setLngLat(e.lngLat);
+        marker.addTo(map);
+    });
 
-        view.animate({
-            center: coordinate,
-            zoom: 16,
-            duration: 1000
-        });
+    function setInitialMarkerPosition() {
+        const longitude = document.getElementById('lon').value;
+        const latitude = document.getElementById('lat').value;
+        if (longitude !== '' && latitude !== '') {
+            marker.setLngLat([longitude, latitude]);
+            marker.addTo(map);
+
+            map.jumpTo({
+                center: [longitude, latitude],
+                zoom: 17
+            });
+        }
     }
+    setInitialMarkerPosition();
 
 </script>

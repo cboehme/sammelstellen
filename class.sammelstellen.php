@@ -7,9 +7,19 @@ class Sammelstellen {
 
     public static function init() {
         if ( !self::$initialised ) {
-            // TODO: perform initalisation
+            self::register_styles_and_scripts();
             self::$initialised = true;
         }
+    }
+
+    public static function register_styles_and_scripts() {
+
+        wp_register_script( 'mapbox-gl.js', plugin_dir_url( __FILE__ ) . '_inc/mapbox-gl.js' );
+        wp_register_script( 'map.js', plugin_dir_url( __FILE__ ) . '_inc/map.js' );
+
+        wp_register_style( 'mapbox-gl.css', plugin_dir_url( __FILE__ ) . '_inc/mapbox-gl.css' );
+        wp_register_style( 'map.css', plugin_dir_url( __FILE__ ) . '_inc/map.css' );
+        wp_register_style( 'sammelstellen.css', plugin_dir_url( __FILE__ ) . '_inc/sammelstellen.css' );
     }
 
     public static function activate_plugin() {
