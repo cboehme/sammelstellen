@@ -82,7 +82,8 @@
     });
 
     const marker = new mapboxgl.Marker({
-        draggable: true
+        draggable: true,
+        color: '#0073AA'
     });
 
     marker.on('dragend', function(e) {
