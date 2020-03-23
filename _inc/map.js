@@ -29,6 +29,12 @@ function addSammelstelle(sammelstelle) {
         color: '#98D800'
     });
     marker.getElement().classList.add('SammelstelleMarker');
+    marker.getElement().addEventListener('click', ev => {
+        map.flyTo({
+            center: sammelstelle.geometry.coordinates,
+            zoom: 15
+        })
+    });
     marker
         .setLngLat(sammelstelle.geometry.coordinates)
         .setPopup(createPopup(sammelstelle))
