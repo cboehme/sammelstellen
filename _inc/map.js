@@ -15,36 +15,34 @@ const geolocateControl = new mapboxgl.GeolocateControl({
 map.addControl(geolocateControl);
 
 map.on('load', function() {
-    map.addSource('sammelstellen', {
-        type: 'geojson',
-        data: 'http://localhost:8000/wp-json/sammelstellen/v1/sammelstellen'
-    });
-    map.addLayer({
-        id: 'sammelstellen',
-        type: 'circle',
-        source: 'sammelstellen'
-    });
     geolocateControl.trigger();
+
+    fetch('http://localhost:8000/wp-json/sammelstellen/v1/sammelstellen')
+        .then(response => response.json())
+        .then(geojson => {
+            geojson.features.forEach(addSammelstelle);
+        });
 });
 
-map.on('mouseenter', 'sammelstellen', function() {
-    map.getCanvas().style.cursor = 'pointer';
-});
+function addSammelstelle(sammelstelle) {
+    const marker = new mapboxgl.Marker({
+        color: '#98D800'
+    });
+    marker.getElement().classList.add('SammelstelleMarker');
+    marker
+        .setLngLat(sammelstelle.geometry.coordinates)
+        .setPopup(createPopup(sammelstelle))
+        .addTo(map);
+}
 
-map.on('mouseleave', 'sammelstellen', function() {
-    map.getCanvas().style.cursor = '';
-});
+function createPopup(sammelstelle) {
+    const name = sammelstelle.properties.name;
+    const adresse = sammelstelle.properties.adresse;
 
-map.on('click', 'sammelstellen', function(e) {
-    const coordinates = e.features[0].geometry.coordinates.slice();
-    const name = e.features[0].properties.name;
-    const adresse = e.features[0].properties.adresse;
-
-    new mapboxgl.Popup({
+    const popup = new mapboxgl.Popup({
         className: 'SammelstellePopup',
         maxWidth: 'none'
-    })
-        .setLngLat(coordinates)
-        .setHTML('<h1>' + name + '</h1><p>' + adresse + '</p>')
-        .addTo(map);
-});
+    });
+    popup.setHTML('<h1>' + name + '</h1><p>' + adresse + '</p>');
+    return popup;
+}

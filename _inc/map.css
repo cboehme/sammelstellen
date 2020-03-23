@@ -3,6 +3,10 @@
     height: 600px;
 }
 
+.SammelstelleMarker {
+    cursor: pointer;
+}
+
 .SammelstellePopup {}
 
 .SammelstellePopup h1 {
