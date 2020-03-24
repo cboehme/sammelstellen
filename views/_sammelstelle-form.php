@@ -81,6 +81,12 @@
         zoom: 10
     });
 
+    map.addControl(new mapboxgl.FullscreenControl());
+
+    map.addControl(new mapboxgl.NavigationControl({
+        visualizePitch: true
+    }));
+
     const marker = new mapboxgl.Marker({
         draggable: true,
         color: '#0073AA'
@@ -90,6 +96,10 @@
         const position = marker.getLngLat();
         document.getElementById('lon').value = position.lng;
         document.getElementById('lat').value = position.lat;
+        map.flyTo({
+            center: position,
+            zoom: 16
+        })
     });
 
     map.on('click', function(e) {
@@ -97,6 +107,10 @@
         document.getElementById('lat').value = e.lngLat.lat;
         marker.setLngLat(e.lngLat);
         marker.addTo(map);
+        map.flyTo({
+            center: e.lngLat,
+            zoom: 16
+        })
     });
 
     function setInitialMarkerPosition() {
@@ -108,7 +122,7 @@
 
             map.jumpTo({
                 center: [longitude, latitude],
-                zoom: 17
+                zoom: 16
             });
         }
     }
