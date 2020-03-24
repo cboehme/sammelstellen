@@ -7,6 +7,10 @@ const map = new mapboxgl.Map({
     zoom: 12
 });
 
+map.addControl(new mapboxgl.NavigationControl({
+    visualizePitch: true
+}));
+
 const geolocateControl = new mapboxgl.GeolocateControl({
     positionOptions: {
         enableHighAccuracy: true
@@ -44,11 +48,14 @@ function addSammelstelle(sammelstelle) {
 function createPopup(sammelstelle) {
     const name = sammelstelle.properties.name;
     const adresse = sammelstelle.properties.adresse;
+    const oeffnungszeiten = sammelstelle.properties.oeffnungszeiten;
+    const hinweise = sammelstelle.properties.hinweise;
 
     const popup = new mapboxgl.Popup({
         className: 'SammelstellePopup',
         maxWidth: 'none'
     });
-    popup.setHTML('<h1>' + name + '</h1><p>' + adresse + '</p>');
+    popup.setHTML('<h1>' + name + '</h1><p>' + adresse + '</p><p>' + oeffnungszeiten + '</p><p>'
+            + hinweise + '</p>');
     return popup;
 }
