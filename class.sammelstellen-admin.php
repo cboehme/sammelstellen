@@ -52,10 +52,10 @@ class Sammelstellen_Admin {
         add_submenu_page('sammelstellen', 'Sammelstelle löschen', 'Löschen',
             'edit_posts', 'sammelstellen-delete', array( 'Sammelstellen_Admin', 'display_confirm_delete_page') );
 
-        add_filter( 'submenu_file', array( 'Sammelstellen_Admin', 'remove_edit_sammelstelle' ) );
+        add_filter( 'submenu_file', array( 'Sammelstellen_Admin', 'remove_submenus') );
     }
 
-    public static function remove_edit_sammelstelle() {
+    public static function remove_submenus() {
         global $plugin_page;
 
         $hidden_submenus = array(
@@ -77,16 +77,13 @@ class Sammelstellen_Admin {
     }
 
     public static function load_resources() {
-
         wp_enqueue_style( 'mapbox-gl.css' );
         wp_enqueue_style( 'sammelstellen.css' );
         wp_enqueue_script( 'mapbox-gl.js' );
     }
 
     public static function display_list_page() {
-
         $model['sammelstellen'] = Sammelstellen::find_all_sammelstellen();
-
         Sammelstellen::view( 'list-sammelstellen', $model);
     }
 
@@ -117,41 +114,23 @@ class Sammelstellen_Admin {
             return false;
         }
 
-        if ( !self::has_required_text_field( self::FIELD_NAME ) ) {
+        $input_data = self::read_input();
+        if ( !$input_data ) {
             return false;
         }
-        if ( !self::has_required_text_field( self::FIELD_ADRESSE ) ) {
-            return false;
-        }
-        if ( !self::has_required_longitude_field( self::FIELD_LONGITUDE ) ) {
-            return false;
-        }
-        if ( !self::has_required_latitude_field( self::FIELD_LATITUDE ) ) {
-            return false;
-        }
-
-        $name = sanitize_text_field( $_POST[self::FIELD_NAME] );
-        $adresse = sanitize_textarea_field( $_POST[self::FIELD_ADRESSE] );
-        $lon = floatval( $_POST[self::FIELD_LONGITUDE] );
-        $lat = floatval( $_POST[self::FIELD_LATITUDE] );
-        $oeffnungszeiten = sanitize_textarea_field( $_POST[self::FIELD_OEFFNUNGSZEITEN] );
-        $aktiv = isset( $_POST[self::FIELD_AKTIV] );
-        $hinweise = sanitize_textarea_field( $_POST[self::FIELD_HINWEISE] );
 
         $table_name = Sammelstellen::get_table_name();
-        $result = $wpdb->query(
+        return $wpdb->query(
             $wpdb->prepare( "
                 INSERT INTO $table_name
                 ( name, adresse, oeffnungszeiten, hinweise, aktiv, location )
                 VALUES ( %s, %s, %s, %s, %d, PointFromText( %s ) )",
-            $name,
-            $adresse,
-            $oeffnungszeiten,
-            $hinweise,
-            $aktiv,
-            "POINT($lon $lat)" ) );
-
-        return $result;
+            $input_data['name'],
+            $input_data['adresse'],
+            $input_data['oeffnungszeiten'],
+            $input_data['hinweise'],
+            $input_data['aktiv'],
+            "POINT(" . $input_data['lon'] . " " . $input_data['lat'] . ")" ) );
     }
 
     private static function edit_sammelstelle() {
@@ -169,6 +148,35 @@ class Sammelstellen_Admin {
             return false;
         }
 
+        $input_data = self::read_input();
+        if ( !$input_data ) {
+            return false;
+        }
+
+        $table_name = Sammelstellen::get_table_name();
+        $result = $wpdb->query(
+            $wpdb->prepare( "
+                UPDATE $table_name
+                SET name = %s, 
+                    adresse = %s, 
+                    oeffnungszeiten = %s, 
+                    hinweise = %s, 
+                    aktiv = %d, 
+                    location = PointFromText( %s )
+                WHERE id = %d",
+                $input_data['name'],
+                $input_data['adresse'],
+                $input_data['oeffnungszeiten'],
+                $input_data['hinweise'],
+                $input_data['aktiv'],
+                "POINT(" . $input_data['lon'] . " " . $input_data['lat'] . ")",
+                $input_data['id'] ) );
+
+        return $result;
+    }
+
+    private static function read_input() {
+
         if ( !self::has_required_text_field( self::FIELD_NAME ) ) {
             return false;
         }
@@ -182,35 +190,16 @@ class Sammelstellen_Admin {
             return false;
         }
 
-        $id = intval( $_POST[ "id" ] );
-        $name = sanitize_text_field( $_POST[self::FIELD_NAME] );
-        $adresse = sanitize_textarea_field( $_POST[self::FIELD_ADRESSE] );
-        $lon = floatval( $_POST[self::FIELD_LONGITUDE] );
-        $lat = floatval( $_POST[self::FIELD_LATITUDE] );
-        $oeffnungszeiten = sanitize_textarea_field( $_POST[self::FIELD_OEFFNUNGSZEITEN] );
-        $aktiv = isset( $_POST[self::FIELD_AKTIV] );
-        $hinweise = sanitize_textarea_field( $_POST[self::FIELD_HINWEISE] );
-
-        $table_name = Sammelstellen::get_table_name();
-        $result = $wpdb->query(
-            $wpdb->prepare( "
-                UPDATE $table_name
-                SET name = %s, 
-                    adresse = %s, 
-                    oeffnungszeiten = %s, 
-                    hinweise = %s, 
-                    aktiv = %d, 
-                    location = PointFromText( %s )
-                WHERE id = %d",
-                $name,
-                $adresse,
-                $oeffnungszeiten,
-                $hinweise,
-                $aktiv,
-                "POINT($lon $lat)",
-                $id ) );
-
-        return $result;
+        return array(
+            'id' => intval( $_POST[ "id" ] ),
+            'name' => sanitize_text_field( $_POST[self::FIELD_NAME] ),
+            'adresse' => sanitize_textarea_field( $_POST[self::FIELD_ADRESSE] ),
+            'lon' => floatval( $_POST[self::FIELD_LONGITUDE] ),
+            'lat' => floatval( $_POST[self::FIELD_LATITUDE] ),
+            'oeffnungszeiten' => sanitize_textarea_field( $_POST[self::FIELD_OEFFNUNGSZEITEN] ),
+            'aktiv' => isset( $_POST[self::FIELD_AKTIV] ),
+            'hinweise' => sanitize_textarea_field( $_POST[self::FIELD_HINWEISE] )
+        );
     }
 
     private static function delete_sammelstelle() {
@@ -240,12 +229,10 @@ class Sammelstellen_Admin {
     }
 
     private static function has_required_text_field( $name ) {
-
         return isset( $_POST[$name] ) && !empty( trim( $_POST[$name] ) );
     }
 
     private static function has_required_latitude_field( $name ) {
-
         if ( self::has_required_float_field( $name ) ) {
             $latitude = floatval( $_POST[$name] );
             if (-90.0 <= $latitude && $latitude <= 90.0) {
@@ -256,7 +243,6 @@ class Sammelstellen_Admin {
     }
 
     private static function has_required_longitude_field( $name ) {
-
         if ( self::has_required_float_field( $name ) ) {
             $longitude = floatval( $_POST[$name] );
             if (-180.0 <= $longitude && $longitude <= 180.0) {
@@ -267,12 +253,10 @@ class Sammelstellen_Admin {
     }
 
     private static function has_required_float_field( $name ) {
-
         return isset( $_POST[$name] ) && preg_match( '/-?\\d+(\.\\d*)?/', $_POST[$name] ) == 1;
     }
 
     public static function display_edit_page() {
-
         if ( !isset( $_GET[ "id" ] ) ) {
             die("Invalid access");
         }
@@ -297,36 +281,28 @@ class Sammelstellen_Admin {
     }
 
     public static function get_sammelstellen_url() {
-
         $args = array( 'page' => 'sammelstellen' );
-
         return add_query_arg( $args, admin_url( 'admin.php' ) );
     }
 
-    public static function get_page_url() {
-
+    public static function get_create_sammelstelle_url() {
         $args = array( 'page' => 'sammelstellen-create' );
-
         return add_query_arg( $args, admin_url( 'admin.php' ) );
     }
 
     public static function get_edit_sammelstelle_url($id) {
-
         $args = array(
             'page' => 'sammelstellen-edit',
             'id' => $id
         );
-
         return add_query_arg( $args, admin_url( 'admin.php' ) );
     }
 
     public static function get_delete_sammelstelle_url($id) {
-
         $args = array(
             'page' => 'sammelstellen-delete',
             'id' => $id
         );
-
         return add_query_arg( $args, admin_url( 'admin.php' ) );
     }
 

@@ -5,7 +5,7 @@
         }
     ?>
     <h1 class="wp-heading-inline">Sammelstellen</h1>
-    <a class="page-title-action" href="<?= esc_url( Sammelstellen_Admin::get_page_url() ); ?>">Neu hinzufügen</a>
+    <a class="page-title-action" href="<?= esc_url( Sammelstellen_Admin::get_create_sammelstelle_url() ); ?>">Neu hinzufügen</a>
     <table class="wp-list-table widefat fixed striped pages">
         <thead>
             <tr>
