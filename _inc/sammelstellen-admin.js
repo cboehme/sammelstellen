@@ -66,7 +66,7 @@ function initializeMapControl()
         document.getElementById('lat').value = position.lat;
         map.flyTo({
             center: position,
-            zoom: 16
+            zoom: 17
         })
     });
 
@@ -77,7 +77,7 @@ function initializeMapControl()
         marker.addTo(map);
         map.flyTo({
             center: e.lngLat,
-            zoom: 16
+            zoom: 17
         })
     });
 }
@@ -91,7 +91,7 @@ function setInitialMarkerPosition() {
 
         map.jumpTo({
             center: [longitude, latitude],
-            zoom: 16
+            zoom: 17
         });
     }
 }
