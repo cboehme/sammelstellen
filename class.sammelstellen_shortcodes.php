@@ -19,9 +19,9 @@ class Sammelstellen_Shortcodes
 
     public static function map_shortcode( $atts = [], $content = null ) {
         wp_enqueue_style( 'mapbox-gl.css' );
-        wp_enqueue_style( 'map.css' );
+        wp_enqueue_style( 'sammelstellen.css' );
         wp_enqueue_script( 'mapbox-gl.js' );
-        wp_enqueue_script( 'map.js' );
+        wp_enqueue_script( 'sammelstellen.js' );
         return '<div id="map" class="map"></div>';
     }
 
