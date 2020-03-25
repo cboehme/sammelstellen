@@ -24,13 +24,13 @@ register_uninstall_hook( __FILE__, array( 'Sammelstellen', 'uninstall_plugin' ) 
 require_once( SAMMELSTELLEN__PLUGIN_DIR . 'class.sammelstellen.php' );
 add_action( 'init', array( 'Sammelstellen', 'init' ) );
 
-require_once( SAMMELSTELLEN__PLUGIN_DIR . 'class.sammelstellen-shortcodes.php' );
+require_once( SAMMELSTELLEN__PLUGIN_DIR . 'class.sammelstellen_shortcodes.php' );
 add_action( 'init', array( 'Sammelstellen_Shortcodes', 'init' ) );
 
-require_once( SAMMELSTELLEN__PLUGIN_DIR . 'class.sammelstellen-rest-api.php' );
+require_once( SAMMELSTELLEN__PLUGIN_DIR . 'class.sammelstellen_rest_api.php' );
 add_action( 'rest_api_init', array( 'Sammelstellen_REST_API', 'init' ) );
 
 if ( is_admin() ) {
-    require_once( SAMMELSTELLEN__PLUGIN_DIR . 'class.sammelstellen-admin.php' );
+    require_once( SAMMELSTELLEN__PLUGIN_DIR . 'class.sammelstellen_admin.php' );
     add_action( 'init', array('Sammelstellen_Admin', 'init' ) );
 }
