@@ -43,7 +43,7 @@ function initializeMapControl()
 {
     map = new mapboxgl.Map({
         container: 'map',
-        style: 'http://localhost:8080/styles/osm-bright/style.json',
+        style: 'http://localhost:8080/styles/klokantech-basic/style.json',
         maxBounds: [[6.95, 50.60], [7.35, 50.80]],
         hash: true,
         center: [7.1006600, 50.7358510],
