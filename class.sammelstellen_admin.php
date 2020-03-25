@@ -64,6 +64,7 @@ class Sammelstellen_Admin {
         );
 
         // Select another submenu item to highlight (optional).
+        $submenu_file = null;
         if ( $plugin_page && isset( $hidden_submenus[ $plugin_page ] ) ) {
             $submenu_file = 'sammelstellen';
         }
@@ -154,7 +155,7 @@ class Sammelstellen_Admin {
         }
 
         $table_name = Sammelstellen::get_table_name();
-        $result = $wpdb->query(
+        return $wpdb->query(
             $wpdb->prepare( "
                 UPDATE $table_name
                 SET name = %s, 
@@ -171,8 +172,6 @@ class Sammelstellen_Admin {
                 $input_data['aktiv'],
                 "POINT(" . $input_data['lon'] . " " . $input_data['lat'] . ")",
                 $input_data['id'] ) );
-
-        return $result;
     }
 
     private static function read_input() {
@@ -220,12 +219,10 @@ class Sammelstellen_Admin {
         $id = intval( $_POST[ "id" ] );
 
         $table_name = Sammelstellen::get_table_name();
-        $result = $wpdb->query(
+        return $wpdb->query(
             $wpdb->prepare( "
                 DELETE FROM $table_name
                 WHERE id = %d", $id ) );
-
-        return $result;
     }
 
     private static function has_required_text_field( $name ) {
