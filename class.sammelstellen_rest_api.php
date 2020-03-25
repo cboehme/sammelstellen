@@ -3,16 +3,23 @@
 
 class Sammelstellen_REST_API {
 
-    public static function init() {
+    private static $initialised = false;
 
+    public static function init() {
+        if (!self::$initialised) {
+            self::register_routes();
+            self::$initialised = true;
+        }
+    }
+
+    private static function register_routes() {
         register_rest_route( 'sammelstellen/v1', '/sammelstellen', array(
             'methods' => WP_REST_Server::READABLE,
             'callback' => array( 'Sammelstellen_REST_API', 'get_sammelstellen' )
-            ) );
+        ) );
     }
 
     public static function get_sammelstellen( $request ) {
-
         $sammelstellen = array();
         foreach ( Sammelstellen::find_sammelstellen_by_aktiv( true ) as $sammelstelle ) {
             $sammelstellen[] = array(

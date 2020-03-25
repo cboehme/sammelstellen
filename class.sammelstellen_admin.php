@@ -79,7 +79,7 @@ class Sammelstellen_Admin {
 
     public static function load_resources() {
         wp_enqueue_style( 'mapbox-gl.css' );
-        wp_enqueue_style( 'sammelstellen.css' );
+        wp_enqueue_style( 'sammelstellen-admin.css' );
         wp_enqueue_script( 'mapbox-gl.js' );
     }
 
@@ -111,12 +111,12 @@ class Sammelstellen_Admin {
             die( 'Access not allowed' );
         }
 
-        if ( !wp_verify_nonce( $_POST[self::NONCE_NAME], self::CREATE_NONCE ) ) {
+        if ( ! wp_verify_nonce( $_POST[self::NONCE_NAME], self::CREATE_NONCE ) ) {
             return false;
         }
 
         $input_data = self::read_input();
-        if ( !$input_data ) {
+        if ( ! $input_data ) {
             return false;
         }
 
@@ -141,11 +141,11 @@ class Sammelstellen_Admin {
             die( 'Access not allowed' );
         }
 
-        if ( !wp_verify_nonce( $_POST[self::NONCE_NAME], self::EDIT_NONCE ) ) {
+        if ( ! wp_verify_nonce( $_POST[self::NONCE_NAME], self::EDIT_NONCE ) ) {
             return false;
         }
 
-        if ( !isset( $_POST[ "id" ] ) ) {
+        if ( ! isset( $_POST[ "id" ] ) ) {
             return false;
         }
 
@@ -176,16 +176,16 @@ class Sammelstellen_Admin {
 
     private static function read_input() {
 
-        if ( !self::has_required_text_field( self::FIELD_NAME ) ) {
+        if ( ! self::has_required_text_field( self::FIELD_NAME ) ) {
             return false;
         }
-        if ( !self::has_required_text_field( self::FIELD_ADRESSE ) ) {
+        if ( ! self::has_required_text_field( self::FIELD_ADRESSE ) ) {
             return false;
         }
-        if ( !self::has_required_longitude_field( self::FIELD_LONGITUDE ) ) {
+        if ( ! self::has_required_longitude_field( self::FIELD_LONGITUDE ) ) {
             return false;
         }
-        if ( !self::has_required_latitude_field( self::FIELD_LATITUDE ) ) {
+        if ( ! self::has_required_latitude_field( self::FIELD_LATITUDE ) ) {
             return false;
         }
 
@@ -204,15 +204,15 @@ class Sammelstellen_Admin {
     private static function delete_sammelstelle() {
         global $wpdb;
 
-        if ( !current_user_can( 'edit_posts' ) ) {
+        if ( ! current_user_can( 'edit_posts' ) ) {
             die( 'Access not allowed' );
         }
 
-        if ( !wp_verify_nonce( $_POST[ self::NONCE_NAME ], self::DELETE_NONCE ) ) {
+        if ( ! wp_verify_nonce( $_POST[ self::NONCE_NAME ], self::DELETE_NONCE ) ) {
             return false;
         }
 
-        if ( !isset($_POST["id"] ) ) {
+        if ( ! isset($_POST["id"] ) ) {
             return false;
         }
 
@@ -254,7 +254,7 @@ class Sammelstellen_Admin {
     }
 
     public static function display_edit_page() {
-        if ( !isset( $_GET[ "id" ] ) ) {
+        if ( ! isset( $_GET[ "id" ] ) ) {
             die("Invalid access");
         }
 
@@ -266,7 +266,7 @@ class Sammelstellen_Admin {
     }
 
     public static function display_confirm_delete_page() {
-        if ( !isset( $_GET[ "id" ] ) ) {
+        if ( ! isset( $_GET[ "id" ] ) ) {
             die("Invalid access");
         }
 
