@@ -81,6 +81,7 @@ class Sammelstellen_Admin {
         wp_enqueue_style( 'mapbox-gl.css' );
         wp_enqueue_style( 'sammelstellen-admin.css' );
         wp_enqueue_script( 'mapbox-gl.js' );
+        wp_enqueue_script( 'sammelstellen-admin.js' );
     }
 
     public static function display_list_page() {
