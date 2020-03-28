@@ -37,11 +37,54 @@ class Sammelstellen_Admin {
     }
 
     private static function init_hooks() {
-        add_action( 'admin_menu', array( 'Sammelstellen_Admin', 'admin_menu' ) );
+        add_action( 'admin_init', array( 'Sammelstellen_Admin', 'admin_add_settings' ) );
+        add_action( 'admin_menu', array( 'Sammelstellen_Admin', 'add_sammelstellen_menus') );
         add_action( 'admin_enqueue_scripts', array( 'Sammelstellen_Admin', 'load_resources' ) );
     }
 
-    public static function admin_menu() {
+    public static function admin_add_settings() {
+        add_settings_section(
+            'sammelstellen_settings',
+            'Sammelstellen',
+            array( 'Sammelstellen_Admin', 'generate_settings_section_info' ),
+            'general'
+        );
+        add_settings_field(
+            'sammelstellen_map_source',
+            'Datenquelle für Karte',
+            array( 'Sammelstellen_Admin', 'generate_map_source_input' ),
+            'general',
+            'sammelstellen_settings'
+        );
+        add_settings_field(
+            'sammelstellen_editor_map_source',
+            'Datenquelle für Karte im Editor',
+            array( 'Sammelstellen_Admin', 'generate_editor_map_source_input' ),
+            'general',
+            'sammelstellen_settings'
+        );
+        register_setting( 'general', 'sammelstellen_map_source' );
+        register_setting( 'general', 'sammelstellen_editor_map_source' );
+    }
+
+    public static function generate_settings_section_info() {
+        echo '<p>Konfiguriere die URLs des Kartenmaterials. Die URLs müssen auf JSON-Dateien im 
+                Mapbox GL Style Format verweisen.</p>';
+    }
+
+    public static function generate_map_source_input() {
+        $value = get_option( 'sammelstellen_map_source' );
+        echo '<input name="sammelstellen_map_source" id="sammelstellen_map_source" type="url" value="'
+            . $value . '">';
+    }
+
+    public static function generate_editor_map_source_input() {
+        $value = get_option( 'sammelstellen_editor_map_source' );
+        echo '<input name="sammelstellen_editor_map_source" id="sammelstellen_editor_map_source" type="url" value="'
+            . $value . '">';
+    }
+
+    public static function add_sammelstellen_menus() {
         add_menu_page( 'Sammelstellen', 'Sammelstellen', 'edit_posts',
             'sammelstellen', array( 'Sammelstellen_Admin', 'display_list_page' ) );
         add_submenu_page('sammelstellen', 'Neue Sammelstelle hinzufügen', 'Neu hinzufügen',
