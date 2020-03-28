@@ -2,12 +2,12 @@
 
 /*
 Plugin Name: Sammelstellen
-Plugin URI: http://URI_Of_Page_Describing_Plugin_and_Updates
-Description: A brief description of the Plugin.
-Version: 1.0
-Author: christoph
-Author URI: http://URI_Of_The_Plugin_Author
-License: A "Slug" license name e.g. GPL2
+Plugin URI: https://www.radentscheid-bonn.de/
+Description: Eine Sammelstellenliste für die Radentscheid Bonn Website
+Version: 0.9
+Author: Christoph Böhme
+Author URI: https://b3e.net/
+License: GPL2
 */
 
 // Make sure we don't expose any info if called directly
