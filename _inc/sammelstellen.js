@@ -1,6 +1,6 @@
 const map = new mapboxgl.Map({
     container: 'map',
-    style: 'http://localhost:8080/styles/positron/style.json',
+    style: SammelstellenSettings.mapSource,
     maxBounds: [[6.95, 50.60], [7.35, 50.80]],
     hash: true,
     center: [7.1006600, 50.7358510],
@@ -21,7 +21,7 @@ map.addControl(geolocateControl);
 map.on('load', function() {
     geolocateControl.trigger();
 
-    fetch('http://localhost:8000/wp-json/sammelstellen/v1/sammelstellen')
+    fetch('/wp-json/sammelstellen/v1/sammelstellen')
         .then(response => response.json())
         .then(geojson => {
             geojson.features.forEach(addSammelstelle);

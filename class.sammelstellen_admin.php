@@ -127,6 +127,8 @@ class Sammelstellen_Admin {
             wp_enqueue_style('sammelstellen-admin.css');
             wp_enqueue_script('mapbox-gl.js');
             wp_enqueue_script('sammelstellen-admin.js');
+            wp_localize_script( 'sammelstellen-admin.js', 'SammelstellenSettings', array(
+                'mapSource' => get_option( 'sammelstellen_editor_map_source' ) ) );
         }
     }
 
