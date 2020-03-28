@@ -39,7 +39,7 @@ class Sammelstellen_Admin {
     private static function init_hooks() {
         add_action( 'admin_init', array( 'Sammelstellen_Admin', 'admin_add_settings' ) );
         add_action( 'admin_menu', array( 'Sammelstellen_Admin', 'add_sammelstellen_menus') );
-        add_action( 'admin_enqueue_scripts', array( 'Sammelstellen_Admin', 'load_resources' ) );
+        add_action( 'admin_enqueue_scripts', array( 'Sammelstellen_Admin', 'load_scripts_and_styles') );
     }
 
     public static function admin_add_settings() {
@@ -120,11 +120,14 @@ class Sammelstellen_Admin {
         return $submenu_file;
     }
 
-    public static function load_resources() {
-        wp_enqueue_style( 'mapbox-gl.css' );
-        wp_enqueue_style( 'sammelstellen-admin.css' );
-        wp_enqueue_script( 'mapbox-gl.js' );
-        wp_enqueue_script( 'sammelstellen-admin.js' );
+    public static function load_scripts_and_styles( $hook_suffix ) {
+        if ( $hook_suffix == 'sammelstellen_page_sammelstellen-create'
+                || $hook_suffix == 'sammelstellen_page_sammelstellen-edit' ) {
+            wp_enqueue_style('mapbox-gl.css');
+            wp_enqueue_style('sammelstellen-admin.css');
+            wp_enqueue_script('mapbox-gl.js');
+            wp_enqueue_script('sammelstellen-admin.js');
+        }
     }
 
     public static function display_list_page() {
