@@ -1,11 +1,6 @@
-String.prototype.interpolate = function (vars) {
-
-    return this.replace(/\${(.+)}/g, (match, p1) => vars[p1] );
-};
-
 const map = new mapboxgl.Map({
     container: 'map',
-    style: SammelstellenSettings.mapSource,
+    style: Config.mapSource,
     maxBounds: [[6.95, 50.60], [7.35, 50.80]],
     hash: true,
     center: [7.1006600, 50.7358510],
@@ -55,6 +50,6 @@ function createPopup(sammelstelle) {
         className: 'SammelstellePopup',
         maxWidth: 'none'
     });
-    popup.setHTML(SammelstellenSettings.markerTemplate.interpolate(sammelstelle.properties));
+    popup.setHTML(Mustache.render(Config.markerTemplate, sammelstelle.properties));
     return popup;
 }

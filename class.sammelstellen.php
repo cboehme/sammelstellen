@@ -13,6 +13,7 @@ class Sammelstellen {
     }
 
     public static function register_styles_and_scripts() {
+        wp_register_script( 'mustache.js', plugin_dir_url( __FILE__ ). '_inc/mustache.min.js' );
         wp_register_script( 'mapbox-gl.js', plugin_dir_url( __FILE__ ) . '_inc/mapbox-gl.js' );
         wp_register_script( 'sammelstellen.js', plugin_dir_url( __FILE__ ) . '_inc/sammelstellen.js' );
         wp_register_script( 'sammelstellen-admin.js', plugin_dir_url( __FILE__ ) . '_inc/sammelstellen-admin.js' );

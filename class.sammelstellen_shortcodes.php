@@ -20,9 +20,10 @@ class Sammelstellen_Shortcodes
     public static function map_shortcode( $atts = [], $content = null ) {
         wp_enqueue_style( 'mapbox-gl.css' );
         wp_enqueue_style( 'sammelstellen.css' );
+        wp_enqueue_script( 'mustache.js' );
         wp_enqueue_script( 'mapbox-gl.js' );
         wp_enqueue_script( 'sammelstellen.js' );
-        wp_localize_script( 'sammelstellen.js', 'SammelstellenSettings', array(
+        wp_localize_script( 'sammelstellen.js', 'Config', array(
             'mapSource' => get_option( 'sammelstellen_map_source' ),
             'markerTemplate' => $content ) );
         return '<div id="map" class="map"></div>';
