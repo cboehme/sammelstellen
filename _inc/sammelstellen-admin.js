@@ -36,8 +36,8 @@ function validateForm(ev) {
     }
 }
 
-var map;
-var marker;
+let map;
+let marker;
 
 function initializeMapControl()
 {
@@ -60,7 +60,7 @@ function initializeMapControl()
         color: '#0073AA'
     });
 
-    marker.on('dragend', function (e) {
+    marker.on('dragend', function () {
         const position = marker.getLngLat();
         document.getElementById('lon').value = position.lng;
         document.getElementById('lat').value = position.lat;
@@ -70,13 +70,13 @@ function initializeMapControl()
         })
     });
 
-    map.on('click', function (e) {
-        document.getElementById('lon').value = e.lngLat.lng;
-        document.getElementById('lat').value = e.lngLat.lat;
-        marker.setLngLat(e.lngLat);
+    map.on('click', function (ev) {
+        document.getElementById('lon').value = ev.lngLat.lng;
+        document.getElementById('lat').value = ev.lngLat.lat;
+        marker.setLngLat(ev.lngLat);
         marker.addTo(map);
         map.flyTo({
-            center: e.lngLat,
+            center: ev.lngLat,
             zoom: 17
         })
     });
