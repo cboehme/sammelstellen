@@ -1,3 +1,8 @@
+String.prototype.interpolate = function (vars) {
+
+    return this.replace(/\${(.+)}/g, (match, p1) => vars[p1] );
+};
+
 const map = new mapboxgl.Map({
     container: 'map',
     style: SammelstellenSettings.mapSource,
@@ -10,12 +15,12 @@ const map = new mapboxgl.Map({
 map.addControl(new mapboxgl.NavigationControl({
     visualizePitch: true
 }));
-
 const geolocateControl = new mapboxgl.GeolocateControl({
     positionOptions: {
         enableHighAccuracy: true
     }
 });
+
 map.addControl(geolocateControl);
 
 map.on('load', function() {
@@ -46,16 +51,10 @@ function addSammelstelle(sammelstelle) {
 }
 
 function createPopup(sammelstelle) {
-    const name = sammelstelle.properties.name;
-    const adresse = sammelstelle.properties.adresse;
-    const oeffnungszeiten = sammelstelle.properties.oeffnungszeiten;
-    const hinweise = sammelstelle.properties.hinweise;
-
     const popup = new mapboxgl.Popup({
         className: 'SammelstellePopup',
         maxWidth: 'none'
     });
-    popup.setHTML('<h1>' + name + '</h1><p>' + adresse + '</p><p>' + oeffnungszeiten + '</p><p>'
-            + hinweise + '</p>');
+    popup.setHTML(SammelstellenSettings.markerTemplate.interpolate(sammelstelle.properties));
     return popup;
 }

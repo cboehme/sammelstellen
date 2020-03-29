@@ -23,7 +23,8 @@ class Sammelstellen_Shortcodes
         wp_enqueue_script( 'mapbox-gl.js' );
         wp_enqueue_script( 'sammelstellen.js' );
         wp_localize_script( 'sammelstellen.js', 'SammelstellenSettings', array(
-            'mapSource' => get_option( 'sammelstellen_map_source' ) ) );
+            'mapSource' => get_option( 'sammelstellen_map_source' ),
+            'markerTemplate' => $content ) );
         return '<div id="map" class="map"></div>';
     }
 
