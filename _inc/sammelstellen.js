@@ -15,6 +15,7 @@ const geolocateControl = new mapboxgl.GeolocateControl({
         enableHighAccuracy: true
     }
 });
+geolocateControl.on('error', (error) => console.log(`Geolocation failed: ${error.message}`));
 
 map.addControl(geolocateControl);
 
