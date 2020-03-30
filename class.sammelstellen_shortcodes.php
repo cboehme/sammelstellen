@@ -5,6 +5,7 @@ class Sammelstellen_Shortcodes
 {
 
     private static $initialised = false;
+    private static $mapId = 0;
 
     public static function init() {
         if ( !self::$initialised ) {
@@ -23,10 +24,21 @@ class Sammelstellen_Shortcodes
         wp_enqueue_script( 'mustache.js' );
         wp_enqueue_script( 'mapbox-gl.js' );
         wp_enqueue_script( 'sammelstellen.js' );
+
         wp_localize_script( 'sammelstellen.js', 'Config', array(
-            'mapSource' => get_option( 'sammelstellen_map_source' ),
-            'markerTemplate' => $content ) );
-        return '<div id="map" class="map"></div>';
+            'mapSource' => get_option( 'sammelstellen_map_source' ) ) );
+
+        $mapId = self::getMapId();
+        $markerTemplate = preg_replace("/(\n\r)|\n|\r/", '\\\n', addslashes( $content ));
+
+        return "<div id='$mapId' class='map'></div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => initMap('$mapId', '$markerTemplate'));
+        </script>";
+    }
+
+    private static function getMapId() {
+        return "map" . self::$mapId++;
     }
 
 }
