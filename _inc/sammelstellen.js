@@ -1,4 +1,5 @@
 maps = {};
+lists = {};
 
 function initMap(container, markerTemplate) {
 
@@ -35,6 +36,14 @@ function initMap(container, markerTemplate) {
 
 }
 
+function initList(container, itemTemplate) {
+
+    lists[container] = {
+        list: document.getElementById(container),
+        itemTemplate: itemTemplate
+    };
+}
+
 document.addEventListener('DOMContentLoaded', loadSammelstellen);
 
 function loadSammelstellen() {
@@ -43,6 +52,9 @@ function loadSammelstellen() {
         .then(geojson => {
             for (map of Object.values(maps)) {
                 geojson.features.forEach(sammelstelle => addSammelstelle(map, sammelstelle));
+            }
+            for (list of Object.values(lists)) {
+                geojson.features.forEach(sammelstelle => addSammelstelleToList(list, sammelstelle));
             }
         });
 }
@@ -72,4 +84,11 @@ function createPopup(sammelstelle, markerTemplate) {
     });
     popup.setHTML(Mustache.render(markerTemplate, sammelstelle.properties));
     return popup;
+}
+
+function addSammelstelleToList(list, sammelstelle) {
+
+    item = document.createElement('li');
+    item.innerHTML = Mustache.render(list.itemTemplate, sammelstelle.properties);
+    list.list.appendChild(item);
 }
