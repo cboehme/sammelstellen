@@ -1,3 +1,5 @@
+maps = {};
+
 function initMap(container, markerTemplate) {
 
     const map = new mapboxgl.Map({
@@ -12,6 +14,7 @@ function initMap(container, markerTemplate) {
     map.addControl(new mapboxgl.NavigationControl({
         visualizePitch: true
     }));
+
     const geolocateControl = new mapboxgl.GeolocateControl({
         positionOptions: {
             enableHighAccuracy: true
@@ -25,37 +28,48 @@ function initMap(container, markerTemplate) {
         geolocateControl.trigger();
     });
 
-    fetch('/wp-json/sammelstellen/v1/sammelstellen')
-        .then(response => response.json())
-        .then(geojson => {
-            geojson.features.forEach(addSammelstelle);
-        });
-
-    function addSammelstelle(sammelstelle) {
-        const marker = new mapboxgl.Marker({
-            color: '#98D800'
-        });
-        marker.getElement().classList.add('SammelstelleMarker');
-        marker.getElement().addEventListener('click', ev => {
-            map.flyTo({
-                center: sammelstelle.geometry.coordinates,
-                zoom: 15
-            })
-        });
-        marker
-            .setLngLat(sammelstelle.geometry.coordinates)
-            .setPopup(createPopup(sammelstelle))
-            .addTo(map);
-    }
-
-    function createPopup(sammelstelle) {
-        const popup = new mapboxgl.Popup({
-            className: 'SammelstellePopup',
-            maxWidth: 'none'
-        });
-        popup.setHTML(Mustache.render(markerTemplate, sammelstelle.properties));
-        return popup;
-    }
+    maps[container] = {
+        map: map,
+        markerTemplate: markerTemplate
+    };
 
 }
 
+document.addEventListener('DOMContentLoaded', loadSammelstellen);
+
+function loadSammelstellen() {
+    fetch('/wp-json/sammelstellen/v1/sammelstellen')
+        .then(response => response.json())
+        .then(geojson => {
+            for (map of Object.values(maps)) {
+                geojson.features.forEach(sammelstelle => addSammelstelle(map, sammelstelle));
+            }
+        });
+}
+
+function addSammelstelle(map, sammelstelle) {
+
+    const marker = new mapboxgl.Marker({
+        color: '#98D800'
+    });
+    marker.getElement().classList.add('SammelstelleMarker');
+    marker.getElement().addEventListener('click', ev => {
+        map.map.flyTo({
+            center: sammelstelle.geometry.coordinates,
+            zoom: 15
+        })
+    });
+    marker
+        .setLngLat(sammelstelle.geometry.coordinates)
+        .setPopup(createPopup(sammelstelle, map.markerTemplate))
+        .addTo(map.map);
+}
+
+function createPopup(sammelstelle, markerTemplate) {
+    const popup = new mapboxgl.Popup({
+        className: 'SammelstellePopup',
+        maxWidth: 'none'
+    });
+    popup.setHTML(Mustache.render(markerTemplate, sammelstelle.properties));
+    return popup;
+}
