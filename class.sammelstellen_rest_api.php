@@ -29,6 +29,7 @@ class Sammelstellen_REST_API {
                     'coordinates' => array(floatval($sammelstelle->longitude), floatval($sammelstelle->latitude))
                 ),
                 'properties' => array(
+                    'id' => $sammelstelle->id,
                     'name' => $sammelstelle->name,
                     'adresse' => $sammelstelle->adresse,
                     'oeffnungszeiten' => $sammelstelle->oeffnungszeiten,

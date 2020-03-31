@@ -59,6 +59,8 @@ function loadSammelstellen() {
         });
 }
 
+const markers = {};
+
 function addSammelstelle(map, sammelstelle) {
 
     const marker = new mapboxgl.Marker({
@@ -75,6 +77,7 @@ function addSammelstelle(map, sammelstelle) {
         .setLngLat(sammelstelle.geometry.coordinates)
         .setPopup(createPopup(sammelstelle, map.markerTemplate))
         .addTo(map.map);
+    markers[sammelstelle.properties.id] = marker;
 }
 
 function createPopup(sammelstelle, markerTemplate) {
@@ -89,6 +92,23 @@ function createPopup(sammelstelle, markerTemplate) {
 function addSammelstelleToList(list, sammelstelle) {
 
     item = document.createElement('li');
+    item.setAttribute('data-id', sammelstelle.properties.id);
+    item.addEventListener('click', showSammelstellenMarker.bind(item));
     item.innerHTML = Mustache.render(list.itemTemplate, sammelstelle.properties);
     list.list.appendChild(item);
+}
+
+function showSammelstellenMarker() {
+    const selectedId = this.getAttribute('data-id');
+    for (let [id, marker] of Object.entries(markers)) {
+        if (id === selectedId) {
+            if (!markers[id].getPopup().isOpen()) {
+                markers[id].togglePopup();
+            }
+        } else {
+            if (markers[id].getPopup().isOpen()) {
+                markers[id].togglePopup();
+            }
+        }
+    }
 }
