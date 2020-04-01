@@ -50,16 +50,16 @@ function loadSammelstellen() {
     fetch('/wp-json/sammelstellen/v1/sammelstellen')
         .then(response => response.json())
         .then(geojson => {
-            for (map of Object.values(maps)) {
+            for (const map of Object.values(maps)) {
                 geojson.features.forEach(sammelstelle => addSammelstelle(map, sammelstelle));
             }
-            for (list of Object.values(lists)) {
+            for (const list of Object.values(lists)) {
                 geojson.features.forEach(sammelstelle => addSammelstelleToList(list, sammelstelle));
             }
         });
 }
 
-const markers = {};
+const markers = [];
 
 function addSammelstelle(map, sammelstelle) {
 
@@ -77,7 +77,10 @@ function addSammelstelle(map, sammelstelle) {
         .setLngLat(sammelstelle.geometry.coordinates)
         .setPopup(createPopup(sammelstelle, map.markerTemplate))
         .addTo(map.map);
-    markers[sammelstelle.properties.id] = marker;
+    markers.push({
+        id: sammelstelle.properties.id,
+        marker: marker
+    });
 }
 
 function createPopup(sammelstelle, markerTemplate) {
@@ -100,14 +103,14 @@ function addSammelstelleToList(list, sammelstelle) {
 
 function showSammelstellenMarker() {
     const selectedId = this.getAttribute('data-id');
-    for (let [id, marker] of Object.entries(markers)) {
-        if (id === selectedId) {
-            if (!markers[id].getPopup().isOpen()) {
-                markers[id].togglePopup();
+    for (const marker of markers) {
+        if (marker.id === selectedId) {
+            if (!marker.marker.getPopup().isOpen()) {
+                marker.marker.togglePopup();
             }
         } else {
-            if (markers[id].getPopup().isOpen()) {
-                markers[id].togglePopup();
+            if (marker.marker.getPopup().isOpen()) {
+                marker.marker.togglePopup();
             }
         }
     }
