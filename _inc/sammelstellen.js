@@ -103,15 +103,23 @@ function addSammelstelleToList(list, sammelstelle) {
 
 function showSammelstellenMarker() {
     const selectedId = this.getAttribute('data-id');
+    let selectedMarker;
     for (const marker of markers) {
         if (marker.id === selectedId) {
             if (!marker.marker.getPopup().isOpen()) {
                 marker.marker.togglePopup();
             }
+            selectedMarker = marker.marker;
         } else {
             if (marker.marker.getPopup().isOpen()) {
                 marker.marker.togglePopup();
             }
         }
+    }
+    for (const map of Object.values(maps)) {
+        map.map.flyTo({
+            center: selectedMarker.getLngLat(),
+            zoom: 15
+        });
     }
 }
