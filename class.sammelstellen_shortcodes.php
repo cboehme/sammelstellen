@@ -5,8 +5,8 @@ class Sammelstellen_Shortcodes
 {
 
     private static $initialised = false;
-    private static $mapId = 0;
-    private static $listId = 0;
+    private static $map_id = 0;
+    private static $list_id = 0;
 
     public static function init() {
         if ( !self::$initialised ) {
@@ -30,7 +30,7 @@ class Sammelstellen_Shortcodes
         wp_localize_script( 'sammelstellen.js', 'Config', array(
             'mapSource' => get_option( 'sammelstellen_map_source' ) ) );
 
-        $mapId = self::getMapId();
+        $mapId = self::get_map_id();
         $markerTemplate = preg_replace("/(\n\r)|\n|\r/", '\\\n', addslashes( $content ));
 
         return "<div id='$mapId' class='map'></div>
@@ -39,8 +39,8 @@ class Sammelstellen_Shortcodes
         </script>";
     }
 
-    private static function getMapId() {
-        return "sammelstellenMap" . self::$mapId++;
+    private static function get_map_id() {
+        return "sammelstellenMap" . self::$map_id++;
     }
 
     public static function list_shortcode( $atts = [], $content = null ) {
@@ -54,7 +54,7 @@ class Sammelstellen_Shortcodes
             'mapSource' => get_option( 'sammelstellen_map_source' ) ) );
 
         $itemTemplate = preg_replace("/(\n\r)|\n|\r/", '\\\n', addslashes( $content ));
-        $listId = self::getListId();
+        $listId = self::get_list_id();
 
         return "<ol id='$listId'></ol>
         <script>
@@ -62,8 +62,8 @@ class Sammelstellen_Shortcodes
         </script>";
     }
 
-    private static function getListId() {
-        return "sammelstellenList" . self::$listId++;
+    private static function get_list_id() {
+        return "sammelstellenList" . self::$list_id++;
     }
 
 }
