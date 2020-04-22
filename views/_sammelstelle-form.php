@@ -23,8 +23,16 @@
             <td><textarea id="oeffnungszeiten" name="oeffnungszeiten"><?= esc_html( $sammelstelle->oeffnungszeiten ); ?></textarea></td>
         </tr>
         <tr class="form-field form-required">
+            <th scope="row"><label for="website">Website</label></th>
+            <td><input type="url" id="website" name="website" value="<?= esc_attr( $sammelstelle->website ); ?>" maxlength="255"/></td>
+        </tr>
+        <tr class="form-field form-required">
+            <th scope="row">Privater Briefkasten</th>
+            <td><input type="checkbox" id="briefkasten" name="briefkasten" <?= $sammelstelle->briefkasten ? 'checked' : ''; ?>/> <label for="briefkasten">Die Sammelstelle ist ein privater Briefkasten, in den ausgefüllte Unterschriftenlisten eingeworfen werden können.</label></td>
+        </tr>
+        <tr class="form-field form-required">
             <th scope="row">Aktive Sammelstelle</th>
-            <td><input type="checkbox" id="aktiv" name="aktiv" <?= $sammelstelle->aktiv ? 'checked' : ''; ?>/> <label for="aktiv">Die Sammelstelle wird auf der Website angezeigt.</label></td>
+            <td><input type="checkbox" id="aktiv" name="aktiv" <?= $sammelstelle->aktiv ? 'checked' : ''; ?>/> <label for="aktiv">Die Sammelstelle wird auf der Website angezeigt. Entferne den Haken, um eine Sammelstelle zeitweise von der Karte zu entfernen.</label></td>
         </tr>
         <tr class="form-field form-required">
             <th scope="row"><label for="hinweise">Hinweise</label></th>

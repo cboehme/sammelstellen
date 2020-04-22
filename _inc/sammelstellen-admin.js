@@ -28,6 +28,8 @@ function validateForm(ev) {
         checkElementValidity('adresse') &
         checkPositionValidity() &
         checkElementValidity('oeffnungszeiten') &
+        checkElementValidity('website') &
+        checkElementValidity('briefkasten') &
         checkElementValidity('aktiv') &
         checkElementValidity('hinweise');
 

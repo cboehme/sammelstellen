@@ -9,11 +9,13 @@
     <table class="wp-list-table widefat fixed striped pages">
         <thead>
             <tr>
-                <th scope="col" id='name' class='manage-column column-primary'>Name</th>
-                <th scope="col" id='adresse' class='manage-column'>Adresse</th>
-                <th scope="col" id='oeffnungszeiten' class='manage-column'>Öffnungszeiten</th>
-                <th scope="col" id='aktiv' class='manage-column'>Aktiv</th>
-                <th scope="col" id='hinweise' class='manage-column'>Hinweise</th>
+                <th scope="col" id="name" class="manage-column column-primary">Name</th>
+                <th scope="col" id="adresse" class="manage-column">Adresse</th>
+                <th scope="col" id="oeffnungszeiten" class="manage-column">Öffnungszeiten</th>
+                <th scope="col" id="website" class="manage-column">Website</th>
+                <th scope="col" id="briefcasten" class="manage-column">Privater Briefkasten</th>
+                <th scope="col" id="aktiv" class="manage-column">Aktiv</th>
+                <th scope="col" id="hinweise" class="manage-column">Hinweise</th>
             </tr>
         </thead>
         <tbody id="the-list">
@@ -27,6 +29,8 @@
                     </td>
                     <td><?= with_breaks( esc_html( $sammelstelle->adresse ) ); ?></td>
                     <td><?= with_breaks( esc_html( $sammelstelle->oeffnungszeiten ) ); ?></td>
+                    <td><?= esc_html( $sammelstelle->website ); ?></td>
+                    <td><?= $sammelstelle->briefkasten ? 'Ja' : 'Nein' ?></td>
                     <td><?= $sammelstelle->aktiv ? 'Ja' : 'Nein' ?></td>
                     <td><?= with_breaks( esc_html( $sammelstelle->hinweise ) ); ?></td>
                 </tr>

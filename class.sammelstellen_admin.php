@@ -13,6 +13,8 @@ class Sammelstellen_Admin {
     const FIELD_LATITUDE = "lat";
     const FIELD_LONGITUDE = "lon";
     const FIELD_OEFFNUNGSZEITEN = "oeffnungszeiten";
+    const FIELD_WEBSITE = "website";
+    const FIELD_BRIEFKASTEN = "briefkasten";
     const FIELD_AKTIV = "aktiv";
     const FIELD_HINWEISE = "hinweise";
 
@@ -144,6 +146,8 @@ class Sammelstellen_Admin {
                 'name' => '',
                 'adresse' => '',
                 'oeffnungszeiten' => '',
+                'website' => '',
+                'briefkasten' => false,
                 'aktiv' => false,
                 'hinweise' => '',
                 'longitude' => '',
@@ -173,14 +177,16 @@ class Sammelstellen_Admin {
         return $wpdb->query(
             $wpdb->prepare( "
                 INSERT INTO $table_name
-                ( name, adresse, oeffnungszeiten, hinweise, aktiv, location )
-                VALUES ( %s, %s, %s, %s, %d, PointFromText( %s ) )",
-            $input_data['name'],
-            $input_data['adresse'],
-            $input_data['oeffnungszeiten'],
-            $input_data['hinweise'],
-            $input_data['aktiv'],
-            "POINT(" . $input_data['lon'] . " " . $input_data['lat'] . ")" ) );
+                ( name, adresse, oeffnungszeiten, website, briefkasten, aktiv, hinweise, location )
+                VALUES ( %s, %s, %s, %s, %d, %d, %s, PointFromText( %s ) )",
+                $input_data['name'],
+                $input_data['adresse'],
+                $input_data['oeffnungszeiten'],
+                $input_data['website'],
+                $input_data['briefkasten'],
+                $input_data['aktiv'],
+                $input_data['hinweise'],
+                "POINT(" . $input_data['lon'] . " " . $input_data['lat'] . ")" ) );
     }
 
     private static function edit_sammelstelle() {
@@ -210,15 +216,19 @@ class Sammelstellen_Admin {
                 SET name = %s, 
                     adresse = %s, 
                     oeffnungszeiten = %s, 
-                    hinweise = %s, 
+                    website = %s, 
+                    briefkasten = %d, 
                     aktiv = %d, 
+                    hinweise = %s, 
                     location = PointFromText( %s )
                 WHERE id = %d",
                 $input_data['name'],
                 $input_data['adresse'],
                 $input_data['oeffnungszeiten'],
-                $input_data['hinweise'],
+                $input_data['website'],
+                $input_data['briefkasten'],
                 $input_data['aktiv'],
+                $input_data['hinweise'],
                 "POINT(" . $input_data['lon'] . " " . $input_data['lat'] . ")",
                 $input_data['id'] ) );
     }
@@ -245,6 +255,8 @@ class Sammelstellen_Admin {
             'lon' => floatval( $_POST[self::FIELD_LONGITUDE] ),
             'lat' => floatval( $_POST[self::FIELD_LATITUDE] ),
             'oeffnungszeiten' => sanitize_textarea_field( $_POST[self::FIELD_OEFFNUNGSZEITEN] ),
+            'website' => esc_url_raw( $_POST[self::FIELD_WEBSITE] ),
+            'briefkasten' => isset( $_POST[self::FIELD_BRIEFKASTEN] ),
             'aktiv' => isset( $_POST[self::FIELD_AKTIV] ),
             'hinweise' => sanitize_textarea_field( $_POST[self::FIELD_HINWEISE] )
         );

@@ -32,9 +32,11 @@ class Sammelstellen {
                 id mediumint(9) NOT NULL AUTO_INCREMENT,
                 name tinytext NOT NULL,
                 adresse mediumtext NOT NULL,
-                oeffnungszeiten tinytext DEFAULT '' NOT NULL,
-                hinweise mediumtext DEFAULT '' NOT NULL,
+                oeffnungszeiten tinytext DEFAULT '' NOT NULL,   
+                website tinytext DEFAULT '' NOT NULL,
+                briefkasten boolean DEFAULT false NOT NULL,
                 aktiv boolean DEFAULT false NOT NULL,
+                hinweise mediumtext DEFAULT '' NOT NULL,
                 location point NOT NULL,
                 PRIMARY KEY  (id)                
                 ) $charset_collate;";
@@ -73,7 +75,7 @@ class Sammelstellen {
 
         $table_name = self::get_table_name();
         return $wpdb->get_results("
-                SELECT id, name, adresse, oeffnungszeiten, aktiv, hinweise,
+                SELECT id, name, adresse, oeffnungszeiten, website, briefkasten, aktiv, hinweise,
                     X(location) as longitude, Y(location) as latitude
                     FROM $table_name ORDER BY name" );
     }
@@ -83,7 +85,7 @@ class Sammelstellen {
 
         $table_name = self::get_table_name();
         return $wpdb->get_results( $wpdb->prepare( "
-                SELECT id, name, adresse, oeffnungszeiten, aktiv, hinweise,
+                SELECT id, name, adresse, oeffnungszeiten, website, briefkasten, aktiv, hinweise,
                     X(location) as longitude, Y(location) as latitude
                     FROM $table_name WHERE aktiv = %d", $aktiv ) );
     }
@@ -93,7 +95,7 @@ class Sammelstellen {
 
         $table_name = self::get_table_name();
         return $wpdb->get_row( $wpdb->prepare("
-                SELECT id, name, adresse, oeffnungszeiten, aktiv, hinweise,
+                SELECT id, name, adresse, oeffnungszeiten, website, briefkasten, aktiv, hinweise,
                     X(location) as longitude, Y(location) as latitude
                     FROM $table_name WHERE id = %d", $id ) );
     }
