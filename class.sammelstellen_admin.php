@@ -65,25 +65,56 @@ class Sammelstellen_Admin {
             'general',
             'sammelstellen_settings'
         );
+        add_settings_field(
+            'sammelstellen_popup_template',
+            'Template für die Popups auf der Sammelstellenkarte',
+            array( 'Sammelstellen_Admin', 'generate_popup_template_input' ),
+            'general',
+            'sammelstellen_settings'
+        );
+        add_settings_field(
+            'sammelstellen_listitem_template',
+            'Template für Einträge in der Sammelstellenliste',
+            array( 'Sammelstellen_Admin', 'generate_listitem_template_input' ),
+            'general',
+            'sammelstellen_settings'
+        );
         register_setting( 'general', 'sammelstellen_map_source' );
         register_setting( 'general', 'sammelstellen_editor_map_source' );
+        register_setting( 'general', 'sammelstellen_popup_template' );
+        register_setting( 'general', 'sammelstellen_listitem_template' );
     }
 
     public static function generate_settings_section_info() {
-        echo '<p>Konfiguriere die URLs des Kartenmaterials. Die URLs müssen auf JSON-Dateien im 
-                Mapbox GL Style Format verweisen.</p>';
+        echo '<p>Konfiguriere das Aussehen der Sammelstellenkarte und der Sammelstellenliste.</p>';
     }
 
     public static function generate_map_source_input() {
         $value = get_option( 'sammelstellen_map_source' );
-        echo '<input name="sammelstellen_map_source" id="sammelstellen_map_source" type="url" value="'
-            . $value . '">';
+        echo '<input name="sammelstellen_map_source" id="sammelstellen_map_source" class="regular-text code" type="url" value="'
+            . esc_attr($value) . '">
+              <p style="font-style: italic">Die URLs für das Kartenmaterial müssen auf JSON-Dateien im Mapbox GL Style Format verweisen.</p>';
     }
 
     public static function generate_editor_map_source_input() {
         $value = get_option( 'sammelstellen_editor_map_source' );
-        echo '<input name="sammelstellen_editor_map_source" id="sammelstellen_editor_map_source" type="url" value="'
-            . $value . '">';
+        echo '<input name="sammelstellen_editor_map_source" id="sammelstellen_editor_map_source"  class="regular-text code" type="url" value="'
+            . esc_attr($value) . '">';
+    }
+
+    public static function generate_popup_template_input() {
+        $value = get_option( 'sammelstellen_popup_template' );
+        echo '<textarea name="sammelstellen_popup_template" id="sammelstellen_popup_template" class="regular-text code">' . esc_html($value) . '</textarea>
+              <p style="font-style: italic">Die Templates für die Darstellung der Sammelstellen werden mit 
+              <a href="https://github.com/janl/mustache.js" target="_blank" rel="noopener noreferer">Mustache.js</a>
+              geparst. Als Platzhalter stehen die Properties aus den Features zur Verfügung, die du über die
+              <a href="/wp-json/sammelstellen/v1/sammelstellen" target="_blank" rel="noopener noreferer">Sammelstellen-REST-API</a> abfragen 
+              kannst.</p>';
+    }
+
+    public static function generate_listitem_template_input() {
+        $value = get_option( 'sammelstellen_listitem_template' );
+        echo '<textarea name="sammelstellen_listitem_template" id="sammelstellen_listitem_template" class="regular-text code">' . esc_html($value) . '</textarea>';
     }
 
     public static function add_sammelstellen_menus() {
