@@ -33,7 +33,6 @@ class Sammelstellen_Shortcodes
             'popupTemplate' => get_option( 'sammelstellen_popup_template' ) ) );
 
         $mapId = self::get_map_id();
-        //$markerTemplate = preg_replace("/(\n\r)|\n|\r/", '\\\n', addslashes( $content ));
 
         return "<div id='$mapId' class='map'></div>
         <script>
@@ -57,7 +56,6 @@ class Sammelstellen_Shortcodes
             'listitemTemplate' => get_option( 'sammelstellen_listitem_template' ),
             'popupTemplate' => get_option( 'sammelstellen_popup_template' ) ) );
 
-        //$itemTemplate = preg_replace("/(\n\r)|\n|\r/", '\\\n', addslashes( $content ));
         $listId = self::get_list_id();
 
         return "<ol id='$listId'></ol>
