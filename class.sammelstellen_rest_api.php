@@ -33,6 +33,8 @@ class Sammelstellen_REST_API {
                     'name' => $sammelstelle->name,
                     'adresse' => $sammelstelle->adresse,
                     'oeffnungszeiten' => $sammelstelle->oeffnungszeiten,
+                    'website' => $sammelstelle->website,
+                    'briefkasten' => $sammelstelle->briefkasten,
                     'hinweise' => $sammelstelle->hinweise
                 )
             );
