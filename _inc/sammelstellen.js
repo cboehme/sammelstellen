@@ -1,7 +1,7 @@
 maps = {};
 lists = {};
 
-function initMap(container, markerTemplate) {
+function initMap(container) {
 
     const map = new mapboxgl.Map({
         container: container,
@@ -30,17 +30,15 @@ function initMap(container, markerTemplate) {
     });
 
     maps[container] = {
-        map: map,
-        markerTemplate: markerTemplate
+        map: map
     };
 
 }
 
-function initList(container, itemTemplate) {
+function initList(container) {
 
     lists[container] = {
-        list: document.getElementById(container),
-        itemTemplate: itemTemplate
+        list: document.getElementById(container)
     };
 }
 
@@ -75,7 +73,7 @@ function addSammelstelle(map, sammelstelle) {
     });
     marker
         .setLngLat(sammelstelle.geometry.coordinates)
-        .setPopup(createPopup(sammelstelle, map.markerTemplate))
+        .setPopup(createPopup(sammelstelle))
         .addTo(map.map);
     markers.push({
         id: sammelstelle.properties.id,
@@ -83,12 +81,12 @@ function addSammelstelle(map, sammelstelle) {
     });
 }
 
-function createPopup(sammelstelle, markerTemplate) {
+function createPopup(sammelstelle) {
     const popup = new mapboxgl.Popup({
         className: 'SammelstellePopup',
         maxWidth: 'none'
     });
-    popup.setHTML(Mustache.render(markerTemplate, sammelstelle.properties));
+    popup.setHTML(Mustache.render(Config.popupTemplate, sammelstelle.properties));
     return popup;
 }
 
@@ -97,7 +95,7 @@ function addSammelstelleToList(list, sammelstelle) {
     item = document.createElement('li');
     item.setAttribute('data-id', sammelstelle.properties.id);
     item.addEventListener('click', showSammelstellenMarker.bind(item));
-    item.innerHTML = Mustache.render(list.itemTemplate, sammelstelle.properties);
+    item.innerHTML = Mustache.render(Config.listitemTemplate, sammelstelle.properties);
     list.list.appendChild(item);
 }
 

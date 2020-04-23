@@ -28,14 +28,16 @@ class Sammelstellen_Shortcodes
         wp_enqueue_script( 'sammelstellen.js' );
 
         wp_localize_script( 'sammelstellen.js', 'Config', array(
-            'mapSource' => get_option( 'sammelstellen_map_source' ) ) );
+            'mapSource' => get_option( 'sammelstellen_map_source' ),
+            'listitemTemplate' => get_option( 'sammelstellen_listitem_template' ),
+            'popupTemplate' => get_option( 'sammelstellen_popup_template' ) ) );
 
         $mapId = self::get_map_id();
-        $markerTemplate = preg_replace("/(\n\r)|\n|\r/", '\\\n', addslashes( $content ));
+        //$markerTemplate = preg_replace("/(\n\r)|\n|\r/", '\\\n', addslashes( $content ));
 
         return "<div id='$mapId' class='map'></div>
         <script>
-            document.addEventListener('DOMContentLoaded', () => initMap('$mapId', '$markerTemplate'));
+            document.addEventListener('DOMContentLoaded', () => initMap('$mapId'));
         </script>";
     }
 
@@ -51,14 +53,16 @@ class Sammelstellen_Shortcodes
         wp_enqueue_script( 'sammelstellen.js' );
 
         wp_localize_script( 'sammelstellen.js', 'Config', array(
-            'mapSource' => get_option( 'sammelstellen_map_source' ) ) );
+            'mapSource' => get_option( 'sammelstellen_map_source' ),
+            'listitemTemplate' => get_option( 'sammelstellen_listitem_template' ),
+            'popupTemplate' => get_option( 'sammelstellen_popup_template' ) ) );
 
-        $itemTemplate = preg_replace("/(\n\r)|\n|\r/", '\\\n', addslashes( $content ));
+        //$itemTemplate = preg_replace("/(\n\r)|\n|\r/", '\\\n', addslashes( $content ));
         $listId = self::get_list_id();
 
         return "<ol id='$listId'></ol>
         <script>
-            document.addEventListener('DOMContentLoaded', () => initList('$listId', '$itemTemplate'));
+            document.addEventListener('DOMContentLoaded', () => initList('$listId'));
         </script>";
     }
 
