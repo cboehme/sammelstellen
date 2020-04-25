@@ -11,6 +11,7 @@
             <tr>
                 <th scope="col" id="name" class="manage-column column-primary">Name</th>
                 <th scope="col" id="adresse" class="manage-column">Adresse</th>
+                <th scope="col" id="postleitzahl" class="manage-column">Postleitzahl</th>
                 <th scope="col" id="oeffnungszeiten" class="manage-column">Öffnungszeiten</th>
                 <th scope="col" id="website" class="manage-column">Website</th>
                 <th scope="col" id="briefcasten" class="manage-column">Privater Briefkasten</th>
@@ -28,6 +29,7 @@
                             <span class='trash'><a href="<?= esc_url( Sammelstellen_Admin::get_delete_sammelstelle_url( $sammelstelle->id ) ); ?>" class="submitdelete" aria-label="&#8222;<?= esc_html( $sammelstelle->name ); ?>&#8220; löschen">Löschen</a>
                     </td>
                     <td><?= with_breaks( esc_html( $sammelstelle->adresse ) ); ?></td>
+                    <td><?= esc_html( $sammelstelle->postleitzahl ); ?></td>
                     <td><?= with_breaks( esc_html( $sammelstelle->oeffnungszeiten ) ); ?></td>
                     <td><?= esc_html( $sammelstelle->website ); ?></td>
                     <td><?= $sammelstelle->briefkasten ? 'Ja' : 'Nein' ?></td>
@@ -41,6 +43,7 @@
             <tr>
                 <th scope="col" class='manage-column column-primary'>Name</th>
                 <th scope="col" class='manage-column'>Adresse</th>
+                <th scope="col" id="postleitzahl" class="manage-column">Postleitzahl</th>
                 <th scope="col" class='manage-column'>Öffnungszeiten</th>
                 <th scope="col" class='manage-column'>Aktiv</th>
                 <th scope="col" class='manage-column'>Hinweise</th>

@@ -32,6 +32,7 @@ class Sammelstellen {
                 id mediumint(9) NOT NULL AUTO_INCREMENT,
                 name tinytext NOT NULL,
                 adresse mediumtext NOT NULL,
+                postleitzahl varchar(5) NOT NULL,
                 oeffnungszeiten tinytext DEFAULT '' NOT NULL,   
                 website tinytext DEFAULT '' NOT NULL,
                 briefkasten boolean DEFAULT false NOT NULL,
@@ -75,9 +76,10 @@ class Sammelstellen {
 
         $table_name = self::get_table_name();
         return $wpdb->get_results("
-                SELECT id, name, adresse, oeffnungszeiten, website, briefkasten, aktiv, hinweise,
+                SELECT id, name, adresse, postleitzahl, oeffnungszeiten, website, briefkasten, aktiv, hinweise,
                     X(location) as longitude, Y(location) as latitude
-                    FROM $table_name ORDER BY name" );
+                    FROM $table_name 
+                    ORDER BY name" );
     }
 
     public static function find_sammelstellen_by_aktiv( $aktiv ) {
@@ -85,9 +87,11 @@ class Sammelstellen {
 
         $table_name = self::get_table_name();
         return $wpdb->get_results( $wpdb->prepare( "
-                SELECT id, name, adresse, oeffnungszeiten, website, briefkasten, aktiv, hinweise,
+                SELECT id, name, adresse, postleitzahl, oeffnungszeiten, website, briefkasten, aktiv, hinweise,
                     X(location) as longitude, Y(location) as latitude
-                    FROM $table_name WHERE aktiv = %d", $aktiv ) );
+                    FROM $table_name 
+                    WHERE aktiv = %d
+                    ORDER BY postleitzahl, name", $aktiv ) );
     }
 
     public static function find_sammelstellen_by_id( $id ) {
@@ -95,9 +99,10 @@ class Sammelstellen {
 
         $table_name = self::get_table_name();
         return $wpdb->get_row( $wpdb->prepare("
-                SELECT id, name, adresse, oeffnungszeiten, website, briefkasten, aktiv, hinweise,
+                SELECT id, name, adresse, postleitzahl, oeffnungszeiten, website, briefkasten, aktiv, hinweise,
                     X(location) as longitude, Y(location) as latitude
-                    FROM $table_name WHERE id = %d", $id ) );
+                    FROM $table_name 
+                    WHERE id = %d", $id ) );
     }
 
 }

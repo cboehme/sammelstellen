@@ -10,6 +10,7 @@ class Sammelstellen_Admin {
 
     const FIELD_NAME = "name";
     const FIELD_ADRESSE = "adresse";
+    const FIELD_POSTLEITZAHL = "postleitzahl";
     const FIELD_LATITUDE = "lat";
     const FIELD_LONGITUDE = "lon";
     const FIELD_OEFFNUNGSZEITEN = "oeffnungszeiten";
@@ -176,6 +177,7 @@ class Sammelstellen_Admin {
                 'id' => '',
                 'name' => '',
                 'adresse' => '',
+                'postleitzahl' => '',
                 'oeffnungszeiten' => '',
                 'website' => '',
                 'briefkasten' => false,
@@ -208,10 +210,11 @@ class Sammelstellen_Admin {
         return $wpdb->query(
             $wpdb->prepare( "
                 INSERT INTO $table_name
-                ( name, adresse, oeffnungszeiten, website, briefkasten, aktiv, hinweise, location )
-                VALUES ( %s, %s, %s, %s, %d, %d, %s, PointFromText( %s ) )",
+                ( name, adresse, postleitzahl, oeffnungszeiten, website, briefkasten, aktiv, hinweise, location )
+                VALUES ( %s, %s, %s, %s, %s, %d, %d, %s, PointFromText( %s ) )",
                 $input_data['name'],
                 $input_data['adresse'],
+                $input_data['postleitzahl'],
                 $input_data['oeffnungszeiten'],
                 $input_data['website'],
                 $input_data['briefkasten'],
@@ -245,7 +248,8 @@ class Sammelstellen_Admin {
             $wpdb->prepare( "
                 UPDATE $table_name
                 SET name = %s, 
-                    adresse = %s, 
+                    adresse = %s,
+                    postleitzahl = %s, 
                     oeffnungszeiten = %s, 
                     website = %s, 
                     briefkasten = %d, 
@@ -255,6 +259,7 @@ class Sammelstellen_Admin {
                 WHERE id = %d",
                 $input_data['name'],
                 $input_data['adresse'],
+                $input_data['postleitzahl'],
                 $input_data['oeffnungszeiten'],
                 $input_data['website'],
                 $input_data['briefkasten'],
@@ -272,6 +277,9 @@ class Sammelstellen_Admin {
         if ( ! self::has_required_text_field( self::FIELD_ADRESSE ) ) {
             return false;
         }
+        if (! self::has_required_postleitzahl_field( self::FIELD_POSTLEITZAHL ) ) {
+            return false;
+        }
         if ( ! self::has_required_longitude_field( self::FIELD_LONGITUDE ) ) {
             return false;
         }
@@ -283,6 +291,7 @@ class Sammelstellen_Admin {
             'id' => intval( $_POST[ "id" ] ),
             'name' => sanitize_text_field( $_POST[self::FIELD_NAME] ),
             'adresse' => sanitize_textarea_field( $_POST[self::FIELD_ADRESSE] ),
+            'postleitzahl' => sanitize_text_field( $_POST[self::FIELD_POSTLEITZAHL] ),
             'lon' => floatval( $_POST[self::FIELD_LONGITUDE] ),
             'lat' => floatval( $_POST[self::FIELD_LATITUDE] ),
             'oeffnungszeiten' => sanitize_textarea_field( $_POST[self::FIELD_OEFFNUNGSZEITEN] ),
@@ -319,6 +328,10 @@ class Sammelstellen_Admin {
 
     private static function has_required_text_field( $name ) {
         return isset( $_POST[$name] ) && !empty( trim( $_POST[$name] ) );
+    }
+
+    private static function has_required_postleitzahl_field( $name ) {
+        return isset( $_POST[$name] ) && preg_match( '/\\d{5}/', $_POST[$name] ) == 1;
     }
 
     private static function has_required_latitude_field( $name ) {

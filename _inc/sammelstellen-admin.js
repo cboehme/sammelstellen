@@ -26,6 +26,7 @@ function validateForm(ev) {
     const valid =
         checkElementValidity('name') &
         checkElementValidity('adresse') &
+        checkElementValidity('postleitzahl') &
         checkPositionValidity() &
         checkElementValidity('oeffnungszeiten') &
         checkElementValidity('website') &

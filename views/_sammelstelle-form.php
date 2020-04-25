@@ -12,6 +12,10 @@
             <td><textarea id="adresse" name="adresse" aria-required="true" required="required"><?= esc_html( $sammelstelle->adresse ); ?></textarea></td>
         </tr>
         <tr class="form-field form-required">
+            <th scope="row"><label for="postleitzahl">Postleitzahl <span class="description">(für Sortierung, erforderlich)</span></label></th>
+            <td><input type="text" id="postleitzahl" name="postleitzahl" aria-required="true" required="required" value="<?= esc_attr( $sammelstelle->postleitzahl ); ?>" pattern="\d{5}"/></td>
+        </tr>
+        <tr class="form-field form-required">
             <th scope="row"><label for="map">Position <span class="description">(erforderlich)</span></label></th>
             <td><div class="map" id="map"></div>
                 <input type="hidden" id="lat" name="lat" value="<?= esc_attr( $sammelstelle->latitude ); ?>" />
