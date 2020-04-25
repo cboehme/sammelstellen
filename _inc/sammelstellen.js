@@ -1,6 +1,12 @@
 maps = {};
 lists = {};
 
+const resizeObserver = new ResizeObserver(entries => {
+    for (const map of Object.values(maps)) {
+        map.map.resize();
+    }
+});
+
 function initMap(container) {
 
     const map = new mapboxgl.Map({
@@ -33,6 +39,7 @@ function initMap(container) {
         map: map
     };
 
+    resizeObserver.observe(document.getElementById(container));
 }
 
 function initList(container) {
