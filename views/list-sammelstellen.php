@@ -43,8 +43,10 @@
             <tr>
                 <th scope="col" class='manage-column column-primary'>Name</th>
                 <th scope="col" class='manage-column'>Adresse</th>
-                <th scope="col" id="postleitzahl" class="manage-column">Postleitzahl</th>
+                <th scope="col" class="manage-column">Postleitzahl</th>
                 <th scope="col" class='manage-column'>Öffnungszeiten</th>
+                <th scope="col" class="manage-column">Website</th>
+                <th scope="col" class="manage-column">Privater Briefkasten</th>
                 <th scope="col" class='manage-column'>Aktiv</th>
                 <th scope="col" class='manage-column'>Hinweise</th>
             </tr>
