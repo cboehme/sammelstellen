@@ -25,6 +25,7 @@ class Sammelstellen_Shortcodes
         wp_enqueue_style( 'sammelstellen.css' );
         wp_enqueue_script( 'mustache.js' );
         wp_enqueue_script( 'mapbox-gl.js' );
+        wp_enqueue_script( 'ResizeObserver.js' );
         wp_enqueue_script( 'sammelstellen.js' );
 
         wp_localize_script( 'sammelstellen.js', 'Config', array(
@@ -49,6 +50,7 @@ class Sammelstellen_Shortcodes
         wp_enqueue_style( 'sammelstellen.css' );
         wp_enqueue_script( 'mustache.js' );
         wp_enqueue_script( 'mapbox-gl.js' );
+        wp_enqueue_script( 'ResizeObserver.js' );
         wp_enqueue_script( 'sammelstellen.js' );
 
         wp_localize_script( 'sammelstellen.js', 'Config', array(
