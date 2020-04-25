@@ -94,7 +94,7 @@ class Sammelstellen {
                     ORDER BY postleitzahl, name", $aktiv ) );
     }
 
-    public static function find_sammelstellen_by_id( $id ) {
+    public static function find_sammelstelle_by_id($id ) {
         global $wpdb;
 
         $table_name = self::get_table_name();

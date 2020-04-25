@@ -365,7 +365,7 @@ class Sammelstellen_Admin {
 
         $id = intval( $_GET[ "id" ] );
         $args = array(
-            'sammelstelle' => Sammelstellen::find_sammelstellen_by_id($id)
+            'sammelstelle' => Sammelstellen::find_sammelstelle_by_id($id)
         );
         Sammelstellen::view( 'edit-sammelstelle', $args );
     }
@@ -377,7 +377,7 @@ class Sammelstellen_Admin {
 
         $id = intval( $_GET[ "id" ] );
         $args = array(
-            'sammelstelle' => Sammelstellen::find_sammelstellen_by_id($id)
+            'sammelstelle' => Sammelstellen::find_sammelstelle_by_id($id)
         );
         Sammelstellen::view( 'confirm-delete-sammelstelle', $args );
     }

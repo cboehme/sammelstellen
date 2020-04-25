@@ -49,7 +49,7 @@ function loadSammelstellen() {
         .then(response => response.json())
         .then(geojson => {
             for (const map of Object.values(maps)) {
-                geojson.features.forEach(sammelstelle => addSammelstelle(map, sammelstelle));
+                geojson.features.forEach(sammelstelle => addSammelstelleToMap(map, sammelstelle));
             }
             for (const list of Object.values(lists)) {
                 geojson.features.forEach(sammelstelle => addSammelstelleToList(list, sammelstelle));
@@ -59,7 +59,7 @@ function loadSammelstellen() {
 
 const markers = [];
 
-function addSammelstelle(map, sammelstelle) {
+function addSammelstelleToMap(map, sammelstelle) {
 
     const marker = new mapboxgl.Marker({
         color: '#98D800'
