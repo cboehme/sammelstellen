@@ -69,7 +69,7 @@ const markers = [];
 function addSammelstelleToMap(map, sammelstelle) {
 
     let markerColor;
-    if (sammelstelle.properties.briefkasten === "1") {
+    if (sammelstelle.properties.briefkasten) {
         markerColor = '#0c78b2';
     } else {
         markerColor = '#98D800';
