@@ -68,8 +68,14 @@ const markers = [];
 
 function addSammelstelleToMap(map, sammelstelle) {
 
+    let markerColor;
+    if (sammelstelle.properties.briefkasten === "1") {
+        markerColor = '#0c78b2';
+    } else {
+        markerColor = '#98D800';
+    }
     const marker = new mapboxgl.Marker({
-        color: '#98D800'
+        color: markerColor
     });
     marker.getElement().classList.add('SammelstelleMarker');
     marker.getElement().addEventListener('click', ev => {
