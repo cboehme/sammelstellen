@@ -35,7 +35,7 @@ class Sammelstellen_REST_API {
                     'postleitzahl' => $sammelstelle->postleitzahl,
                     'oeffnungszeiten' => $sammelstelle->oeffnungszeiten,
                     'website' => $sammelstelle->website,
-                    'briefkasten' => $sammelstelle->briefkasten,
+                    'briefkasten' => $sammelstelle->briefkasten == "1",
                     'hinweise' => $sammelstelle->hinweise
                 )
             );
