@@ -24,7 +24,8 @@ function initMap(container) {
 
     const geolocateControl = new mapboxgl.GeolocateControl({
         positionOptions: {
-            enableHighAccuracy: true
+            enableHighAccuracy: true,
+            showAccuracyCircle: false
         }
     });
     geolocateControl.on('error', (error) => console.log(`Geolocation failed: ${error.message}`));
