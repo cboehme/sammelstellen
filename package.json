@@ -1,0 +1,19 @@
+{
+  "name": "sammelstellen-frontend",
+  "version": "1.0.0",
+  "description": "Eine Webkomponente zur Anzeige von Sammelstellen für den Radentscheid",
+  "author": "Christoph Böhme",
+  "license": "Apache-2.0",
+  "browser": "index.js",
+  "scripts": {
+    "serve": "es-dev-server --app-index index.html --node-resolve --watch --open --preserve-symlinks",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "lit-element": "^2.3.1",
+    "mapbox-gl": "file:../mapbox-gl-js"
+  },
+  "devDependencies": {
+    "es-dev-server": "^1.47.0"
+  }
+}
