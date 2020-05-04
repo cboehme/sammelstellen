@@ -5,11 +5,19 @@ export class Sammelstellen extends LitElement {
 
   map;
   mapStyle;
+  sammelstellen;
 
   static get properties() {
     return {
-      mapStyle: {type: String}
+      mapStyle: {type: String},
+      sammelstellen: {type: Object}
     };
+  }
+
+  constructor() {
+    super();
+    this.mapStyle = "";
+    this.sammelstellen = [];
   }
 
   static get styles() {
@@ -78,9 +86,48 @@ export class Sammelstellen extends LitElement {
     });
   }
 
-  updated(updatedProperties) {
+  updated(changedProperties) {
     super.updated();
     this.map.setStyle(this.mapStyle);
+    this._updateSammelstellen();
+  }
+
+  _updateSammelstellen() {
+    this.sammelstellen.features.forEach(this._addSammelstelleToMap);
+  }
+
+  _addSammelstelleToMap = (sammelstelle) => {
+
+    let markerColor;
+    if (sammelstelle.properties.briefkasten) {
+      markerColor = '#0c78b2';
+    } else {
+      markerColor = '#98D800';
+    }
+    const marker = new mapboxgl.Marker({
+      color: markerColor
+    });
+    marker.getElement().classList.add('SammelstelleMarker');
+    marker.getElement().addEventListener('click', ev => {
+      this.map.flyTo({
+        center: sammelstelle.geometry.coordinates,
+        zoom: 15
+      })
+    });
+    marker
+        .setLngLat(sammelstelle.geometry.coordinates)
+        .setPopup(this.createPopup(sammelstelle))
+        .addTo(this.map);
+  }
+
+  createPopup(sammelstelle) {
+    const popup = new mapboxgl.Popup({
+      className: 'SammelstellePopup',
+      maxWidth: 'none'
+    });
+    //popup.setHTML(Mustache.render(Config.popupTemplate, sammelstelle.properties));
+    popup.setHTML("Sammelstelle");
+    return popup;
   }
 
 }
