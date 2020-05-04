@@ -69,7 +69,7 @@ export class Sammelstellen extends LitElement {
       showAccuracyCircle: false
     });
     geolocateControl.on('error', (error) => {
-      console.log(`Geolocation failed: ${error.message}`)
+      console.warn(`Geolocation failed: ${error.message}`)
     });
 
     this.map.addControl(geolocateControl);
