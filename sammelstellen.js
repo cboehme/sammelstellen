@@ -1,4 +1,5 @@
 import {LitElement, html, css} from 'lit-element';
+import {render} from 'lit-html';
 import mapboxgl from 'mapbox-gl';
 
 export class Sammelstellen extends LitElement {
@@ -125,8 +126,10 @@ export class Sammelstellen extends LitElement {
       className: 'SammelstellePopup',
       maxWidth: 'none'
     });
-    //popup.setHTML(Mustache.render(Config.popupTemplate, sammelstelle.properties));
-    popup.setHTML("Sammelstelle");
+    const container = document.createElement("div");
+    popup.setDOMContent(container);
+    const popupInfo = (props) => html`<h2>${props.name}</h2>`;
+    render(popupInfo(sammelstelle.properties), container);
     return popup;
   }
 
