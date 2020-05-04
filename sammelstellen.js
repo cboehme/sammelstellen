@@ -3,6 +3,9 @@ import mapboxgl from 'mapbox-gl';
 
 export class Sammelstellen extends LitElement {
 
+  map;
+  mapStyle;
+
   static get properties() {
     return {
       mapStyle: {type: String}
