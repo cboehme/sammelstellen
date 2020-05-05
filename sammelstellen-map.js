@@ -2,11 +2,9 @@ import {LitElement, html, css} from 'lit-element';
 import {render} from 'lit-html';
 import mapboxgl from 'mapbox-gl';
 
-export class Sammelstellen extends LitElement {
+export class sammelstellenMap extends LitElement {
 
   map;
-  mapStyle;
-  sammelstellen;
 
   static get properties() {
     return {
@@ -18,7 +16,7 @@ export class Sammelstellen extends LitElement {
   constructor() {
     super();
     this.mapStyle = "";
-    this.sammelstellen = [];
+    this.sammelstellen = {"type":"FeatureCollection","features":[]};
   }
 
   static get styles() {
@@ -135,4 +133,4 @@ export class Sammelstellen extends LitElement {
 
 }
 
-window.customElements.define('wp-sammelstellen', Sammelstellen);
+window.customElements.define('sammelstellen-map', sammelstellenMap);
