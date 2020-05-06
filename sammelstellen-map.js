@@ -1,4 +1,5 @@
-import {LitElement, html, css} from 'lit-element';
+import {LitElement, css} from 'lit-element';
+import {html} from 'lit-html';
 import {render} from 'lit-html';
 import mapboxgl from 'mapbox-gl';
 
@@ -16,25 +17,14 @@ export class sammelstellenMap extends LitElement {
   constructor() {
     super();
     this.mapStyle = "";
-    this.sammelstellen = {"type":"FeatureCollection","features":[]};
+    this.sammelstellen = {"type": "FeatureCollection", "features": []};
   }
 
   static get styles() {
     return css`
-      :host {
-        display: block;
-        position: absolute;
-        top: 0px;
-        bottom: 0px;
-        left: 0px;
-        right: 0px;
-      }
       #map {
-	    position: absolute;
-        top: 0px;
-	    bottom: 0px;
-	    left: 0px;
-        right: 0px;
+	    width: 100%;
+	    height: 100%;
       }`;
   }
 

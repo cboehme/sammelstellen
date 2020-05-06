@@ -1,5 +1,8 @@
-import {LitElement, html} from "lit-element";
+import {css, LitElement} from "lit-element";
+import {html} from 'lit-html';
+
 import "./sammelstellen-map";
+import "./sammelstellen-list";
 
 class SammelstellenView extends LitElement {
 
@@ -13,11 +16,29 @@ class SammelstellenView extends LitElement {
     constructor() {
         super();
         this.mapStyle = "";
-        this.sammelstellen = {"type":"FeatureCollection","features":[]};
+        this.sammelstellen = {"type": "FeatureCollection", "features": []};
+    }
+
+    static get styles() {
+        return css`
+            sammelstellen-map {
+                position: fixed;
+                top: 0px;
+                bottom: 0px;
+                left: 50%;
+                right: 0px;
+            }
+            sammelstellen-list {
+                display: block;
+                width: 50%;
+            }`;
     }
 
     render() {
-        return html`<sammelstellen-map mapStyle=${this.mapStyle} .sammelstellen="${this.sammelstellen}"/>`
+        return html`
+            <sammelstellen-map mapStyle=${this.mapStyle} .sammelstellen="${this.sammelstellen}"></sammelstellen-map>
+            <sammelstellen-list .sammelstellen="${this.sammelstellen}"></sammelstellen-list>
+        `;
     }
 
     firstUpdated(_changedProperties) {
