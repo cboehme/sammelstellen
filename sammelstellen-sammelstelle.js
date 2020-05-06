@@ -10,18 +10,6 @@ class SammelstellenSammelstelle extends LitElement {
     }
 
     render() {
-        let oeffnungszeiten = '';
-        if (this.sammelstelle.oeffnungszeiten) {
-            oeffnungszeiten = html`<li>Öffnungszeiten: ${this.sammelstelle.oeffnungszeiten}</li>`;
-        }
-        let hinweise = '';
-        if (this.sammelstelle.hinweise) {
-            hinweise = html`<li>${this.sammelstelle.hinweise}</li>`;
-        }
-        let website = '';
-        if (this.sammelstelle.website) {
-            website = html`<li><a href="${this.sammelstelle.website}" target="_blank" rel="noopener noreferer">Website der Sammelstelle</a></li>`;
-        }
         if (this.sammelstelle.briefkasten) {
             return html`
                 <h1>Radentscheid-Briefkasten</h1>
@@ -29,9 +17,9 @@ class SammelstellenSammelstelle extends LitElement {
                 <ul>
                     <li>${this.sammelstelle.name}</li>
                     <li>${this.sammelstelle.adresse}</li>
-                    ${oeffnungszeiten}
-                    ${hinweise}
-                    ${website}
+                    ${this._renderOeffnungszeiten()}
+                    ${this._renderHinweise()}
+                    ${this._renderWebsite()}
                 </ul>
             `;
         }
@@ -39,11 +27,32 @@ class SammelstellenSammelstelle extends LitElement {
                 <h1>${this.sammelstelle.name}</h1>
                 <ul>
                     <li>${this.sammelstelle.adresse}</li>
-                    ${oeffnungszeiten}
-                    ${hinweise}
-                    ${website}
+                    ${this._renderOeffnungszeiten()}
+                    ${this._renderHinweise()}
+                    ${this._renderWebsite()}
                 </ul>
             `;
+    }
+
+    _renderOeffnungszeiten() {
+        if (this.sammelstelle.oeffnungszeiten) {
+            return html`<li>Öffnungszeiten: ${this.sammelstelle.oeffnungszeiten}</li>`;
+        }
+        return '';
+    }
+
+    _renderHinweise() {
+        if (this.sammelstelle.hinweise) {
+            return html`<li>${this.sammelstelle.hinweise}</li>`;
+        }
+        return '';
+    }
+
+    _renderWebsite() {
+        if (this.sammelstelle.website) {
+            return html`<li><a href="${this.sammelstelle.website}" target="_blank" rel="noopener noreferer">Website der Sammelstelle</a></li>`;
+        }
+        return '';
     }
 
     createRenderRoot() {
