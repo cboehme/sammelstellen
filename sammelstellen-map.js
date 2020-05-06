@@ -3,6 +3,8 @@ import {html} from 'lit-html';
 import {render} from 'lit-html';
 import mapboxgl from 'mapbox-gl';
 
+import "./sammelstellen-sammelstelle";
+
 export class sammelstellenMap extends LitElement {
 
   map;
@@ -116,7 +118,7 @@ export class sammelstellenMap extends LitElement {
     });
     const container = document.createElement("div");
     popup.setDOMContent(container);
-    const popupInfo = (props) => html`<h2>${props.name}</h2>`;
+    const popupInfo = props => html`<sammelstellen-sammelstelle .sammelstelle="${props}"/>`;
     render(popupInfo(sammelstelle.properties), container);
     return popup;
   }

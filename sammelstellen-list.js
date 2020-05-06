@@ -1,4 +1,4 @@
-import {LitElement} from "lit-element";
+import {css, LitElement} from "lit-element";
 import {html} from 'lit-html';
 
 import "./sammelstellen-sammelstelle";
@@ -17,10 +17,8 @@ class SammelstellenList extends LitElement {
     }
 
     render() {
-        const sammelstellenList = this.sammelstellen.features.map(sammelstelle =>
-            html`<sammelstellen-sammelstelle .sammelstelle="${sammelstelle.properties}"/>`
-        );
-        return html`<ol>${sammelstellenList}</ol>`;
+        return this.sammelstellen.features.map(sammelstelle =>
+            html`<sammelstellen-sammelstelle .sammelstelle="${sammelstelle.properties}"/>`);
     }
 }
 
