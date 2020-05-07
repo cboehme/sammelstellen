@@ -1,6 +1,5 @@
-import {LitElement, css} from 'lit-element';
-import {html} from 'lit-html';
-import {render} from 'lit-html';
+import {css, LitElement} from 'lit-element';
+import {html, render} from 'lit-html';
 import mapboxgl from 'mapbox-gl';
 
 import "./sammelstellen-sammelstelle";
@@ -12,7 +11,8 @@ export class sammelstellenMap extends LitElement {
   static get properties() {
     return {
       mapStyle: {type: String},
-      sammelstellen: {type: Object}
+      sammelstellen: {type: Object},
+      selected: {type: String}
     };
   }
 
@@ -20,6 +20,8 @@ export class sammelstellenMap extends LitElement {
     super();
     this.mapStyle = "";
     this.sammelstellen = {"type": "FeatureCollection", "features": []};
+    this.selected = null;
+    this.markers = new Map();
   }
 
   static get styles() {
@@ -84,7 +86,29 @@ export class sammelstellenMap extends LitElement {
   }
 
   _updateSammelstellen() {
-    this.sammelstellen.features.forEach(this._addSammelstelleToMap);
+    this.markers = this._update(this.markers, this.sammelstellen.features,
+        this._addSammelstelleToMap,
+        this._updateSammelstelleOnMap,
+        this._removeSammelstelleFromMap);
+  }
+
+  _update(prevSammelstellen, newSammelstellen, addSammelstelle, updateSammelstelle, removeSammelstelle) {
+
+    let nextSammelstellen = new Map();
+    newSammelstellen.forEach(sammelstelle => {
+      const id = sammelstelle.properties.id;
+      if (prevSammelstellen.has(id)) {
+        nextSammelstellen.set(id, updateSammelstelle(prevSammelstellen.get(id), sammelstelle));
+      } else {
+        nextSammelstellen.set(id, addSammelstelle(sammelstelle));
+      }
+    });
+    prevSammelstellen.forEach((_, id) => {
+      if (!nextSammelstellen.has(id)) {
+        removeSammelstelle(prevSammelstellen.get(id));
+      }
+    });
+    return nextSammelstellen;
   }
 
   _addSammelstelleToMap = (sammelstelle) => {
@@ -109,6 +133,11 @@ export class sammelstellenMap extends LitElement {
         .setLngLat(sammelstelle.geometry.coordinates)
         .setPopup(this.createPopup(sammelstelle))
         .addTo(this.map);
+    if (sammelstelle.properties.id === this.selected) {
+      this.openPopup(marker);
+      this.flyTo(marker);
+    }
+    return marker;
   }
 
   createPopup(sammelstelle) {
@@ -123,6 +152,39 @@ export class sammelstellenMap extends LitElement {
     return popup;
   }
 
+  _updateSammelstelleOnMap = (marker, sammelstelle) => {
+
+    if (sammelstelle.properties.id === this.selected) {
+      this.openPopup(marker);
+      this.flyTo(marker);
+    } else {
+      this.closePopup(marker);
+    }
+    return marker;
+  }
+
+  openPopup(marker) {
+    if (!marker.getPopup().isOpen()) {
+      marker.togglePopup();
+    }
+  }
+
+  closePopup(marker) {
+    if (marker.getPopup().isOpen()) {
+      marker.togglePopup();
+    }
+  }
+
+  flyTo(marker) {
+    this.map.flyTo({
+      center: marker.getLngLat(),
+      zoom: 15
+    });
+  }
+
+  _removeSammelstelleFromMap = (marker) => {
+    marker.remove();
+  }
 }
 
 window.customElements.define('sammelstellen-map', sammelstellenMap);

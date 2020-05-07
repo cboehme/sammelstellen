@@ -9,7 +9,8 @@ class SammelstellenView extends LitElement {
     static get properties() {
         return {
             mapStyle: {type: String},
-            sammelstellen: {type: Object}
+            sammelstellen: {type: Object},
+            selected: {type: String}
         }
     }
 
@@ -17,6 +18,7 @@ class SammelstellenView extends LitElement {
         super();
         this.mapStyle = "";
         this.sammelstellen = {"type": "FeatureCollection", "features": []};
+        this.selected = null;
     }
 
     static get styles() {
@@ -36,9 +38,16 @@ class SammelstellenView extends LitElement {
 
     render() {
         return html`
-            <sammelstellen-map mapStyle=${this.mapStyle} .sammelstellen="${this.sammelstellen}"></sammelstellen-map>
-            <sammelstellen-list .sammelstellen="${this.sammelstellen}"></sammelstellen-list>
+            <sammelstellen-map mapStyle=${this.mapStyle} 
+                               .sammelstellen="${this.sammelstellen}" 
+                               selected="${this.selected}"></sammelstellen-map>
+            <sammelstellen-list .sammelstellen="${this.sammelstellen}" 
+                                @sammelstelle-selected="${this.sammelstelleSelected}"></sammelstellen-list>
         `;
+    }
+
+    sammelstelleSelected(event) {
+        this.selected = event.sammelstelleId;
     }
 
     firstUpdated(_changedProperties) {

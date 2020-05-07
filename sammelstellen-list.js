@@ -1,6 +1,8 @@
 import {css, LitElement} from "lit-element";
 import {html} from 'lit-html';
 
+import {SammelstelleSelectedEvent} from './events';
+
 import "./sammelstellen-sammelstelle";
 
 class SammelstellenList extends LitElement {
@@ -18,8 +20,15 @@ class SammelstellenList extends LitElement {
 
     render() {
         return this.sammelstellen.features.map(sammelstelle =>
-            html`<sammelstellen-sammelstelle .sammelstelle="${sammelstelle.properties}"/>`);
+            html`<sammelstellen-sammelstelle 
+                    .sammelstelle="${sammelstelle.properties}" 
+                    @click="${() => this.sammelstelleSelected(sammelstelle.properties.id)}"/>`);
     }
+
+    sammelstelleSelected(sammelstelleId) {
+        this.dispatchEvent(new SammelstelleSelectedEvent(sammelstelleId));
+    }
+
 }
 
 window.customElements.define("sammelstellen-list", SammelstellenList);
