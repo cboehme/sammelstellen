@@ -10,7 +10,8 @@ module.exports = {
     debug: true,
     middlewares: [
         proxy("/wp-json/", {
-            target: "http://localhost:8000/",
+            changeOrigin: true,
+            target: "https://www.radentscheid-bonn.de/"
         }),
     ],
 };

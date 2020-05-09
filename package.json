@@ -10,10 +10,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "htm": "^3.0.4",
     "koa-proxies": "^0.11.0",
     "lit-element": "^2.3.1",
     "lit-html": "^1.2.1",
-    "mapbox-gl": "file:../mapbox-gl-js"
+    "mapbox-gl": "file:../mapbox-gl-js",
+    "preact": "^10.4.1"
   },
   "devDependencies": {
     "es-dev-server": "^1.47.0"

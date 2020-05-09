@@ -11,11 +11,16 @@
       margin: 0;
     }
   </style>
-
-  <script type="module" src="sammelstellen-view.js"></script>
 </head>
 
 <body>
-  <sammelstellen-view mapStyle="http://localhost:8080/styles/positron/style.json"></sammelstellen-view>
+  <script type="module">
+    import {render} from 'preact';
+    import {html} from 'htm/preact';
+    import Sammelstellen from "./sammelstellen";
+
+    const App = html`<${Sammelstellen} mapStyle="http://localhost:8080/styles/positron/style.json"/>`;
+    render(App, document.body);
+  </script>
 </body>
 </html>
