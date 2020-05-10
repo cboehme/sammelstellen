@@ -30,7 +30,7 @@ export default function SammelstellenKarte({mapStyle, sammelstellen, selected}) 
         [sammelstellen.features, selected]);
 
     return html`
-        <link href='./node_modules/mapbox-gl/dist/mapbox-gl.css' rel='stylesheet'/>
+        <link href='../node_modules/mapbox-gl/dist/mapbox-gl.css' rel='stylesheet'/>
         <div style="width: 100%; height: 100%" ref=${mapContainer}></div>`;
 
     function observeMapContainerSize() {
