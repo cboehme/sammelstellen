@@ -8,18 +8,25 @@ import Sammelstelle from "./sammelstelle";
 
 export default function SammelstellenKarte({mapStyle, sammelstellen, selected}) {
 
-    const mapContainer = useRef();
     const map = useRef();
+    const mapContainer = useRef();
+    const resizeObserver = useRef(new ResizeObserver(() => {
+        if (map.current !== null) {
+            map.current.resize();
+        }
+    }));
     useEffect(() => {
         map.current = createMap(mapContainer.current);
+        resizeObserver.current.observe(mapContainer.current);
         return () => {
+            resizeObserver.current.unobserve(mapContainer.current);
             map.current.remove();
             map.current = null;
         }
     }, []);
     useEffect(() => {
         map.current.setStyle(mapStyle);
-    }, [mapStyle])
+    }, [mapStyle]);
 
     const markers = useRef(new Map());
     useEffect(

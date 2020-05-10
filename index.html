@@ -10,17 +10,40 @@
     body {
       margin: 0;
     }
+    header, footer {
+      padding: 1px 2em;
+      background-color: cornflowerblue;
+      color: ghostwhite;
+    }
+    header {
+      height: 10em;
+    }
+    footer {
+      height: 5em;
+    }
+    main {
+      width: 95%;
+      margin: 0 auto;
+    }
   </style>
 </head>
 
 <body>
+  <header>
+    <h1>Sammelstellenkarte</h1>
+    <nav><p>Hier wäre ein Menü</p></nav>
+  </header>
+  <main></main>
+  <footer>
+    <p>Hier gehört eine ordentliche Fußzeile hin</p>
+  </footer>
   <script type="module">
     import {render} from 'preact';
     import {html} from 'htm/preact';
     import Sammelstellen from "./sammelstellen";
 
-    const App = html`<${Sammelstellen} mapStyle="http://localhost:8080/styles/positron/style.json"/>`;
-    render(App, document.body);
+    const App = html`<${Sammelstellen} mapStyle="http://localhost:8080/styles/positron/style.json" shrinkAt="160"/>`;
+    render(App, document.getElementsByTagName("main")[0]);
   </script>
 </body>
 </html>
