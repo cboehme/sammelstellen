@@ -67,7 +67,7 @@ export default function Sammelstellen({mapStyle, shrinkAt = Number.MAX_VALUE}) {
         </div>
         <div class="List" style="visibility: ${showingList ? 'visible' : 'hidden'};">
             <${SammelstellenListe} sammelstellen="${sammelstellen}" 
-                                   onSammelstelleClick="${(id) => setSelected(id)}"/>
+                                   onSammelstelleClick="${(id) => selectSammelstelle(id)}"/>
         </div>`;
 
     function computeMapWidth() {
@@ -104,6 +104,14 @@ export default function Sammelstellen({mapStyle, shrinkAt = Number.MAX_VALUE}) {
     function toggleMap() {
         setShowingMap(!showingMap);
         setShowingList(!showingList);
+    }
+
+    function selectSammelstelle(id) {
+        if (mediaMaxWidth.current.matches) {
+            setShowingMap(true);
+            setShowingList(false);
+        }
+        setSelected(id);
     }
 }
 
