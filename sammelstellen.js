@@ -43,6 +43,8 @@ export default function Sammelstellen({mapStyle, shrinkAt = Number.MAX_VALUE}) {
                 height: calc(95vh - 5em /*c*/);
             }
             .List {
+                padding-top: 50vh;
+                padding-bottoM: 30vh;
                 width: 50%;
             }
             
@@ -55,6 +57,8 @@ export default function Sammelstellen({mapStyle, shrinkAt = Number.MAX_VALUE}) {
                     height: calc(95vh - 5em /*c*/ - 4em);
                 }
                 .List {
+                    padding-top: 0;
+                    padding-bottom: 0;
                     width: 100%;
                 }
             }
