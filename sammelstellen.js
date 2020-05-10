@@ -20,21 +20,8 @@ export default function Sammelstellen({mapStyle, shrinkAt = Number.MAX_VALUE}) {
     const mediaMaxWidth = useRef();
     useEffect(() => {
         mediaMaxWidth.current = window.matchMedia("(max-width: 41em)"); /*c*/
-        mediaMaxWidth.current.addListener(() => {
-            if (!mediaMaxWidth.current.matches) {
-                setShowingMap(true);
-                setShowingList(true);
-                computeMapWidth();
-            } else {
-                if (window.scrollY > shrinkAt) {
-                    setShowingMap(false);
-                    setShowingList(true);
-                } else {
-                    setShowingMap(true);
-                    setShowingList(false);
-                }
-            }
-        });
+        mediaMaxWidth.current.addListener(handleMaxWidthChange);
+        handleMaxWidthChange();
         return () => mediaMaxWidth.current = null;
     }, []);
 
@@ -72,7 +59,7 @@ export default function Sammelstellen({mapStyle, shrinkAt = Number.MAX_VALUE}) {
                 }
             }
         </style>
-        <nav class="Switcher"><button onclick="${toggleMap}">Kartenansicht</button></nav>
+        <nav class="Switcher"><button onclick="${toggleMap}">${showingMap ? "Zur Listenansicht" : "Zur Kartenansicht"}</button></nav>
         <div class="Map" style="margin-left: calc(100% - ${mapWidth}%); width: ${mapWidth}%; display: ${showingMap ? 'block' : 'none'};">
             <${SammelstellenKarte} mapStyle=${mapStyle} 
                                    sammelstellen="${sammelstellen}" 
@@ -95,6 +82,22 @@ export default function Sammelstellen({mapStyle, shrinkAt = Number.MAX_VALUE}) {
             setMapWidth(newWidth);
         } else {
             setMapWidth(100);
+        }
+    }
+
+    function handleMaxWidthChange() {
+        if (!mediaMaxWidth.current.matches) {
+            setShowingMap(true);
+            setShowingList(true);
+            computeMapWidth();
+        } else {
+            if (window.scrollY > shrinkAt) {
+                setShowingMap(false);
+                setShowingList(true);
+            } else {
+                setShowingMap(true);
+                setShowingList(false);
+            }
         }
     }
 
