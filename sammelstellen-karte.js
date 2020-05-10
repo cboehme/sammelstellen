@@ -10,16 +10,12 @@ export default function SammelstellenKarte({mapStyle, sammelstellen, selected}) 
 
     const map = useRef();
     const mapContainer = useRef();
-    const resizeObserver = useRef(new ResizeObserver(() => {
-        if (map.current !== null) {
-            map.current.resize();
-        }
-    }));
     useEffect(() => {
         map.current = createMap(mapContainer.current);
-        resizeObserver.current.observe(mapContainer.current);
+        let resizeObserver = observeMapContainerSize();
         return () => {
-            resizeObserver.current.unobserve(mapContainer.current);
+            resizeObserver.unobserve(mapContainer.current);
+            resizeObserver = null;
             map.current.remove();
             map.current = null;
         }
@@ -36,6 +32,16 @@ export default function SammelstellenKarte({mapStyle, sammelstellen, selected}) 
     return html`
         <link href='./node_modules/mapbox-gl/dist/mapbox-gl.css' rel='stylesheet'/>
         <div style="width: 100%; height: 100%" ref=${mapContainer}></div>`;
+
+    function observeMapContainerSize() {
+        const resizeObserver = new ResizeObserver(() => {
+            if (map.current !== null) {
+                map.current.resize();
+            }
+        });
+        resizeObserver.observe(mapContainer.current);
+        return resizeObserver;
+    }
 }
 
 function createMap(containerElement) {
