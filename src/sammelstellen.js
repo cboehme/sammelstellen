@@ -1,3 +1,5 @@
+import 'promise-polyfill';
+import 'whatwg-fetch';
 import {html} from "htm/preact";
 import {useEffect, useRef, useState} from "preact/hooks";
 
