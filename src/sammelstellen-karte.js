@@ -1,3 +1,4 @@
+import ResizeObserver from 'resize-observer-polyfill';
 import {render} from 'preact';
 import {html} from "htm/preact";
 import {useEffect, useRef} from "preact/hooks";
