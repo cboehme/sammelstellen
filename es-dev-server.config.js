@@ -2,6 +2,7 @@ const proxy = require("koa-proxies");
 
 module.exports = {
     port: 3000,
+    hostname: "192.168.122.1",
     nodeResolve: true,
     watch: true,
     open: true,
@@ -12,6 +13,10 @@ module.exports = {
         proxy("/wp-json/", {
             changeOrigin: true,
             target: "https://www.radentscheid-bonn.de/"
+        }),
+        proxy("/styles/", {
+            changeOrigin: true,
+            target: "http://localhost:8080/"
         }),
         (context, next) => {
             if (context.url === "/mapbox-gl.css") {
