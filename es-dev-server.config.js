@@ -14,10 +14,6 @@ module.exports = {
             changeOrigin: true,
             target: "https://www.radentscheid-bonn.de/"
         }),
-        proxy("/styles/", {
-            changeOrigin: true,
-            target: "http://localhost:8080/"
-        }),
         (context, next) => {
             if (context.url === "/mapbox-gl.css") {
                 context.url = "/node_modules/mapbox-gl/dist/mapbox-gl.css";
