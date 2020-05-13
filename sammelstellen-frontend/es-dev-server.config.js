@@ -16,7 +16,7 @@ module.exports = {
         }),
         (context, next) => {
             if (context.url === "/mapbox-gl.css") {
-                context.url = "/node_modules/mapbox-gl/dist/mapbox-gl.css";
+                context.url = "../node_modules/mapbox-gl/dist/mapbox-gl.css";
             }
             return next();
         }
