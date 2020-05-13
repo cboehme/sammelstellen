@@ -6,8 +6,8 @@
   "license": "Apache-2.0",
   "browser": "index.js",
   "scripts": {
-    "serve": "../node_modules/.bin/es-dev-server",
-    "build": "../node_modules/.bin/rollup --config",
+    "serve": "node_modules/.bin/es-dev-server",
+    "build": "node_modules/.bin/rollup --config",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
