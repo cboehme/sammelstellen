@@ -43,7 +43,7 @@ class Sammelstellen {
                 PRIMARY KEY  (id)                
                 ) $charset_collate;";
 
-        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta( $sql );
     }
 
