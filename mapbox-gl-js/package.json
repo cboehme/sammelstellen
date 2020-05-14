@@ -3,6 +3,7 @@
   "description": "A WebGL interactive maps library",
   "version": "1.10.0",
   "main": "dist/mapbox-gl.js",
+  "module": "dist/mapbox-gl-esm.js",
   "style": "dist/mapbox-gl.css",
   "license": "SEE LICENSE IN LICENSE.txt",
   "repository": {

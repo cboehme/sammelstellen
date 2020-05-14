@@ -34,15 +34,23 @@ export default [{
     // into a single, final bundle. See rollup/bundle_prelude.js and
     // rollup/mapboxgl.js for details.
     input: 'rollup/mapboxgl.js',
-    output: {
+    output: [{
         name: 'mapboxgl',
         file: outputFile,
+        format: 'umd',
+        sourcemap: production ? true : 'inline',
+        indent: false,
+        intro: fs.readFileSync(require.resolve('./rollup/bundle_prelude.js'), 'utf8'),
+        banner
+    }, {
+        name: 'mapboxgl',
+        file: 'dist/mapbox-gl-esm.js',
         format: 'esm',
         sourcemap: production ? true : 'inline',
         indent: false,
         intro: fs.readFileSync(require.resolve('./rollup/bundle_prelude.js'), 'utf8'),
         banner
-    },
+    }],
     treeshake: false,
     plugins: [
         // Ingest the sourcemaps produced in the first step of the build.
