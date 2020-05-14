@@ -53,7 +53,7 @@ export default function Sammelstellen({mapStyle, shrinkAt = Number.MAX_VALUE}) {
             }
             .List {
                 padding-top: 50vh;
-                padding-bottoM: 30vh;
+                padding-bottom: 30vh;
                 width: 50%;
             }
             
