@@ -30,9 +30,7 @@ export default function SammelstellenKarte({mapStyle, sammelstellen, selected}) 
         () => markers.current = updateMarkers(markers.current, sammelstellen.features, selected, map.current),
         [sammelstellen.features, selected]);
 
-    return html`
-        <link href='mapbox-gl.css' rel='stylesheet'/>
-        <div style="width: 100%; height: 100%" ref=${mapContainer}></div>`;
+    return html`<div style="width: 100%; height: 100%" ref=${mapContainer}></div>`;
 
     function observeMapContainerSize() {
         const resizeObserver = new ResizeObserver(() => {

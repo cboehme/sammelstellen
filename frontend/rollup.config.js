@@ -13,7 +13,7 @@ export default {
         nodeResolve(),
         copy({
             targets: [
-                { src: "node_modules/mapbox-gl/dist/mapbox-gl.css", dest: "wordpress-plugin/_inc/" }
+                { src: "node_modules/mapbox-gl/dist/mapbox-gl.css", dest: "../wordpress-plugin/_inc/" }
             ],
         })
     ]
