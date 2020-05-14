@@ -1,3 +1,6 @@
 node_modules/
 .idea/
 dist/
+/wordpress-plugin/_inc/frontend.js
+/wordpress-plugin/_inc/mapbox-gl.css
+/wordpress-plugin/_inc/mapbox-gl.js

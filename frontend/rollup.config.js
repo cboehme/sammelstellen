@@ -6,15 +6,18 @@ export default {
     input: "src/index.js",
     output: {
         name: "embedSammelstellen",
-        file: "../wordpress-plugin/_inc/frontend.js",
+        file: "dist/frontend.js",
         format: "iife",
+        sourcemap: true,
+        indent: false,
         plugins: [terser()]
     },
+    treeshake: true,
     plugins: [
         nodeResolve(),
         copy({
             targets: [
-                { src: "node_modules/mapbox-gl/dist/mapbox-gl.css", dest: "../wordpress-plugin/_inc/" }
+                { src: "node_modules/mapbox-gl/dist/mapbox-gl.css", dest: "dist/" }
             ],
         })
     ]

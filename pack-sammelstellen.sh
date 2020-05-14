@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ZIPFILE="sammelstellen-${1}.zip"
 
