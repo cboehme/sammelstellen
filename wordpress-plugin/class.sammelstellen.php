@@ -18,6 +18,7 @@ class Sammelstellen {
         wp_register_script( 'ResizeObserver.js', plugin_dir_url( __FILE__ ) . '_inc/ResizeObserver.js' );
         wp_register_script( 'sammelstellen.js', plugin_dir_url( __FILE__ ) . '_inc/sammelstellen.js', array(), false, true );
         wp_register_script( 'sammelstellen-admin.js', plugin_dir_url( __FILE__ ) . '_inc/sammelstellen-admin.js', array(), false, true );
+        wp_register_script( 'frontend.js', plugin_dir_url( __FILE__ ) . '_inc/frontend.js' );
         wp_register_style( 'mapbox-gl.css', plugin_dir_url( __FILE__ ) . '_inc/mapbox-gl.css' );
         wp_register_style( 'sammelstellen.css', plugin_dir_url( __FILE__ ) . '_inc/sammelstellen.css' );
         wp_register_style( 'sammelstellen-admin.css', plugin_dir_url( __FILE__ ) . '_inc/sammelstellen-admin.css' );

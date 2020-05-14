@@ -18,6 +18,7 @@ class Sammelstellen_Shortcodes
     private static function add_shortcodes() {
         add_shortcode( 'sammelstellen-map', array( 'Sammelstellen_Shortcodes', 'map_shortcode' ) );
         add_shortcode( 'sammelstellen-list', array( 'Sammelstellen_Shortcodes', 'list_shortcode' ) );
+        add_shortcode( 'sammelstellen', array( 'Sammelstellen_Shortcodes', 'sammelstellen_shortcode' ) );
     }
 
     public static function map_shortcode( $atts = [], $content = null ) {
@@ -70,4 +71,17 @@ class Sammelstellen_Shortcodes
         return "sammelstellenList" . self::$list_id++;
     }
 
+    public function sammelstellen_shortcode( $atts = [], $content = null ) {
+
+        wp_enqueue_style( 'mapbox-gl.css' );
+        wp_enqueue_script( 'frontend.js' );
+
+        $mapId = self::get_map_id();
+
+        return "<div id='$mapId'></div>
+            <script defer>
+                document.addEventListener('DOMContentLoaded', () =>
+                    embedSammelstellen(document.getElementById('$mapId')));
+            </script>";
+    }
 }

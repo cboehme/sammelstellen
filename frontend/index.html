@@ -40,6 +40,9 @@
   <footer>
     <p>Hier gehört eine ordentliche Fußzeile hin</p>
   </footer>
-  <script src="src/index.js" type="module"></script>
+  <script type="module">
+    import embedSammelstellen from './src/index.js';
+    embedSammelstellen(document.getElementsByTagName("main")[0]);
+  </script>
 </body>
 </html>

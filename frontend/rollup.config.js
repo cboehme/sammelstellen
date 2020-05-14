@@ -5,6 +5,7 @@ import copy from "rollup-plugin-copy";
 export default {
     input: "src/index.js",
     output: {
+        name: "embedSammelstellen",
         file: "../wordpress-plugin/_inc/frontend.js",
         format: "iife",
         plugins: [terser()]
