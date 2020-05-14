@@ -37,7 +37,7 @@ export default [{
     output: {
         name: 'mapboxgl',
         file: outputFile,
-        format: 'umd',
+        format: 'esm',
         sourcemap: production ? true : 'inline',
         indent: false,
         intro: fs.readFileSync(require.resolve('./rollup/bundle_prelude.js'), 'utf8'),
