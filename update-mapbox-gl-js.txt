@@ -1,0 +1,13 @@
+1. Update mapbox-gl-js repository:
+   git fetch mapbox-gl-js VERSION
+   git subtree pull --prefix mapbox-gl-js mapbox-gl-js VERSION --squash
+
+2. Change build configuration to create ES modules:
+   In mapbox-gl-js/rollup.config.js the build configuration with 
+   output name "mapboxgl" must use "esm" as format.
+
+3. Build:
+   npm install
+   npm run build-css
+   npm run build-prod-min
+
