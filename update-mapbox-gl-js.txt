@@ -3,8 +3,10 @@
    git subtree pull --prefix mapbox-gl-js mapbox-gl-js VERSION --squash
 
 2. Change build configuration to create ES modules:
-   In mapbox-gl-js/rollup.config.js the build configuration with 
-   output name "mapboxgl" must use "esm" as format.
+   In mapbox-gl-js/rollup.config.js copy the output section in the
+   second build step, change the file property to dist/mapbox-gl-esm.js and
+   change the format property to esm.
+   Add a module entry to package.json which points to dist/mapbox-gl-esm.js
 
 3. Build:
    npm install
