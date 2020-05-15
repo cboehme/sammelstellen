@@ -4,10 +4,14 @@ import {useEffect, useRef, useState} from "preact/hooks";
 import SammelstellenListe from "./sammelstellen-liste";
 import SammelstellenKarte from "./sammelstellen-karte";
 
-export default function Sammelstellen({mapStyle, shrinkAt = Number.MAX_VALUE}) {
+export default function Sammelstellen({
+        src,
+        mapStyle,
+        startPushRight = Number.MAX_VALUE,
+        compactMap = "(max-width: 0)"}) {
 
     const [sammelstellen, setSammelstellen] = useState({"type": "FeatureCollection", "features": []});
-    useEffect(() => loadSammelstellen().then(setSammelstellen), []);
+    useEffect(() => loadSammelstellen(src).then(setSammelstellen), [src]);
 
     const [mapWidth, setMapWidth] = useState(100);
     useEffect(() => {
@@ -17,12 +21,12 @@ export default function Sammelstellen({mapStyle, shrinkAt = Number.MAX_VALUE}) {
 
     const [showingMap, setShowingMap] = useState(true);
     const [showingList, setShowingList] = useState(true);
-    const mediaMaxWidth = useRef();
+    const mediaMatcher = useRef();
     useEffect(() => {
-        mediaMaxWidth.current = window.matchMedia("(max-width: 41em)"); /*c*/
-        mediaMaxWidth.current.addListener(handleMaxWidthChange);
+        mediaMatcher.current = window.matchMedia(compactMap);
+        mediaMatcher.current.addListener(handleMaxWidthChange);
         handleMaxWidthChange();
-        return () => mediaMaxWidth.current = null;
+        return () => mediaMatcher.current = null;
     }, []);
 
     const [selected, setSelected] = useState("");
@@ -32,29 +36,29 @@ export default function Sammelstellen({mapStyle, shrinkAt = Number.MAX_VALUE}) {
             .Switcher {
               display: none;
               position: sticky;
-              top: 5em /*c*/;  
+              top: var(--sticky-top, 0);  
               height: 4em;
               text-align: center;
               background-color: white;
             }
             .Map {
                 position: sticky;
-                top: 5em /*c*/;
-                height: calc(95vh - 5em /*c*/);
+                top: var(--sticky-top, 0);
+                height: calc(95vh - var(--sticky-top, 0));
             }
             .List {
-                padding-top: 50vh;
+                padding-top: 70vh;
                 padding-bottom: 30vh;
                 width: 50%;
             }
             
-            @media(max-width: 41em /*c*/) {
+            @media(${compactMap}) {
                 .Switcher {
                     display: block;
                 }
                 .Map {
-                    top: calc(5em /*c*/ + 4em);
-                    height: calc(95vh - 5em /*c*/ - 4em);
+                    top: calc(var(--sticky-top, 0) + 4em);
+                    height: calc(95vh - var(--sticky-top, 0) - 4em);
                 }
                 .List {
                     padding-top: 0;
@@ -77,12 +81,13 @@ export default function Sammelstellen({mapStyle, shrinkAt = Number.MAX_VALUE}) {
     function computeMapWidth() {
 
         const scrollTop = window.scrollY;
-        if (scrollTop > shrinkAt && !mediaMaxWidth.current.matches) {
-            let shrinkProgress = scrollTop - shrinkAt;
-            if (shrinkProgress > 400) {
-                shrinkProgress = 400;
+        if (scrollTop > startPushRight && !mediaMatcher.current.matches) {
+            let relativeScrollTop = scrollTop - startPushRight;
+            let viewportHeight = document.documentElement.clientHeight;
+            if (relativeScrollTop > viewportHeight) {
+                relativeScrollTop = viewportHeight;
             }
-            const newWidth = 100 - (50 / 400 * shrinkProgress);
+            const newWidth = 100 - (50 / viewportHeight * relativeScrollTop);
             setMapWidth(newWidth);
         } else {
             setMapWidth(100);
@@ -90,12 +95,12 @@ export default function Sammelstellen({mapStyle, shrinkAt = Number.MAX_VALUE}) {
     }
 
     function handleMaxWidthChange() {
-        if (!mediaMaxWidth.current.matches) {
+        if (!mediaMatcher.current.matches) {
             setShowingMap(true);
             setShowingList(true);
             computeMapWidth();
         } else {
-            if (window.scrollY > shrinkAt) {
+            if (window.scrollY > startPushRight) {
                 setShowingMap(false);
                 setShowingList(true);
             } else {
@@ -111,7 +116,7 @@ export default function Sammelstellen({mapStyle, shrinkAt = Number.MAX_VALUE}) {
     }
 
     function selectSammelstelle(id) {
-        if (mediaMaxWidth.current.matches) {
+        if (mediaMatcher.current.matches) {
             setShowingMap(true);
             setShowingList(false);
         }
@@ -119,8 +124,8 @@ export default function Sammelstellen({mapStyle, shrinkAt = Number.MAX_VALUE}) {
     }
 }
 
-function loadSammelstellen() {
+function loadSammelstellen(src) {
 
-    return fetch('/wp-json/sammelstellen/v1/sammelstellen')
+    return fetch(src)
         .then(response => response.json());
 }

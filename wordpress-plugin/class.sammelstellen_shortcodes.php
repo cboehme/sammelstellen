@@ -75,16 +75,37 @@ class Sammelstellen_Shortcodes
 
         wp_enqueue_style( 'mapbox-gl.css' );
         wp_enqueue_script( 'frontend.js' );
+        wp_localize_script( 'frontend.js', 'Config', array(
+            'mapSource' => get_option( 'sammelstellen_map_source' ),
+            'startPushRight' => $atts["startPushRight"],
+            'compactMap' => $atts["compactMap"] ) );
 
         $mapId = self::get_map_id();
 
-        return "<div id='$mapId'>
-                    Dein Browser ist leider zu alt, um die Sammelstellenkarte anzuzeigen.<br/>
-                    Bitte verwende einen aktuelleren Browser.
-                </div>
+        return "
+            <style>
+                .Sammelstellen {
+                    max-width: unset;
+                }
+                .Sammelstellen article {
+                    text-align: left;
+                }
+            </style>
+            <div id='$mapId' class='Sammelstellen'>
+                Dein Browser ist leider zu alt, um die Sammelstellenkarte anzuzeigen.<br/>
+                Bitte verwende einen aktuelleren Browser.
+            </div>
             <script defer>
                 document.addEventListener('DOMContentLoaded', function() {
-                    embedSammelstellen(document.getElementById('$mapId'));});
+                    embedSammelstellen(
+                        document.getElementById('$mapId'),
+                        '/wp-json/sammelstellen/v1/sammelstellen',
+                        Config.mapSource,
+                        Config.startPushRight,
+                        Config.compactMap
+                        );
+                    document.getElementById('$mapId').innerText = '';
+                });
             </script>";
     }
 }

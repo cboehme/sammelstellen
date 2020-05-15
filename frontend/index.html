@@ -26,6 +26,8 @@
     main {
       width: 95%;
       margin: 0 auto;
+
+      --sticky-top: 5em;
     }
   </style>
   <link href="mapbox-gl.css" rel="stylesheet">
@@ -42,7 +44,12 @@
   </footer>
   <script type="module">
     import embedSammelstellen from './src/index.js';
-    embedSammelstellen(document.getElementsByTagName("main")[0]);
+    embedSammelstellen(
+            document.getElementsByTagName("main")[0],
+            "/wp-json/sammelstellen/v1/sammelstellen",
+            "http://localhost:8080/styles/positron/style.json",
+            160,
+            "(max-width: 5em)");
   </script>
 </body>
 </html>
