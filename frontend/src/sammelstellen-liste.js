@@ -1,4 +1,5 @@
 import {html} from "htm/preact";
+
 import Sammelstelle from "./sammelstelle";
 
 export default function SammelstellenListe({sammelstellen, onSammelstelleClick = () => {}}) {

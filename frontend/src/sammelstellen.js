@@ -1,15 +1,6 @@
 import {html} from "htm/preact";
 import {useEffect, useRef, useState} from "preact/hooks";
 
-import Promise from "promise-polyfill";
-if (typeof window.Promise === "undefined") {
-    window.Promise = Promise;
-}
-import {fetch as fetchPolyfill} from "whatwg-fetch";
-if (typeof window.fetch === "undefined") {
-    window.fetch = fetchPolyfill;
-}
-
 import SammelstellenListe from "./sammelstellen-liste";
 import SammelstellenKarte from "./sammelstellen-karte";
 
