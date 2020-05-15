@@ -72,25 +72,21 @@ class Sammelstellen_Shortcodes
     }
 
     public function sammelstellen_shortcode( $atts = [], $content = null ) {
+        $defaultedAtts = shortcode_atts( array(
+            'start-push-right' => "10000000",
+            'compact-map' => "(max-width: 0)",
+        ), $atts );
 
         wp_enqueue_style( 'mapbox-gl.css' );
         wp_enqueue_script( 'frontend.js' );
         wp_localize_script( 'frontend.js', 'Config', array(
             'mapSource' => get_option( 'sammelstellen_map_source' ),
-            'startPushRight' => $atts["startPushRight"],
-            'compactMap' => $atts["compactMap"] ) );
+            'startPushRight' => $defaultedAtts["start-push-right"],
+            'compactMap' => $defaultedAtts["compact-map"] ) );
 
         $mapId = self::get_map_id();
 
         return "
-            <style>
-                .Sammelstellen {
-                    max-width: unset;
-                }
-                .Sammelstellen article {
-                    text-align: left;
-                }
-            </style>
             <div id='$mapId' class='Sammelstellen'>
                 Dein Browser ist leider zu alt, um die Sammelstellenkarte anzuzeigen.<br/>
                 Bitte verwende einen aktuelleren Browser.
