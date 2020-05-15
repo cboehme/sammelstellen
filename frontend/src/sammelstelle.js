@@ -7,7 +7,7 @@ export default function Sammelstelle({
     if (briefkasten) {
         return html`
             <article onclick="${onClick}">
-                <h1>Radentscheid-Briefkasten</h1>
+                <h2>Radentscheid-Briefkasten</h2>
                 <p class="hinweis-briefkasten">Privater Briefkasten als Einwurfstelle für Unterschriftenlisten</p>
                 <ul>
                     <li>${name}</li>
@@ -20,7 +20,7 @@ export default function Sammelstelle({
     }
     return html`
         <article onclick="${onClick}">
-            <h1>${name}</h1>
+            <h2>${name}</h2>
             <ul>
                 <li>${adresse}</li>
                 <${Oeffnungszeiten} oeffnungszeiten="${(oeffnungszeiten)}"/>
