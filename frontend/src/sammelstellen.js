@@ -70,7 +70,8 @@ export default function Sammelstellen({
         <div class="sammelstellen-karte" style="margin-left: calc(100% - ${mapWidth}%); width: ${mapWidth}%; display: ${showingMap ? 'block' : 'none'};">
             <${SammelstellenKarte} mapStyle=${mapStyle} 
                                    sammelstellen="${sammelstellen}" 
-                                   selected="${selected}"/>
+                                   selected="${selected}"
+                                   onSammelstelleClick="${(id) => console.log('Sammelstelle selected: ' + id)}"/>
         </div>
         <div class="sammelstellen-liste" style="visibility: ${showingList ? 'visible' : 'hidden'};">
             <${SammelstellenListe} sammelstellen="${sammelstellen}" 
