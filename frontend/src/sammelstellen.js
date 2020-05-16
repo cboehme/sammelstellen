@@ -71,10 +71,11 @@ export default function Sammelstellen({
             <${SammelstellenKarte} mapStyle=${mapStyle} 
                                    sammelstellen="${sammelstellen}" 
                                    selected="${selected}"
-                                   onSammelstelleClick="${(id) => console.log('Sammelstelle selected: ' + id)}"/>
+                                   onSammelstelleClick="${(id) => selectSammelstelle(id)}"/>
         </div>
         <div class="sammelstellen-liste" style="visibility: ${showingList ? 'visible' : 'hidden'};">
             <${SammelstellenListe} sammelstellen="${sammelstellen}" 
+                                   selected="${selected}"
                                    onSammelstelleClick="${(id) => selectSammelstelle(id)}"/>
         </div>`;
 
