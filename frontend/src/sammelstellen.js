@@ -44,7 +44,7 @@ export default function Sammelstellen({
             .Map {
                 position: sticky;
                 top: var(--sticky-top, 0);
-                height: calc(95vh - var(--sticky-top, 0));
+                height: calc(100vh - var(--sticky-top, 0));
             }
             .List {
                 padding-top: 70vh;
@@ -58,7 +58,7 @@ export default function Sammelstellen({
                 }
                 .Map {
                     top: calc(var(--sticky-top, 0) + 4em);
-                    height: calc(95vh - var(--sticky-top, 0) - 4em);
+                    height: calc(100vh - var(--sticky-top, 0) - 4em);
                 }
                 .List {
                     padding-top: 0;
