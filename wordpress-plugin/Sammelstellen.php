@@ -4,7 +4,7 @@
 Plugin Name: Sammelstellen
 Plugin URI: https://www.radentscheid-bonn.de/
 Description: Eine Sammelstellenliste für die Radentscheid Bonn Website
-Version: 1.5
+Version: 2.0-beta1
 Author: Christoph Böhme
 Author URI: https://b3e.net/
 License: GPL2
