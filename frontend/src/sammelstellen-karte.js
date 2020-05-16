@@ -8,7 +8,7 @@ import mapboxgl from 'mapbox-gl';
 
 import Sammelstelle from "./sammelstelle";
 
-export default function SammelstellenKarte({mapStyle, sammelstellen, selected}) {
+export default function SammelstellenKarte({mapStyle, sammelstellen, selected, onSammelstelleClick = () => {}}) {
 
     const map = useRef();
     const mapContainer = useRef();
@@ -28,8 +28,9 @@ export default function SammelstellenKarte({mapStyle, sammelstellen, selected}) 
 
     const markers = useRef(new Map());
     useEffect(
-        () => markers.current = updateMarkers(markers.current, sammelstellen.features, selected, map.current),
-        [sammelstellen.features, selected]);
+        () => markers.current = updateMarkers(markers.current, sammelstellen.features, selected,
+            onSammelstelleClick, map.current),
+        [sammelstellen.features, selected, onSammelstelleClick]);
 
     return html`
        <style>
@@ -90,7 +91,7 @@ function addGeolocateControl(map) {
     });
 }
 
-function updateMarkers(prevSammelstellen, currentSammelstellen, selected, map) {
+function updateMarkers(prevSammelstellen, currentSammelstellen, selected, clickHandler, map) {
 
     let nextSammelstellen = new Map();
     currentSammelstellen.forEach(sammelstelle => {
@@ -98,7 +99,7 @@ function updateMarkers(prevSammelstellen, currentSammelstellen, selected, map) {
         if (prevSammelstellen.has(id)) {
             nextSammelstellen.set(id, updateSammelstelle(prevSammelstellen.get(id), sammelstelle, selected, map));
         } else {
-            nextSammelstellen.set(id, addSammelstelle(sammelstelle, selected, map));
+            nextSammelstellen.set(id, addSammelstelle(sammelstelle, selected, clickHandler, map));
         }
     });
     prevSammelstellen.forEach((_, id) => {
@@ -109,7 +110,7 @@ function updateMarkers(prevSammelstellen, currentSammelstellen, selected, map) {
     return nextSammelstellen;
 }
 
-function addSammelstelle(sammelstelle, selected, map) {
+function addSammelstelle(sammelstelle, selected, clickHandler, map) {
 
     let markerColor;
     if (!sammelstelle.properties.aktiv) {
@@ -128,6 +129,7 @@ function addSammelstelle(sammelstelle, selected, map) {
             center: sammelstelle.geometry.coordinates,
             zoom: 15
         })
+        clickHandler(sammelstelle.properties.id);
     });
     marker
         .setLngLat(sammelstelle.geometry.coordinates)
