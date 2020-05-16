@@ -8,7 +8,7 @@ export default function Sammelstelle({
         return html`
             <article onclick="${onClick}">
                 <h2>Radentscheid-Briefkasten</h2>
-                <p class="hinweis-briefkasten">Privater Briefkasten als Einwurfstelle für Unterschriftenlisten</p>
+                <p class="sammelstellen-info-briefkasten">Privater Briefkasten als Einwurfstelle für Unterschriftenlisten</p>
                 <ul>
                     <li>${name}</li>
                     <li>${adresse}</li>

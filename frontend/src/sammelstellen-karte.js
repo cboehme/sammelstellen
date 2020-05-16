@@ -33,7 +33,7 @@ export default function SammelstellenKarte({mapStyle, sammelstellen, selected}) 
 
     return html`
        <style>
-           .SammelstelleMarker {
+           .sammelstellen-marker {
                cursor: pointer;
            }
        </style>
@@ -120,7 +120,7 @@ function addSammelstelle(sammelstelle, selected, map) {
     const marker = new mapboxgl.Marker({
         color: markerColor
     });
-    marker.getElement().classList.add('SammelstelleMarker');
+    marker.getElement().classList.add('sammelstellen-marker');
     marker.getElement().addEventListener('click', ev => {
         map.flyTo({
             center: sammelstelle.geometry.coordinates,
@@ -140,7 +140,7 @@ function addSammelstelle(sammelstelle, selected, map) {
 
 function createPopup(sammelstelle) {
     const popup = new mapboxgl.Popup({
-        className: 'SammelstellePopup',
+        className: 'sammelstellen-popup',
         maxWidth: 'none'
     });
     const container = document.createElement("div");

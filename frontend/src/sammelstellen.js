@@ -33,47 +33,46 @@ export default function Sammelstellen({
 
     return html`
         <style>
-            .Switcher {
-              display: none;
-              position: sticky;
-              top: var(--sticky-top, 0);  
-              height: 4em;
-              text-align: center;
-              background-color: white;
+            .sammelstellen-switcher {
+                box-sizing: border-box;
+                display: none;
             }
-            .Map {
+            .sammelstellen-karte {
+                box-sizing: border-box;
                 position: sticky;
-                top: var(--sticky-top, 0);
-                height: calc(100vh - var(--sticky-top, 0));
+                top: var(--sticky-map-top, 0);
+                height: calc(100vh - var(--sticky-map-top, 0));
             }
-            .List {
-                padding-top: 70vh;
-                padding-bottom: 30vh;
+            .sammelstellen-liste {
+                box-sizing: border-box;
                 width: 50%;
             }
             
             @media(${compactMap}) {
-                .Switcher {
-                    display: block;
+                .sammelstellen-switcher {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: sticky;
+                    top: var(--sticky-map-top, 0);  
+                    height: var(--switcher-height, 4em);
                 }
-                .Map {
-                    top: calc(var(--sticky-top, 0) + 4em);
-                    height: calc(100vh - var(--sticky-top, 0) - 4em);
+                .sammelstellen-karte {
+                    top: calc(var(--sticky-map-top, 0) + var(--switcher-height, 4em));
+                    height: calc(100vh - var(--sticky-map-top, 0) - var(--switcher-height, 4em));
                 }
-                .List {
-                    padding-top: 0;
-                    padding-bottom: 0;
+                .sammelstellen-liste {
                     width: 100%;
                 }
             }
         </style>
-        <nav class="Switcher"><button onclick="${toggleMap}">${showingMap ? "Zur Listenansicht" : "Zur Kartenansicht"}</button></nav>
-        <div class="Map" style="margin-left: calc(100% - ${mapWidth}%); width: ${mapWidth}%; display: ${showingMap ? 'block' : 'none'};">
+        <nav class="sammelstellen-switcher"><button onclick="${toggleMap}">${showingMap ? "Zur Listenansicht" : "Zur Kartenansicht"}</button></nav>
+        <div class="sammelstellen-karte" style="margin-left: calc(100% - ${mapWidth}%); width: ${mapWidth}%; display: ${showingMap ? 'block' : 'none'};">
             <${SammelstellenKarte} mapStyle=${mapStyle} 
                                    sammelstellen="${sammelstellen}" 
                                    selected="${selected}"/>
         </div>
-        <div class="List" style="visibility: ${showingList ? 'visible' : 'hidden'};">
+        <div class="sammelstellen-liste" style="visibility: ${showingList ? 'visible' : 'hidden'};">
             <${SammelstellenListe} sammelstellen="${sammelstellen}" 
                                    onSammelstelleClick="${(id) => selectSammelstelle(id)}"/>
         </div>`;

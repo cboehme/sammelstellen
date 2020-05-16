@@ -4,9 +4,15 @@ import Sammelstelle from "./sammelstelle";
 
 export default function SammelstellenListe({sammelstellen, onSammelstelleClick = () => {}}) {
 
-     return html`<ul>
+     return html`
+        <style>
+            .sammelstellen-listeneintrag {
+                cursor: pointer;
+            }
+        </style>
+        <ul>
         ${sammelstellen.features.map(sammelstelle => {return html`
-            <li><${Sammelstelle} 
+            <li class="sammelstellen-listeneintrag"><${Sammelstelle} 
                 sammelstelle="${sammelstelle.properties}" 
                 onClick="${() => onSammelstelleClick(sammelstelle.properties.id)}"/></li>`})}
         </ul>`;

@@ -87,7 +87,7 @@ class Sammelstellen_Shortcodes
         $mapId = self::get_map_id();
 
         return "
-            <div id='$mapId' class='Sammelstellen'>
+            <div id='$mapId'class='sammelstellen-container'>
                 Dein Browser ist leider zu alt, um die Sammelstellenkarte anzuzeigen.<br/>
                 Bitte verwende einen aktuelleren Browser.
             </div>
