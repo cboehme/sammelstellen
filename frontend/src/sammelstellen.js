@@ -23,7 +23,7 @@ export default function Sammelstellen({
     const [showingList, setShowingList] = useState(true);
     const mediaMatcher = useRef();
     useEffect(() => {
-        mediaMatcher.current = window.matchMedia(compactMap);
+        mediaMatcher.current = window.matchMedia(`(${compactMap})`);
         mediaMatcher.current.addListener(handleMaxWidthChange);
         handleMaxWidthChange();
         return () => mediaMatcher.current = null;
