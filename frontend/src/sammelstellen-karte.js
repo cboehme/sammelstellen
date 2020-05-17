@@ -97,7 +97,8 @@ function updateMarkers(prevSammelstellen, currentSammelstellen, selected, clickH
     currentSammelstellen.forEach(sammelstelle => {
         const id = sammelstelle.properties.id;
         if (prevSammelstellen.has(id)) {
-            nextSammelstellen.set(id, updateSammelstelle(prevSammelstellen.get(id), sammelstelle, selected, map));
+            nextSammelstellen.set(id, updateSammelstelle(prevSammelstellen.get(id), sammelstelle, selected,
+                clickHandler, map));
         } else {
             nextSammelstellen.set(id, addSammelstelle(sammelstelle, selected, clickHandler, map));
         }
@@ -123,13 +124,14 @@ function addSammelstelle(sammelstelle, selected, clickHandler, map) {
     const marker = new mapboxgl.Marker({
         color: markerColor
     });
+    marker.clickHandler = clickHandler;
     marker.getElement().classList.add('sammelstellen-marker');
     marker.getElement().addEventListener('click', ev => {
         map.flyTo({
             center: sammelstelle.geometry.coordinates,
             zoom: 15
         })
-        clickHandler(sammelstelle.properties.id);
+        marker.clickHandler(sammelstelle.properties.id);
     });
     marker
         .setLngLat(sammelstelle.geometry.coordinates)
@@ -154,8 +156,9 @@ function createPopup(sammelstelle) {
     return popup;
 }
 
-function updateSammelstelle(marker, sammelstelle, selected, map) {
+function updateSammelstelle(marker, sammelstelle, selected, clickHandler, map) {
 
+    marker.clickHandler = clickHandler;
     if (sammelstelle.properties.id === selected) {
         openPopup(marker);
         flyTo(marker, map);
