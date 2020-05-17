@@ -9,7 +9,8 @@ export default function SammelstellenListe({sammelstellen, selected, onSammelste
         const sammelstelle = document.getElementById(`sammelstellen-sammelstelle-${selected}`);
         if (sammelstelle !== null) {
             sammelstelle.scrollIntoView({
-                behavior: "smooth"
+                behavior: "smooth",
+                block: "center"
             })
         }
     }, [selected]);
