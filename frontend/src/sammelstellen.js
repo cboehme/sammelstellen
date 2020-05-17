@@ -8,7 +8,7 @@ export default function Sammelstellen({
         src,
         mapStyle,
         startPushRight = Number.MAX_VALUE,
-        compactMap = "(max-width: 0)"}) {
+        compactMap = "max-width: 0"}) {
 
     const [sammelstellen, setSammelstellen] = useState({"type": "FeatureCollection", "features": []});
     useEffect(() => loadSammelstellen(src).then(setSammelstellen), [src]);
