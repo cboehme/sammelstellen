@@ -133,6 +133,15 @@ export default function Sammelstellen({
 
 function loadSammelstellen(src) {
 
-    return fetch(src)
+    let init = {};
+    if (Config !== undefined && Config.wp_nonce !== undefined) {
+        init = {
+            headers: new Headers({
+                'X-WP-Nonce': Config.wp_nonce
+            }),
+            credentials: 'same-origin'
+        }
+    }
+    return fetch(src, init)
         .then(response => response.json());
 }

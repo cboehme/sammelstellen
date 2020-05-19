@@ -53,7 +53,7 @@ function initList(container) {
 document.addEventListener('DOMContentLoaded', loadSammelstellen);
 
 function loadSammelstellen() {
-    fetch('/wp-json/sammelstellen/v1/sammelstellen')
+    fetch('/wp-json/sammelstellen/v1/sammelstellen?aktiv=true')
         .then(response => response.json())
         .then(geojson => {
             for (const map of Object.values(maps)) {

@@ -82,7 +82,8 @@ class Sammelstellen_Shortcodes
         wp_localize_script( 'frontend.js', 'Config', array(
             'mapSource' => get_option( 'sammelstellen_map_source' ),
             'startPushRight' => $defaultedAtts["start-push-right"],
-            'compactMap' => $defaultedAtts["compact-map"] ) );
+            'compactMap' => $defaultedAtts["compact-map"],
+            'wp_nonce' => wp_create_nonce('wp_rest' ) ) );
 
         $mapId = self::get_map_id();
 
@@ -95,7 +96,7 @@ class Sammelstellen_Shortcodes
                 document.addEventListener('DOMContentLoaded', function() {
                     embedSammelstellen(
                         document.getElementById('$mapId'),
-                        '/wp-json/sammelstellen/v1/sammelstellen',
+                        '/wp-json/sammelstellen/v1/sammelstellen?aktiv=true',
                         Config.mapSource,
                         Config.startPushRight,
                         Config.compactMap
