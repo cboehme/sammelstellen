@@ -18,6 +18,7 @@ class Sammelstellen_Shortcodes
     private static function add_shortcodes() {
         add_shortcode( 'sammelstellen-map', array( 'Sammelstellen_Shortcodes', 'map_shortcode' ) );
         add_shortcode( 'sammelstellen-list', array( 'Sammelstellen_Shortcodes', 'list_shortcode' ) );
+        add_shortcode( 'sammelstellen-simple-list', array( 'Sammelstellen_Shortcodes', 'simple_list_shortcode' ) );
         add_shortcode( 'sammelstellen', array( 'Sammelstellen_Shortcodes', 'sammelstellen_shortcode' ) );
     }
 
@@ -69,6 +70,45 @@ class Sammelstellen_Shortcodes
 
     private static function get_list_id() {
         return "sammelstellenList" . self::$list_id++;
+    }
+
+    public function simple_list_shortcode( $atts = [], $content = null ) {
+
+        $last_plz = "";
+        $output = "";
+        foreach (Sammelstellen::find_sammelstellen_by_aktiv( true ) as $sammelstelle ) {
+            if ($last_plz !== $sammelstelle->postleitzahl) {
+                $output .= "<h1>Postleitzahl $sammelstelle->postleitzahl</h1>";
+                $last_plz = $sammelstelle->postleitzahl;
+            }
+            $output .= "<article>";
+            if ($sammelstelle->briefkasten) {
+                $output .= "
+                    <h2>Radentscheid-Briefkasten</h2>
+                    <p class='sammelstellen-info-briefkasten'>Privater Briefkasten als Einwurfstelle für Unterschriftenlisten</p>
+                    <ul>
+                        <li>" . esc_html( $sammelstelle->name ) . "</li>
+                        <li>" . esc_html( $sammelstelle->adresse ) . "</li>";
+            } else {
+                $output .= "<h2>" . esc_html( $sammelstelle->name ) . "</h2>
+                <ul>
+                    <li>" . esc_html( $sammelstelle->adresse ) . "</li>";
+            }
+            if ( $sammelstelle->oeffnungszeiten ) {
+                $output .= "<li>Öffnungszeiten: " . esc_html( $sammelstelle->oeffnungszeiten ) . "</li>";
+            }
+            if ( $sammelstelle->hinweise ) {
+                $output .= "<li>" . esc_html( $sammelstelle->hinweise ) . "</li>";
+            }
+            if ( $sammelstelle->website ) {
+                $output .= "<li><a href='" . esc_attr( $sammelstelle->website ) . "' 
+                           target='_blank'
+                           rel='noopener noreferer'>Website der Sammelstelle</a></li>";
+            }
+            $output .= "
+                </ul></article>";
+        }
+        return $output;
     }
 
     public function sammelstellen_shortcode( $atts = [], $content = null ) {
