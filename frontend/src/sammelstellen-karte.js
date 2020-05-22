@@ -8,7 +8,7 @@ import mapboxgl from 'mapbox-gl';
 
 import Sammelstelle from "./sammelstelle";
 
-export default function SammelstellenKarte({mapStyle, sammelstellen, selected, onSammelstelleClick = () => {}}) {
+export default function SammelstellenKarte({mapStyle, sammelstellen, selected}) {
 
     const map = useRef();
     const mapContainer = useRef();
@@ -28,9 +28,8 @@ export default function SammelstellenKarte({mapStyle, sammelstellen, selected, o
 
     const markers = useRef(new Map());
     useEffect(
-        () => markers.current = updateMarkers(markers.current, sammelstellen.features, selected,
-            onSammelstelleClick, map.current),
-        [sammelstellen.features, selected, onSammelstelleClick]);
+        () => markers.current = updateMarkers(markers.current, sammelstellen.features, selected, map.current),
+        [sammelstellen.features, selected]);
 
     return html`
        <style>
@@ -91,16 +90,15 @@ function addGeolocateControl(map) {
     });
 }
 
-function updateMarkers(prevSammelstellen, currentSammelstellen, selected, clickHandler, map) {
+function updateMarkers(prevSammelstellen, currentSammelstellen, selected, map) {
 
     let nextSammelstellen = new Map();
     currentSammelstellen.forEach(sammelstelle => {
         const id = sammelstelle.properties.id;
         if (prevSammelstellen.has(id)) {
-            nextSammelstellen.set(id, updateSammelstelle(prevSammelstellen.get(id), sammelstelle, selected,
-                clickHandler, map));
+            nextSammelstellen.set(id, updateSammelstelle(prevSammelstellen.get(id), sammelstelle, selected, map));
         } else {
-            nextSammelstellen.set(id, addSammelstelle(sammelstelle, selected, clickHandler, map));
+            nextSammelstellen.set(id, addSammelstelle(sammelstelle, selected, map));
         }
     });
     prevSammelstellen.forEach((_, id) => {
@@ -111,7 +109,7 @@ function updateMarkers(prevSammelstellen, currentSammelstellen, selected, clickH
     return nextSammelstellen;
 }
 
-function addSammelstelle(sammelstelle, selected, clickHandler, map) {
+function addSammelstelle(sammelstelle, selected, map) {
 
     let markerColor;
     if (sammelstelle.properties.briefkasten) {
@@ -122,14 +120,12 @@ function addSammelstelle(sammelstelle, selected, clickHandler, map) {
     const marker = new mapboxgl.Marker({
         color: markerColor
     });
-    marker.clickHandler = clickHandler;
     marker.getElement().classList.add('sammelstellen-marker');
     marker.getElement().addEventListener('click', ev => {
         map.flyTo({
             center: sammelstelle.geometry.coordinates,
             zoom: 15
         })
-        marker.clickHandler(sammelstelle.properties.id);
     });
     marker
         .setLngLat(sammelstelle.geometry.coordinates)
@@ -154,9 +150,8 @@ function createPopup(sammelstelle) {
     return popup;
 }
 
-function updateSammelstelle(marker, sammelstelle, selected, clickHandler, map) {
+function updateSammelstelle(marker, sammelstelle, selected, map) {
 
-    marker.clickHandler = clickHandler;
     if (sammelstelle.properties.id === selected) {
         openPopup(marker);
         flyTo(marker, map);

@@ -70,13 +70,11 @@ export default function Sammelstellen({
         <div class="sammelstellen-karte" style="margin-left: calc(100% - ${mapWidth}%); width: ${mapWidth}%; display: ${showingMap ? 'block' : 'none'};">
             <${SammelstellenKarte} mapStyle=${mapStyle} 
                                    sammelstellen="${sammelstellen}" 
-                                   selected="${selected}"
-                                   onSammelstelleClick="${selectSammelstelleFromMap}"/>
+                                   selected="${selected}"/>
         </div>
         <div class="sammelstellen-liste" style="visibility: ${showingList ? 'visible' : 'hidden'};">
             <${SammelstellenListe} sammelstellen="${sammelstellen}" 
-                                   selected="${selected}"
-                                   onSammelstelleClick="${selectSammelstelle}"/>
+                                   onSammelstelleClick="${(id) => selectSammelstelle(id)}"/>
         </div>`;
 
     function computeMapWidth() {
@@ -122,12 +120,6 @@ export default function Sammelstellen({
             setShowingList(false);
         }
         setSelected(id);
-    }
-
-    function selectSammelstelleFromMap(id) {
-        if (mediaMatcher.current.matches || mapWidth < 51) {
-            selectSammelstelle(id);
-        }
     }
 }
 

@@ -1,11 +1,12 @@
 import {html} from 'htm/preact';
 
 export default function Sammelstelle({
-        sammelstelle: {briefkasten, name, adresse, oeffnungszeiten, hinweise, website}}) {
+        sammelstelle: {briefkasten, name, adresse, oeffnungszeiten, hinweise, website},
+        onClick = () => {}}) {
 
     if (briefkasten) {
         return html`
-            <article>
+            <article onclick="${onClick}">
                 <h2>Radentscheid-Briefkasten</h2>
                 <p class="sammelstellen-info-briefkasten">Privater Briefkasten als Einwurfstelle für Unterschriftenlisten</p>
                 <ul>
@@ -18,7 +19,7 @@ export default function Sammelstelle({
             </article>`;
     }
     return html`
-        <article>
+        <article onclick="${onClick}">
             <h2>${name}</h2>
             <ul>
                 <li>${adresse}</li>
