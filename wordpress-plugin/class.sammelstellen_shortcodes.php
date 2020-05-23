@@ -60,14 +60,21 @@ class Sammelstellen_Shortcodes
 
     public function sammelstellen_shortcode( $atts = [], $content = null ) {
         $defaultedAtts = shortcode_atts( array(
+            'aktiv' => "true",
             'start-push-right' => "10000000",
             'compact-map' => "(max-width: 0)",
             'fallback-page' => ""
         ), $atts );
 
+        if ($defaultedAtts["aktiv"] === "") {
+            $apiUrl = "/wp-json/sammelstellen/v1/sammelstellen";
+        } else {
+            $apiUrl = "/wp-json/sammelstellen/v1/sammelstellen?aktiv=" . $defaultedAtts["aktiv"];
+        }
         wp_enqueue_style( 'mapbox-gl.css' );
         wp_enqueue_script( 'frontend.js' );
         wp_localize_script( 'frontend.js', 'Config', array(
+            'src' => $apiUrl,
             'mapSource' => get_option( 'sammelstellen_map_source' ),
             'startPushRight' => $defaultedAtts["start-push-right"],
             'compactMap' => $defaultedAtts["compact-map"],
@@ -84,7 +91,7 @@ class Sammelstellen_Shortcodes
                 document.addEventListener('DOMContentLoaded', function() {
                     embedSammelstellen(
                         document.getElementById('$mapId'),
-                        '/wp-json/sammelstellen/v1/sammelstellen?aktiv=true',
+                        Config.src,
                         Config.mapSource,
                         Config.startPushRight,
                         Config.compactMap
