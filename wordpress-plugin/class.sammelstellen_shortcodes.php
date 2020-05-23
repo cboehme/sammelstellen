@@ -77,7 +77,7 @@ class Sammelstellen_Shortcodes
 
         return "
             <div id='$mapId' class='sammelstellen'>
-                Dein Browser ist leider zu alt, um die Sammelstellenkarte anzuzeigen.<br/>
+                Dein Browser kann die Sammelstellenkarte leider nicht anzeigen, da er zu alt ist.<br/>
                 Du kannst aber die <a href='" . get_permalink($defaultedAtts["fallback-page"]) . "'>Sammelstellenliste</a> benutzen.
             </div>
             <script defer>
