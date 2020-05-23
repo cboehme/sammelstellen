@@ -112,7 +112,9 @@ function updateMarkers(prevSammelstellen, currentSammelstellen, selected, map) {
 function addSammelstelle(sammelstelle, selected, map) {
 
     let markerColor;
-    if (sammelstelle.properties.briefkasten) {
+    if (!sammelstelle.properties.aktiv) {
+        markerColor = '#b0b0b0';
+    } else if (sammelstelle.properties.briefkasten) {
         markerColor = '#0c78b2';
     } else {
         markerColor = '#98D800';

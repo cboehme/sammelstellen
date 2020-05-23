@@ -1,14 +1,14 @@
 import {html} from 'htm/preact';
 
 export default function Sammelstelle({
-        sammelstelle: {briefkasten, name, adresse, oeffnungszeiten, hinweise, website},
+        sammelstelle: {briefkasten, name, adresse, oeffnungszeiten, hinweise, website, aktiv},
         onClick = () => {}}) {
 
     if (briefkasten) {
         return html`
-            <article onclick="${onClick}">
+            <article class=${aktiv ? "" : "sammelstellen-sammelstelle-inaktiv"} onclick="${onClick}">
                 <h2>Radentscheid-Briefkasten</h2>
-                <p class="sammelstellen-info-briefkasten">Privater Briefkasten als Einwurfstelle für Unterschriftenlisten</p>
+                <p class="sammelstellen-info-text">Privater Briefkasten als Einwurfstelle für Unterschriftenlisten</p>
                 <ul>
                     <li>${name}</li>
                     <li>${adresse}</li>
@@ -16,10 +16,11 @@ export default function Sammelstelle({
                     <${Hinweise} hinweise="${hinweise}"/>
                     <${Website} website="${website}"/>
                 </ul>
+                <${Inaktiv} aktiv=${aktiv}/>
             </article>`;
     }
     return html`
-        <article onclick="${onClick}">
+        <article class=${aktiv ? "" : "sammelstellen-sammelstelle-inaktiv"} onclick="${onClick}">
             <h2>${name}</h2>
             <ul>
                 <li>${adresse}</li>
@@ -27,6 +28,7 @@ export default function Sammelstelle({
                 <${Hinweise} hinweise="${hinweise}"/>
                 <${Website} website="${website}"/>
             </ul>
+            <${Inaktiv} aktiv="${aktiv}"/>
         </article>`;
 }
 
@@ -56,6 +58,14 @@ function Website({website}) {
                            target="_blank" 
                            rel="noopener noreferer" 
                            onclick="${(ev) => ev.stopPropagation()}">Website der Sammelstelle</a></li>`;
+    }
+    return '';
+}
+
+function Inaktiv({aktiv}) {
+
+    if (aktiv !== true) {
+        return html`<p class="sammelstellen-info-text">Diese Sammelstelle ist nicht aktiv</p>`;
     }
     return '';
 }
