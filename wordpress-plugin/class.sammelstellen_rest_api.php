@@ -53,7 +53,8 @@ class Sammelstellen_REST_API {
                     'oeffnungszeiten' => $sammelstelle->oeffnungszeiten,
                     'website' => $sammelstelle->website,
                     'briefkasten' => $sammelstelle->briefkasten == "1",
-                    'hinweise' => $sammelstelle->hinweise
+                    'hinweise' => $sammelstelle->hinweise,
+                    'aktiv' => $sammelstelle->aktiv == "1"
                 )
             );
         };
