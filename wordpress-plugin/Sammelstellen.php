@@ -33,8 +33,4 @@ add_action( 'rest_api_init', array( 'Sammelstellen_REST_API', 'init' ) );
 if ( is_admin() ) {
     require_once( SAMMELSTELLEN__PLUGIN_DIR . 'class.sammelstellen_admin.php' );
     add_action( 'init', array('Sammelstellen_Admin', 'init' ) );
-
-    // TODO: Remove in next version:
-    delete_option( "sammelstellen_popup_template" );
-    delete_option( "sammelstellen_listitem_template" );
 }
