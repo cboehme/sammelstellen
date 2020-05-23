@@ -52,8 +52,10 @@ class Sammelstellen {
         global $wpdb;
 
         $table_name = $wpdb->prefix . 'sammelstellen';
-
         $wpdb->query( "DROP TABLE IF EXISTS $table_name;" );
+
+        delete_option( "sammelstellen_map_source" );
+        delete_option( "sammelstellen_editor_map_source" );
     }
 
     public static function view( $name, array $args = array() ) {
