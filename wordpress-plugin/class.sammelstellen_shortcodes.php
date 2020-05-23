@@ -19,7 +19,7 @@ class Sammelstellen_Shortcodes
         add_shortcode( 'sammelstellen', array( 'Sammelstellen_Shortcodes', 'sammelstellen_shortcode' ) );
     }
 
-    public function sammelstellen_liste( $atts = [], $content = null ) {
+    public function sammelstellen_liste_shortcode( $atts = [], $content = null ) {
 
         $last_plz = "";
         $output = "";
