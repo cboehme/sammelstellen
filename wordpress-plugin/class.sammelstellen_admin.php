@@ -258,16 +258,16 @@ class Sammelstellen_Admin {
 
         return array(
             'id' => intval( $_POST[ "id" ] ),
-            'name' => sanitize_text_field( $_POST[self::FIELD_NAME] ),
-            'adresse' => sanitize_textarea_field( $_POST[self::FIELD_ADRESSE] ),
-            'postleitzahl' => sanitize_text_field( $_POST[self::FIELD_POSTLEITZAHL] ),
+            'name' => sanitize_text_field( stripslashes( $_POST[self::FIELD_NAME] ) ),
+            'adresse' => sanitize_textarea_field( stripslashes( $_POST[self::FIELD_ADRESSE] ) ),
+            'postleitzahl' => sanitize_text_field( stripslashes( $_POST[self::FIELD_POSTLEITZAHL] ) ),
             'lon' => floatval( $_POST[self::FIELD_LONGITUDE] ),
             'lat' => floatval( $_POST[self::FIELD_LATITUDE] ),
-            'oeffnungszeiten' => sanitize_textarea_field( $_POST[self::FIELD_OEFFNUNGSZEITEN] ),
+            'oeffnungszeiten' => sanitize_textarea_field( stripslashes( $_POST[self::FIELD_OEFFNUNGSZEITEN] ) ),
             'website' => esc_url_raw( $_POST[self::FIELD_WEBSITE] ),
             'briefkasten' => isset( $_POST[self::FIELD_BRIEFKASTEN] ),
             'aktiv' => isset( $_POST[self::FIELD_AKTIV] ),
-            'hinweise' => sanitize_textarea_field( $_POST[self::FIELD_HINWEISE] )
+            'hinweise' => sanitize_textarea_field( stripslashes( $_POST[self::FIELD_HINWEISE] ) )
         );
     }
 
