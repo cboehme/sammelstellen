@@ -126,7 +126,7 @@ export default function Sammelstellen({
 function loadSammelstellen(src) {
 
     let init = {};
-    if (Config !== undefined && Config.wp_nonce !== undefined) {
+    if (typeof Config !== 'undefined' && typeof Config.wp_nonce !== 'undefined') {
         init = {
             headers: new Headers({
                 'X-WP-Nonce': Config.wp_nonce
