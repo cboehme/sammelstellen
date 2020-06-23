@@ -29,7 +29,7 @@ export default function Sammelstellen({
         return () => mediaMatcher.current = null;
     }, []);
 
-    const [selected, setSelected] = useState("");
+    const [selected, setSelected] = useState(() => window.location.hash.substr(1));
 
     return html`
         <style>
