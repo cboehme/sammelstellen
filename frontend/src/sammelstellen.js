@@ -121,6 +121,7 @@ export default function Sammelstellen({
             setShowingMap(true);
             setShowingList(false);
         }
+        window.history.replaceState(null, null, "#" + id);
         setSelected(id);
     }
 
@@ -128,6 +129,7 @@ export default function Sammelstellen({
         if (mediaMatcher.current.matches || mapWidth < 51) {
             selectSammelstelle(id);
         }
+        window.history.replaceState(null, null, "#" + id);
     }
 }
 
