@@ -13,7 +13,7 @@ export default function SammelstellenListe({sammelstellen, selected, onSammelste
                 block: "center"
             })
         }
-    }, [selected]);
+    }, [sammelstellen, selected]);
     return html`
         <style>
             .sammelstellen-listeneintrag {
