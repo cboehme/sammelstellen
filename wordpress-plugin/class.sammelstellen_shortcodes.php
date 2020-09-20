@@ -20,10 +20,15 @@ class Sammelstellen_Shortcodes
     }
 
     public function sammelstellen_liste_shortcode( $atts = [], $content = null ) {
-
+        $sammlung_beendet = get_option( 'sammelstellen_sammlung_beendet' ) === "true";
         $last_plz = "";
         $output = "";
-        foreach (Sammelstellen::find_sammelstellen_by_aktiv( true ) as $sammelstelle ) {
+        if ( $sammlung_beendet ) {
+            $sammelstellen = Sammelstellen::find_sammelstellen_by_aktiv_without_briefkaesten( true );
+        } else {
+            $sammelstellen = Sammelstellen::find_sammelstellen_by_aktiv( true );
+        }
+        foreach ($sammelstellen as $sammelstelle ) {
             if ($last_plz !== $sammelstelle->postleitzahl) {
                 $output .= "<h1 class='sammelstellen-plz-bereich'>Postleitzahl $sammelstelle->postleitzahl</h1>";
                 $last_plz = $sammelstelle->postleitzahl;
@@ -34,18 +39,19 @@ class Sammelstellen_Shortcodes
                     <h2>Radentscheid-Briefkasten</h2>
                     <p class='sammelstellen-info-briefkasten'>Privater Briefkasten als Einwurfstelle für Unterschriftenlisten</p>
                     <ul>
-                        <li>" . esc_html( $sammelstelle->name ) . "</li>
-                        <li>" . esc_html( $sammelstelle->adresse ) . "</li>";
+                        <li>" . esc_html( $sammelstelle->name ) . "</li>";
             } else {
                 $output .= "<h2>" . esc_html( $sammelstelle->name ) . "</h2>
-                <ul>
-                    <li>" . esc_html( $sammelstelle->adresse ) . "</li>";
+                <ul>";
             }
-            if ( $sammelstelle->oeffnungszeiten ) {
-                $output .= "<li>Öffnungszeiten: " . esc_html( $sammelstelle->oeffnungszeiten ) . "</li>";
-            }
-            if ( $sammelstelle->hinweise ) {
-                $output .= "<li>" . esc_html( $sammelstelle->hinweise ) . "</li>";
+            if ( !$sammlung_beendet ) {
+                $output .= "<li>" . esc_html($sammelstelle->adresse) . "</li>";
+                if ($sammelstelle->oeffnungszeiten) {
+                    $output .= "<li>Öffnungszeiten: " . esc_html($sammelstelle->oeffnungszeiten) . "</li>";
+                }
+                if ($sammelstelle->hinweise) {
+                    $output .= "<li>" . esc_html($sammelstelle->hinweise) . "</li>";
+                }
             }
             if ( $sammelstelle->website ) {
                 $output .= "<li><a href='" . esc_attr( $sammelstelle->website ) . "' 

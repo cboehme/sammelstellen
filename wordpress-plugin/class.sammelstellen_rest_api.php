@@ -30,39 +30,69 @@ class Sammelstellen_REST_API {
     }
 
     public static function get_sammelstellen( $request ) {
-        $aktiv_param = $request->get_param( "aktiv" );
-        if ( $aktiv_param === null ) {
-            $sammelstellen = Sammelstellen::find_all_sammelstellen();
-        } else {
-            $aktiv = rest_sanitize_boolean( $aktiv_param );
-            $sammelstellen = Sammelstellen::find_sammelstellen_by_aktiv( $aktiv );
-        }
+        $sammelstellen = self::find_sammelstellen( $request->get_param( "aktiv" ) );
         $sammelstellen_geojson = array();
         foreach ( $sammelstellen as $sammelstelle ) {
-            $sammelstellen_geojson[] = array(
-                'type' => 'Feature',
-                'geometry' => array(
-                    'type' => 'Point',
-                    'coordinates' => array(floatval($sammelstelle->longitude), floatval($sammelstelle->latitude))
-                ),
-                'properties' => array(
-                    'id' => $sammelstelle->id,
-                    'name' => $sammelstelle->name,
-                    'adresse' => $sammelstelle->adresse,
-                    'postleitzahl' => $sammelstelle->postleitzahl,
-                    'oeffnungszeiten' => $sammelstelle->oeffnungszeiten,
-                    'website' => $sammelstelle->website,
-                    'briefkasten' => $sammelstelle->briefkasten == "1",
-                    'hinweise' => $sammelstelle->hinweise,
-                    'aktiv' => $sammelstelle->aktiv == "1"
-                )
-            );
+            $sammelstellen_geojson[] = self::map_sammelstelle_to_geojson( $sammelstelle );
         };
         $geo_json = array(
             'type' => 'FeatureCollection',
             'features' => $sammelstellen_geojson
         );
         return rest_ensure_response( $geo_json );
+    }
+
+    private static function map_sammelstelle_to_geojson( $sammelstelle ) {
+        $sammlung_beendet = get_option( 'sammelstellen_sammlung_beendet' ) === "true";
+        return array(
+            'type' => 'Feature',
+            'geometry' => array(
+                'type' => 'Point',
+                'coordinates' => array(floatval($sammelstelle->longitude), floatval($sammelstelle->latitude))
+            ),
+            'properties' => (
+                $sammlung_beendet
+                    ? self::map_sammelstellen_archiv_properties( $sammelstelle )
+                    : self::map_sammelstellen_properties( $sammelstelle )
+            )
+        );
+    }
+
+    private static function find_sammelstellen( $aktiv_param ) {
+        if ($aktiv_param === null) {
+            return Sammelstellen::find_all_sammelstellen();
+        }
+        $sammlung_beendet = get_option( 'sammelstellen_sammlung_beendet' ) === "true";
+        $aktiv = rest_sanitize_boolean( $aktiv_param );
+        if ($sammlung_beendet) {
+            return Sammelstellen::find_sammelstellen_by_aktiv_without_briefkaesten( $aktiv );
+        }
+        return Sammelstellen::find_sammelstellen_by_aktiv( $aktiv );
+    }
+
+    private static function map_sammelstellen_properties( $sammelstelle ) {
+        return array(
+            'id' => $sammelstelle->id,
+            'name' => $sammelstelle->name,
+            'adresse' => $sammelstelle->adresse,
+            'postleitzahl' => $sammelstelle->postleitzahl,
+            'oeffnungszeiten' => $sammelstelle->oeffnungszeiten,
+            'website' => $sammelstelle->website,
+            'briefkasten' => $sammelstelle->briefkasten == "1",
+            'hinweise' => $sammelstelle->hinweise,
+            'aktiv' => $sammelstelle->aktiv == "1"
+        );
+    }
+
+    private static function map_sammelstellen_archiv_properties( $sammelstelle ) {
+        return array(
+            'id' => $sammelstelle->id,
+            'name' => $sammelstelle->name,
+            'postleitzahl' => $sammelstelle->postleitzahl,
+            'website' => $sammelstelle->website,
+            'briefkasten' => $sammelstelle->briefkasten == "1",
+            'aktiv' => $sammelstelle->aktiv == "1"
+        );
     }
 
 }

@@ -66,8 +66,16 @@ class Sammelstellen_Admin {
             'general',
             'sammelstellen_settings'
         );
+        add_settings_field(
+            'sammelstellen_sammlung_beendet',
+            'Sammlung beendet',
+            array( 'Sammelstellen_Admin', 'generate_sammlung_beendet_input' ),
+            'general',
+            'sammelstellen_settings'
+        );
         register_setting( 'general', 'sammelstellen_map_source' );
         register_setting( 'general', 'sammelstellen_editor_map_source' );
+        register_setting( 'general', 'sammelstellen_sammlung_beendet' );
     }
 
     public static function generate_settings_section_info() {
@@ -85,6 +93,13 @@ class Sammelstellen_Admin {
         $value = get_option( 'sammelstellen_editor_map_source' );
         echo '<input name="sammelstellen_editor_map_source" id="sammelstellen_editor_map_source"  class="regular-text code" type="url" value="'
             . esc_attr($value) . '">';
+    }
+
+    public static function generate_sammlung_beendet_input() {
+        $value = get_option( 'sammelstellen_sammlung_beendet' ) === 'true';
+        echo '<label for="sammelstellen_sammlung_beendet"><input name="sammelstellen_sammlung_beendet" id="sammelstellen_sammlung_beendet" class="" type="checkbox" value="true" '
+            . ( $value ? 'checked="checked"' : '' ) . '"> Sammlung beendet.</label>
+              <p style="font-style: italic">Schaltet die Kartendarstellung in einen Archivmodus um, in dem nur noch die Namen und Websites der Sammelstellen angezeigt werden.</p>';
     }
 
     public static function add_sammelstellen_menus() {

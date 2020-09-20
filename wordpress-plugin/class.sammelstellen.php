@@ -56,6 +56,7 @@ class Sammelstellen {
 
         delete_option( "sammelstellen_map_source" );
         delete_option( "sammelstellen_editor_map_source" );
+        delete_option( "sammelstellen_sammlung_beendet" );
     }
 
     public static function view( $name, array $args = array() ) {
@@ -95,6 +96,18 @@ class Sammelstellen {
                     X(location) as longitude, Y(location) as latitude
                     FROM $table_name 
                     WHERE aktiv = %d
+                    ORDER BY postleitzahl, name", $aktiv ) );
+    }
+
+    public static function find_sammelstellen_by_aktiv_without_briefkaesten( $aktiv ) {
+        global $wpdb;
+
+        $table_name = self::get_table_name();
+        return $wpdb->get_results( $wpdb->prepare( "
+                SELECT id, name, adresse, postleitzahl, oeffnungszeiten, website, briefkasten, aktiv, hinweise,
+                    X(location) as longitude, Y(location) as latitude
+                    FROM $table_name 
+                    WHERE aktiv = %d AND briefkasten = 0
                     ORDER BY postleitzahl, name", $aktiv ) );
     }
 

@@ -11,8 +11,8 @@ export default function Sammelstelle({
                 <p class="sammelstellen-info-text">Privater Briefkasten als Einwurfstelle für Unterschriftenlisten</p>
                 <ul>
                     <li>${name}</li>
-                    <li>${adresse}</li>
-                    <${Oeffnungszeiten} oeffnungszeiten="${(oeffnungszeiten)}"/>
+                    <${Adresse} adresse="${adresse}"/>
+                    <${Oeffnungszeiten} oeffnungszeiten="${oeffnungszeiten}"/>
                     <${Hinweise} hinweise="${hinweise}"/>
                     <${Website} website="${website}"/>
                 </ul>
@@ -23,13 +23,21 @@ export default function Sammelstelle({
         <article class=${aktiv ? "" : "sammelstellen-sammelstelle-inaktiv"} onclick="${onClick}">
             <h2>${name}</h2>
             <ul>
-                <li>${adresse}</li>
-                <${Oeffnungszeiten} oeffnungszeiten="${(oeffnungszeiten)}"/>
+                <${Adresse} adresse="${adresse}"/>
+                <${Oeffnungszeiten} oeffnungszeiten="${oeffnungszeiten}"/>
                 <${Hinweise} hinweise="${hinweise}"/>
                 <${Website} website="${website}"/>
             </ul>
             <${Inaktiv} aktiv="${aktiv}"/>
         </article>`;
+}
+
+function Adresse({adresse}) {
+
+    if (adresse) {
+        return html`<li>${adresse}</li>`;
+    }
+    return '';
 }
 
 function Oeffnungszeiten({oeffnungszeiten}) {
